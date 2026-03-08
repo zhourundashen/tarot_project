@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天功能诊断工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        h1 {
+            color: #9b59b6;
+            border-bottom: 2px solid #9b59b6;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-section h2 {
+            color: #3498db;
+            margin-top: 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success { background: #27ae60; }
+        .status.error { background: #e74c3c; }
+        .status.pending { background: #f39c12; }
+        button {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover { background: #8e44ad; }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .log-line { margin: 5px 0; }
+        .log-line.error { color: #e74c3c; }
+        .log-line.success { color: #27ae60; }
+        .log-line.info { color: #3498db; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2a2a4e;
+            color: #eee;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .config-item {
+            margin: 10px 0;
+        }
+        .config-item label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        .result-box {
+            background: rgba(155, 89, 182, 0.1);
+            border: 1px solid #9b59b6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 聊天功能诊断工具</h1>
+    
+    <!-- 1. 检查配置 -->
+    <div class="test-section">
+        <h2>1. 检查前端配置</h2>
+        <div class="config-item">
+            <label>后端地址:</label>
+            <span id="config-backend">-</span>
+        </div>
+        <div class="config-item">
+            <label>AI是否启用:</label>
+            <span id="config-aiEnabled">-</span>
+        </div>
+        <div class="config-item">
+            <label>使用后端:</label>
+            <span id="config-useBackend">-</span>
+        </div>
+        <div class="config-item">
+            <label>AI模型:</label>
+            <span id="config-model">-</span>
+        </div>
+        <div class="log" id="config-log"></div>
+    </div>
+    
+    <!-- 2. 测试后端连接 -->
+    <div class="test-section">
+        <h2>2. 测试后端连接</h2>
+        <button onclick="testBackendConnection()">测试连接</button>
+        <button onclick="testHealthCheck()">健康检查</button>
+        <div class="log" id="backend-log"></div>
+    </div>
+    
+    <!-- 3. 测试AI聊天 -->
+    <div class="test-section">
+        <h2>3. 测试AI聊天</h2>
+        <textarea id="test-message" rows="3" placeholder="输入测试消息...">你好，我想了解塔罗牌</textarea>
+        <button onclick="testAIChat()">发送测试消息</button>
+        <div class="result-box" id="ai-response" style="display:none;">
+            <strong>AI回复:</strong>
+            <p id="ai-response-text"></p>
+        </div>
+        <div class="log" id="ai-log"></div>
+    </div>
+    
+    <!-- 4. 检查前端代码 -->
+    <div class="test-section">
+        <h2>4. 检查前端代码</h2>
+        <button onclick="checkDOMElements()">检查DOM元素</button>
+        <button onclick="checkAppObject()">检查app对象</button>
+        <button onclick="checkTarotAI()">检查TarotAI对象</button>
+        <div class="log" id="frontend-log"></div>
+    </div>
+    
+    <!-- 5. 完整测试 -->
+    <div class="test-section">
+        <h2>5. 完整流程测试</h2>
+        <button onclick="runFullTest()">运行完整测试</button>
+        <div class="log" id="full-test-log"></div>
+    </div>
+    
+    <script>
+        // 日志函数
+        function log(elementId, message, type = 'info') {
+            const logEl = document.getElementById(elementId);
+            const line = document.createElement('div');
+            line.className = `log-line ${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        // 1. 检查配置
+        function checkConfig() {
+            try {
+                if (typeof CONFIG === 'undefined') {
+                    log('config-log', '❌ CONFIG对象未定义', 'error');
+                    return;
+                }
+                
+                document.getElementById('config-backend').textContent = CONFIG.backendUrl;
+                document.getElementById('config-aiEnabled').textContent = CONFIG.aiEnabled ? '是' : '否';
+                document.getElementById('config-useBackend').textContent = CONFIG.useBackend ? '是' : '否';
+                document.getElementById('config-model').textContent = CONFIG.model;
+                
+                log('config-log', '✅ CONFIG对象已加载', 'success');
+                log('config-log', `后端地址: ${CONFIG.backendUrl}`, 'info');
+                log('config-log', `AI启用: ${CONFIG.aiEnabled}`, 'info');
+                log('config-log', `使用后端: ${CONFIG.useBackend}`, 'info');
+            } catch (error) {
+                log('config-log', `❌ 检查配置失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 2. 测试后端连接
+        async function testBackendConnection() {
+            log('backend-log', '开始测试后端连接...', 'info');
+            
+            try {
+                const response = await fetch(`${CONFIG.backendUrl}/api/ai/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: '测试' }],
+                        stream: false
+                    })
+                });
+                
+                log('backend-log', `HTTP状态码: ${response.status}`, 'info');
+                
+                const data = await response.json();
+                log('backend-log', `✅ 后端连接成功`, 'success');
+                log('backend-log', `响应数据: ${JSON.stringify(data).substring(0, 100)}...`, 'info');
+                
+                return true;
+            } catch (error) {
+                log('backend-log', `❌ 后端连接失败: ${error.message}`, 'error');
+                log('backend-log', '可能的原因:', 'info');
+                log('backend-log', '1. 后端服务未启动 (运行: cd backend/server && npm start)', 'info');
+                log('backend-log', '2. 端口3000被占用', 'info');
+                log('backend-log', '3. CORS配置问题', 'info');
+                return false;
+            }
+        }
+        
+        async function testHealthCheck() {
+            log('backend-log', '测试健康检查端点...', 'info');
+            
+            try {
+                const response = await fetch(`${CONFIG.backendUrl}/health`);
+                const data = await response.json();
+                log('backend-log', `✅ 健康检查通过: ${JSON.stringify(data)}`, 'success');
+            } catch (error) {
+                log('backend-log', `⚠️ 健康检查失败（可能没有此端点）: ${error.message}`, 'info');
+            }
+        }
+        
+        // 3. 测试AI聊天
+        async function testAIChat() {
+            const message = document.getElementById('test-message').value;
+            log('ai-log', `发送测试消息: "${message}"`, 'info');
+            
+            try {
+                const messages = [
+                    {
+                        role: 'system',
+                        content: '你是一位温和、简洁的塔罗占卜师助手。'
+                    },
+                    {
+                        role: 'user',
+                        content: message
+                    }
+                ];
+                
+                log('ai-log', '调用TarotAI.chat()...', 'info');
+                const response = await TarotAI.chat(messages);
+                
+                log('ai-log', `✅ AI回复成功`, 'success');
+                
+                document.getElementById('ai-response').style.display = 'block';
+                document.getElementById('ai-response-text').textContent = response;
+                
+                log('ai-log', `回复长度: ${response.length} 字符`, 'info');
+            } catch (error) {
+                log('ai-log', `❌ AI聊天失败: ${error.message}`, 'error');
+                log('ai-log', `错误堆栈: ${error.stack}`, 'error');
+            }
+        }
+        
+        // 4. 检查前端代码
+        function checkDOMElements() {
+            log('frontend-log', '检查DOM元素...', 'info');
+            
+            const elements = {
+                'chat-input': '聊天输入框',
+                'chat-messages': '聊天消息容器',
+                'chat-send-btn': '发送按钮'
+            };
+            
+            for (const [id, name] of Object.entries(elements)) {
+                const el = document.getElementById(id);
+                if (el) {
+                    log('frontend-log', `✅ ${name} (${id}) 存在`, 'success');
+                } else {
+                    log('frontend-log', `❌ ${name} (${id}) 不存在`, 'error');
+                }
+            }
+        }
+        
+        function checkAppObject() {
+            log('frontend-log', '检查app对象...', 'info');
+            
+            if (typeof app === 'undefined') {
+                log('frontend-log', '❌ app对象未定义', 'error');
+                return;
+            }
+            
+            log('frontend-log', '✅ app对象已定义', 'success');
+            
+            const methods = ['sendChatMessage', 'addUserMessage', 'addAIMessage', 'showTypingIndicator', 'hideTypingIndicator'];
+            
+            for (const method of methods) {
+                if (typeof app[method] === 'function') {
+                    log('frontend-log', `✅ app.${method}() 存在`, 'success');
+                } else {
+                    log('frontend-log', `❌ app.${method}() 不存在`, 'error');
+                }
+            }
+        }
+        
+        function checkTarotAI() {
+            log('frontend-log', '检查TarotAI对象...', 'info');
+            
+            if (typeof TarotAI === 'undefined') {
+                log('frontend-log', '❌ TarotAI对象未定义', 'error');
+                return;
+            }
+            
+            log('frontend-log', '✅ TarotAI对象已定义', 'success');
+            
+            const methods = ['chat', 'chatWithContext', 'interpret'];
+            
+            for (const method of methods) {
+                if (typeof TarotAI[method] === 'function') {
+                    log('frontend-log', `✅ TarotAI.${method}() 存在`, 'success');
+                } else {
+                    log('frontend-log', `❌ TarotAI.${method}() 不存在`, 'error');
+                }
+            }
+        }
+        
+        // 5. 完整测试
+        async function runFullTest() {
+            log('full-test-log', '=== 开始完整测试 ===', 'info');
+            
+            // 1. 检查配置
+            log('full-test-log', '\n【步骤1】检查配置', 'info');
+            checkConfig();
+            
+            // 2. 检查前端代码
+            log('full-test-log', '\n【步骤2】检查前端代码', 'info');
+            checkDOMElements();
+            checkAppObject();
+            checkTarotAI();
+            
+            // 3. 测试后端连接
+            log('full-test-log', '\n【步骤3】测试后端连接', 'info');
+            const backendOk = await testBackendConnection();
+            
+            if (backendOk) {
+                // 4. 测试AI聊天
+                log('full-test-log', '\n【步骤4】测试AI聊天', 'info');
+                await testAIChat();
+            } else {
+                log('full-test-log', '\n⚠️ 跳过AI聊天测试（后端连接失败）', 'info');
+            }
+            
+            log('full-test-log', '\n=== 测试完成 ===', 'info');
+        }
+        
+        // 页面加载时自动检查配置
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                checkConfig();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

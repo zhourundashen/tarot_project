@@ -674,7 +674,12 @@ const app = {
      * @returns {void}
      */
     addAIMessage(content, quickActions = null, useTypewriter = true) {
+        console.log('=== addAIMessage 被调用 ===');
+        console.log('内容:', content?.substring(0, 100));
+        console.log('内容长度:', content?.length);
+        
         this.chatMessages.push({ role: 'ai', content });
+        console.log('当前聊天消息数:', this.chatMessages.length);
         
         const isReadingResult = content.includes('【') && 
                                  (content.includes('核心启示') || 
@@ -682,19 +687,28 @@ const app = {
                                   content.includes('牌面启示') ||
                                   content.includes('第') && content.includes('张'));
         
+        console.log('是否是解读结果:', isReadingResult);
+        
         if (useTypewriter && isReadingResult && content.length > 100) {
-            this.renderChatMessages(null, false);
+            // 打字机效果（仅用于长篇解读）
+            console.log('使用打字机效果');
+            this.renderChatMessages(null, false);  // 先显示空消息容器
             this.saveChatHistory();
             
             const messageIndex = this.chatMessages.length - 1;
             this.typewriterEffect(content, messageIndex).then(() => {
+                console.log('打字机效果完成');
                 if (quickActions) {
                     this.renderChatMessages(quickActions, true);
                 }
             });
         } else {
-            this.renderChatMessages(quickActions, true);
+            // 普通聊天消息：直接显示
+            console.log('普通消息，直接渲染');
+            this.renderChatMessages(quickActions, false);  // ✅ 修改为false，立即显示内容
             this.saveChatHistory();
+            
+            console.log('消息已添加到界面');
         }
     },
 
@@ -706,11 +720,20 @@ const app = {
 
     renderChatMessages(quickActions = null, emptyLastMessage = false) {
         const container = document.getElementById('chat-messages');
-        if (!container) return;
+        if (!container) {
+            console.error('❌ 聊天消息容器不存在');
+            return;
+        }
+        
+        console.log('=== renderChatMessages 被调用 ===');
+        console.log('消息数量:', this.chatMessages.length);
+        console.log('emptyLastMessage:', emptyLastMessage);
         
         let html = this.chatMessages.map((msg, index) => {
             const isLastMessage = index === this.chatMessages.length - 1;
             const shouldShowContent = !(emptyLastMessage && isLastMessage);
+            
+            console.log(`消息${index}: ${msg.role}, isLast=${isLastMessage}, show=${shouldShowContent}`);
             
             return `
                 <div class="chat-message ${msg.role}">
@@ -734,6 +757,8 @@ const app = {
         
         container.innerHTML = html;
         container.scrollTop = container.scrollHeight;
+        
+        console.log('✅ 消息已渲染到界面');
     },
 
     formatMessageContent(content) {
@@ -785,38 +810,6 @@ const app = {
         };
 
         await type();
-    },
-
-    /**
-     * 添加AI消息到聊天记录（支持打字机效果）
-     * @param {string} content - 消息内容
-     * @param {Array<Object>|null} [quickActions=null] - 快捷操作按钮
-     * @param {boolean} [useTypewriter=true] - 是否使用打字机效果
-     * @returns {void}
-     */
-    addAIMessage(content, quickActions = null, useTypewriter = true) {
-        this.chatMessages.push({ role: 'ai', content });
-        
-        const isReadingResult = content.includes('【') && 
-                                 (content.includes('核心启示') || 
-                                  content.includes('最终指引') ||
-                                  content.includes('牌面启示') ||
-                                  content.includes('第') && content.includes('张'));
-        
-        if (useTypewriter && isReadingResult && content.length > 100) {
-            this.renderChatMessages(null, false);
-            this.saveChatHistory();
-            
-            const messageIndex = this.chatMessages.length - 1;
-            this.typewriterEffect(content, messageIndex).then(() => {
-                if (quickActions) {
-                    this.renderChatMessages(quickActions, true);
-                }
-            });
-        } else {
-            this.renderChatMessages(quickActions, true);
-            this.saveChatHistory();
-        }
     },
 
     showTypingIndicator() {
@@ -886,7 +879,19 @@ const app = {
         const input = document.getElementById('chat-input');
         const message = input ? input.value.trim() : '';
         
-        if (!message) return;
+        if (!message) {
+            console.warn('聊天消息为空');
+            return;
+        }
+        
+        console.log('=== 开始发送聊天消息 ===');
+        console.log('消息内容:', message);
+        console.log('当前状态:', {
+            userQuestion: this.userQuestion,
+            currentSpread: this.currentSpread?.name,
+            drawnCards: this.drawnCards?.length,
+            chatMessages: this.chatMessages.length
+        });
         
         input.value = '';
         this.addUserMessage(message);
@@ -894,19 +899,69 @@ const app = {
         this.showTypingIndicator();
         
         try {
+            // 检查TarotAI是否可用
+            if (typeof TarotAI === 'undefined') {
+                throw new Error('TarotAI模块未加载，请刷新页面重试');
+            }
+            
+            // 检查chatWithContext方法是否存在
+            if (typeof TarotAI.chatWithContext !== 'function') {
+                throw new Error('TarotAI.chatWithContext方法不存在');
+            }
+            
+            console.log('调用 TarotAI.chatWithContext()...');
+            
             const response = await TarotAI.chatWithContext(
                 message,
-                this.userQuestion,
-                this.currentSpread,
-                this.drawnCards,
-                this.chatMessages
+                this.userQuestion || '',
+                this.currentSpread || { name: '未选择牌阵' },
+                this.drawnCards || [],
+                this.chatMessages || []
             );
+            
+            console.log('AI响应成功:', response);
             
             this.hideTypingIndicator();
             this.addAIMessage(response);
+            
+            console.log('=== 聊天消息处理完成 ===');
+            
         } catch (error) {
+            console.error('=== 聊天消息处理失败 ===');
+            console.error('错误类型:', error.name);
+            console.error('错误信息:', error.message);
+            console.error('错误堆栈:', error.stack);
+            
             this.hideTypingIndicator();
-            this.addAIMessage('抱歉，我暂时无法回应。请稍后再试。');
+            
+            // 根据错误类型显示不同的提示
+            let errorMessage = '抱歉，我暂时无法回应。';
+            
+            if (error.message.includes('NetworkError') || 
+                error.message.includes('Failed to fetch') ||
+                error.message.includes('Network request failed')) {
+                errorMessage = '❌ 网络连接失败。\n\n请检查：\n1. 后端服务是否启动 (cd backend/server && npm start)\n2. 浏览器是否允许访问 http://localhost:3000';
+                console.error('网络错误: 无法连接到后端服务');
+            } else if (error.message.includes('TarotAI模块未加载')) {
+                errorMessage = '❌ AI模块未加载。\n\n请刷新页面重试。';
+                console.error('模块错误: TarotAI未定义');
+            } else if (error.message.includes('API') || error.message.includes('401') || error.message.includes('403')) {
+                errorMessage = '❌ AI服务认证失败。\n\n请检查后端.env文件中的ZHIPU_API_KEY是否正确。';
+                console.error('认证错误: API密钥无效');
+            } else if (error.message.includes('timeout') || error.message.includes('Timeout')) {
+                errorMessage = '❌ 请求超时。\n\nAI响应时间过长，请稍后重试。';
+                console.error('超时错误: AI响应超时');
+            } else {
+                errorMessage = `❌ 发生错误：${error.message}\n\n请查看浏览器控制台(F12)获取详细信息。`;
+                console.error('未知错误:', error);
+            }
+            
+            this.addAIMessage(errorMessage);
+            
+            // 同时显示toast提示
+            if (this.showToast) {
+                this.showToast(errorMessage.split('\n')[0], 'error');
+            }
         }
     },
 
