@@ -1,0 +1,5 @@
+export { default as WelcomeView } from './WelcomeView.vue'
+export { default as SpreadSelectView } from './SpreadSelectView.vue'
+export { default as ShuffleView } from './ShuffleView.vue'
+export { default as DrawView } from './DrawView.vue'
+export { default as ResultView } from './ResultView.vue'

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分享功能测试</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+        <h1>分享功能测试</h1>
+        <button onclick="testShare()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            测试分享功能
+        </button>
+        <div id="result" style="margin-top: 20px; padding: 10px; background: #f5f5f5;"></div>
+    </div>
+
+    <script src="js/share.js"></script>
+    <script>
+        async function testShare() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '开始测试...';
+
+            try {
+                // 测试1：检查TarotShare对象
+                if (typeof TarotShare === 'undefined') {
+                    resultDiv.innerHTML = '❌ 错误：TarotShare对象未定义';
+                    return;
+                }
+                resultDiv.innerHTML += '<br>✅ TarotShare对象存在';
+
+                // 测试2：检查必要方法
+                const methods = ['generateShareImage', 'generateAllPages', 'showShareModalWithPages'];
+                for (const method of methods) {
+                    if (typeof TarotShare[method] !== 'function') {
+                        resultDiv.innerHTML += `<br>❌ 错误：${method}方法不存在`;
+                        return;
+                    }
+                    resultDiv.innerHTML += `<br>✅ ${method}方法存在`;
+                }
+
+                // 测试3：生成测试数据
+                const testOptions = {
+                    question: '这是一个测试问题',
+                    spreadName: '三牌阵',
+                    cards: [
+                        {
+                            card: { name: '愚者', suit: '大阿卡纳', keywords: ['开始', '冒险'] },
+                            reversed: false,
+                            position: '过去'
+                        },
+                        {
+                            card: { name: '魔术师', suit: '大阿卡纳', keywords: ['创造', '技能'] },
+                            reversed: false,
+                            position: '现在'
+                        },
+                        {
+                            card: { name: '女祭司', suit: '大阿卡纳', keywords: ['直觉', '神秘'] },
+                            reversed: true,
+                            position: '未来'
+                        }
+                    ],
+                    interpretation: '这是一个测试解读内容。',
+                    keywords: ['勇气', '信任', '希望'],
+                    summary: '这是测试总结。',
+                    scores: { love: 70, career: 80, wealth: 60, health: 75, study: 85 },
+                    trend: [60, 70, 80],
+                    elements: { fire: 30, water: 25, air: 20, earth: 25 }
+                };
+
+                resultDiv.innerHTML += '<br>⏳ 开始生成分享图片...';
+
+                // 测试4：生成主图片
+                const mainImage = await TarotShare.generateShareImage(testOptions);
+                if (!mainImage || !mainImage.startsWith('data:image')) {
+                    resultDiv.innerHTML += '<br>❌ 错误：主图片生成失败';
+                    return;
+                }
+                resultDiv.innerHTML += '<br>✅ 主图片生成成功';
+
+                // 测试5：生成所有页面
+                const pages = await TarotShare.generateAllPages(testOptions);
+                if (!pages || pages.length === 0) {
+                    resultDiv.innerHTML += '<br>❌ 错误：页面生成失败';
+                    return;
+                }
+                resultDiv.innerHTML += `<br>✅ 生成了 ${pages.length} 个页面`;
+
+                // 测试6：显示模态框
+                resultDiv.innerHTML += '<br>⏳ 显示分享模态框...';
+                TarotShare.showShareModalWithPages(pages, testOptions);
+                resultDiv.innerHTML += '<br>✅ 模态框显示成功';
+
+                resultDiv.innerHTML += '<br><br><strong style="color: green;">✅ 所有测试通过！</strong>';
+
+            } catch (error) {
+                resultDiv.innerHTML += `<br><br><strong style="color: red;">❌ 错误：${error.message}</strong>`;
+                console.error('测试失败:', error);
+            }
+        }
+    </script>
+</body>
+</html>

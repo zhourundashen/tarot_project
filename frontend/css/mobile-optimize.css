@@ -1,0 +1,953 @@
+/* ========================================
+   移动端优化样式 - v1.0
+   适配：320px - 768px
+   ======================================== */
+
+/* ========== 移动端基础优化 ========== */
+
+/* 安全区域适配（iPhone X等刘海屏） */
+@supports (padding: max(0px)) {
+    body {
+        padding-top: max(20px, env(safe-area-inset-top));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+    }
+    
+    .modal-content,
+    .legal-content,
+    .share-modal-content,
+    .history-modal-content {
+        padding-bottom: max(30px, calc(20px + env(safe-area-inset-bottom)));
+    }
+}
+
+/* ========== 触摸区域优化 ========== */
+/* 所有按钮最小触摸区域44x44px */
+@media (max-width: 768px) {
+    .btn-mystical,
+    .btn-login,
+    .btn-logout,
+    .btn-sound,
+    .btn-ai,
+    .btn-ritual,
+    .btn-help,
+    .question-tag,
+    .quick-action-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .btn-mystical {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+    }
+    
+    .btn-sound,
+    .btn-ai,
+    .btn-ritual,
+    .btn-help {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ========== Header优化 ========== */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 10px;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
+        letter-spacing: 0.08em;
+    }
+    
+    .subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+    }
+    
+    .header-controls {
+        gap: 8px;
+        margin-top: 10px;
+    }
+    
+    .user-bar {
+        font-size: 0.85rem;
+        gap: 8px;
+    }
+}
+
+/* ========== 欢迎页优化 ========== */
+@media (max-width: 768px) {
+    .welcome-content {
+        padding: 30px 20px;
+    }
+    
+    .tarot-symbol {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 30px;
+    }
+    
+    .welcome-content h2 {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+    }
+    
+    .intro-text {
+        font-size: 0.9rem;
+        margin-bottom: 35px;
+        line-height: 1.6;
+    }
+    
+    .welcome-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .welcome-buttons .btn-mystical {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* ========== 问题输入页优化 ========== */
+@media (max-width: 768px) {
+    #question-screen h2 {
+        font-size: 1.4rem;
+    }
+    
+    .question-input-area textarea {
+        font-size: 1rem;
+        padding: 15px;
+        min-height: 120px;
+    }
+    
+    .template-category {
+        margin-bottom: 12px;
+    }
+    
+    .category-header {
+        padding: 12px 15px;
+    }
+    
+    .category-icon {
+        font-size: 1.3rem;
+    }
+    
+    .category-name {
+        font-size: 0.95rem;
+    }
+    
+    .category-questions {
+        padding: 12px 15px;
+        gap: 8px;
+    }
+    
+    .question-tag {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== 牌阵选择优化 ========== */
+@media (max-width: 768px) {
+    #spread-screen h2 {
+        font-size: 1.4rem;
+    }
+    
+    .spread-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 5px;
+    }
+    
+    .spread-card {
+        padding: 18px;
+    }
+    
+    .spread-card h3 {
+        font-size: 1.05rem;
+    }
+    
+    .spread-card p {
+        font-size: 0.85rem;
+    }
+    
+    .spread-badge {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+}
+
+/* ========== 洗牌/切牌优化 ========== */
+@media (max-width: 768px) {
+    .shuffle-container {
+        padding: 20px 15px;
+    }
+    
+    .shuffle-card {
+        width: 70px;
+        height: 105px;
+    }
+    
+    .cut-area {
+        height: 220px;
+        padding: 15px;
+    }
+    
+    .cut-pile {
+        width: 90px;
+        height: 135px;
+    }
+    
+    .cut-pile-label {
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== 抽牌界面优化 ========== */
+@media (max-width: 768px) {
+    .fan-container {
+        height: 320px;
+        padding: 15px 10px;
+    }
+    
+    .fan-card {
+        width: 50px;
+        height: 78px;
+    }
+    
+    .selected-cards {
+        padding: 15px 10px;
+        min-height: 100px;
+    }
+    
+    .selected-slot {
+        width: 55px;
+        height: 85px;
+    }
+    
+    #draw-counter {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+    
+    /* 牌背图案优化 */
+    .back-symbol {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* 超小屏幕（320px-360px）额外优化 */
+@media (max-width: 360px) {
+    .fan-container {
+        height: 280px;
+    }
+    
+    .fan-card {
+        width: 45px;
+        height: 70px;
+    }
+}
+
+/* ========== 牌阵展示优化 ========== */
+@media (max-width: 768px) {
+    .table-area {
+        padding: 15px 10px;
+        min-height: 320px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 改进牌阵缩放方式 */
+    .spread-display {
+        transform: scale(0.5);
+        transform-origin: center top;
+        min-height: 400px;
+        width: fit-content;
+        margin: 0 auto;
+    }
+    
+    /* 单牌阵特殊处理 */
+    .spread-display.single-card {
+        transform: scale(0.8);
+        min-height: 300px;
+    }
+    
+    /* 三牌阵优化 */
+    .spread-display.three-card {
+        transform: scale(0.6);
+    }
+    
+    .result-card {
+        width: 85px;
+        height: 130px;
+    }
+    
+    .card-position-label {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+    
+    /* 牌拖拽提示 */
+    .drag-hint {
+        font-size: 0.8rem;
+        padding: 8px 15px;
+        margin-bottom: 10px;
+    }
+}
+
+/* ========== 结果页面优化 ========== */
+@media (max-width: 768px) {
+    #result-screen h2 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    /* 结果牌面展示优化 */
+    .result-cards-display {
+        padding: 15px 10px;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .result-card-wrapper {
+        width: 100px;
+    }
+    
+    .result-card-display {
+        width: 80px;
+        height: 123px;
+    }
+    
+    .result-card-name {
+        font-size: 0.85rem;
+        margin-top: 6px;
+    }
+    
+    .result-card-position {
+        font-size: 0.75rem;
+    }
+    
+    /* AI解读区域优化 */
+    .ai-interpretation {
+        padding: 18px 15px;
+        margin: 15px 10px;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+    
+    /* 今日关键词优化 */
+    .today-keywords {
+        padding: 15px;
+        margin: 15px 10px;
+    }
+    
+    .today-keywords h4 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    .keyword-tag {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    /* 结果操作按钮优化 */
+    .result-actions-wrapper {
+        padding: 15px 10px;
+    }
+    
+    .result-actions-primary {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .result-actions-primary .btn-mystical {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .result-actions {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .result-actions .btn-mystical {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    /* 满意度反馈优化 */
+    .feedback-buttons {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 10px;
+    }
+    
+    .feedback-btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    /* 追问输入框优化 */
+    .followup-input-inline {
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .followup-input-inline textarea {
+        min-height: 80px;
+        font-size: 0.95rem;
+    }
+    
+    .followup-input-inline button {
+        width: 100%;
+    }
+}
+
+/* ========== 聊天侧栏优化 ========== */
+@media (max-width: 768px) {
+    .process-layout {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    /* 移动端聊天栏改为可折叠的顶部栏 */
+    .chat-sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        transition: max-height 0.3s ease;
+    }
+    
+    .chat-sidebar.collapsed {
+        max-height: 50px;
+        height: 50px;
+        overflow: hidden;
+    }
+    
+    .chat-header {
+        padding: 12px 15px;
+        cursor: pointer;
+    }
+    
+    .chat-header h3 {
+        font-size: 0.95rem;
+    }
+    
+    .chat-messages {
+        padding: 10px 15px;
+        max-height: 200px;
+    }
+    
+    .chat-message {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+    
+    .chat-input-area {
+        padding: 10px 15px;
+    }
+    
+    .chat-input {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    .chat-send-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    /* 聊天切换按钮优化 */
+    .chat-toggle-btn {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        transform: none;
+        width: 40px;
+        height: 36px;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+    
+    .main-area {
+        flex: 1;
+        padding: 15px 10px;
+        overflow-y: auto;
+    }
+}
+
+/* ========== 六芒星桌布优化 ========== */
+@media (max-width: 768px) {
+    .ritual-container {
+        width: 280px;
+        height: 280px;
+        opacity: 0.8;
+    }
+    
+    .hexagram-svg {
+        max-height: 300px;
+    }
+    
+    /* 减少动画性能消耗 */
+    .hexagram-svg .bg-glow,
+    .hexagram-svg .hexagram-main {
+        animation-duration: 5s;
+    }
+}
+
+@media (max-width: 360px) {
+    .ritual-container {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+/* ========== 分享模态框优化 ========== */
+@media (max-width: 768px) {
+    .share-modal-content {
+        padding: 20px 15px;
+        margin: 10px;
+        max-height: 85vh;
+    }
+    
+    .share-modal-close {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+    
+    .share-modal-title {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+    
+    .share-preview {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .template-selector {
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    
+    .template-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .template-btn .template-icon {
+        font-size: 1.2rem;
+    }
+    
+    .share-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .share-btn {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+/* ========== 历史记录模态框优化 ========== */
+@media (max-width: 768px) {
+    .history-modal-content {
+        padding: 20px 15px;
+        margin: 10px;
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .history-modal-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .history-filters {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+    
+    .history-search {
+        width: 100%;
+    }
+    
+    .history-search input {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+    
+    .history-list {
+        max-height: 400px;
+    }
+    
+    .history-item {
+        padding: 12px;
+    }
+    
+    .history-question {
+        font-size: 0.9rem;
+    }
+    
+    .history-meta {
+        font-size: 0.75rem;
+    }
+    
+    .history-actions {
+        gap: 8px;
+    }
+    
+    .history-action-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+/* ========== 登录/注册模态框优化 ========== */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 25px 20px;
+        margin: 15px 10px;
+        width: 95%;
+        max-width: 400px;
+    }
+    
+    .modal-content h3 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input {
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    .modal-content .btn-mystical {
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+    .switch-auth {
+        font-size: 0.85rem;
+        margin-top: 15px;
+    }
+}
+
+/* ========== 法律页面优化 ========== */
+@media (max-width: 768px) {
+    .legal-content {
+        padding: 25px 20px;
+        margin: 10px;
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .legal-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+    }
+    
+    .legal-body {
+        font-size: 0.85rem;
+        line-height: 1.7;
+    }
+    
+    .legal-body h4 {
+        font-size: 0.95rem;
+        margin: 18px 0 10px 0;
+        padding-left: 10px;
+    }
+}
+
+/* ========== 新手引导优化 ========== */
+@media (max-width: 768px) {
+    .guide-overlay {
+        padding: 15px;
+    }
+    
+    .guide-card {
+        padding: 25px 20px;
+        max-width: 95%;
+        margin: 0 auto;
+    }
+    
+    .guide-step {
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .guide-title {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .guide-content {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .guide-progress {
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .guide-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .guide-buttons {
+        gap: 10px;
+    }
+    
+    .guide-buttons button {
+        flex: 1;
+        min-width: 100px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ========== 命运之轮加载动画优化 ========== */
+@media (max-width: 768px) {
+    .wheel-loading {
+        padding: 20px;
+    }
+    
+    .wheel-container {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .wheel-zodiac {
+        display: none;
+    }
+    
+    .wheel-planet {
+        font-size: 11px;
+    }
+    
+    .wheel-rune {
+        font-size: 9px;
+    }
+    
+    .wheel-center {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .wheel-center-icon {
+        font-size: 18px;
+    }
+    
+    .wheel-center-symbol {
+        display: none;
+    }
+    
+    .wheel-text {
+        margin-top: 15px;
+    }
+    
+    .wheel-text-content {
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== Toast提示优化 ========== */
+@media (max-width: 768px) {
+    .toast {
+        width: 90%;
+        max-width: 350px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        bottom: 100px;
+    }
+}
+
+/* ========== 滚动条优化 ========== */
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: rgba(212, 175, 55, 0.3);
+        border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(212, 175, 55, 0.5);
+    }
+}
+
+/* ========== 字体大小优化 ========== */
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    h2 {
+        font-size: 1.4rem;
+    }
+    
+    h3 {
+        font-size: 1.15rem;
+    }
+    
+    p, li {
+        line-height: 1.6;
+    }
+}
+
+/* ========== 触摸反馈优化 ========== */
+@media (max-width: 768px) {
+    .btn-mystical:active,
+    .question-tag:active,
+    .spread-card:active,
+    .fan-card:active,
+    .result-card:active,
+    button:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+    
+    /* 移除hover效果（移动端无hover） */
+    .btn-mystical:hover,
+    .spread-card:hover {
+        transform: none;
+    }
+    
+    /* 改用:active状态 */
+    .btn-mystical:active {
+        transform: translateY(-1px);
+    }
+}
+
+/* ========== 性能优化 ========== */
+@media (max-width: 768px) {
+    /* 减少动画复杂度 */
+    .star {
+        animation-duration: 4s;
+    }
+    
+    /* 禁用部分装饰性动画 */
+    .moon-glow {
+        display: none;
+    }
+    
+    /* GPU加速 */
+    .fan-card,
+    .result-card,
+    .spread-card {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+}
+
+/* ========== 横屏适配 ========== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .welcome-content {
+        padding: 20px 40px;
+    }
+    
+    .welcome-buttons {
+        flex-direction: row;
+    }
+    
+    .fan-container {
+        height: 250px;
+    }
+    
+    .chat-sidebar {
+        max-height: 200px;
+    }
+    
+    .ritual-container {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+/* ========== 打印优化 ========== */
+@media print {
+    .header-controls,
+    .chat-sidebar,
+    .ritual-container,
+    .result-actions,
+    .feedback-buttons {
+        display: none !important;
+    }
+}
+
+/* ========== 辅助功能 ========== */
+@media (max-width: 768px) {
+    /* 高对比度模式支持 */
+    @media (prefers-contrast: high) {
+        .btn-mystical {
+            border-width: 2px;
+        }
+        
+        .result-card,
+        .fan-card {
+            border-width: 2px;
+        }
+    }
+    
+    /* 减少动画模式 */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+        
+        .ritual-container {
+            display: none;
+        }
+    }
+}

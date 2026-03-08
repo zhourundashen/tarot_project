@@ -1,0 +1,1355 @@
+{
+  "version": "1.0.0",
+  "source": "actually_you_are_tarot",
+  "sourceTitle": "其实你已经很塔罗了",
+  "majorArcana": [
+    {
+      "id": 0,
+      "name": "愚人",
+      "nameEn": "The Fool",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 1,
+      "name": "魔术师",
+      "nameEn": "The Magician",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "女教皇",
+      "nameEn": "The High Priestess",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "女皇",
+      "nameEn": "The Empress",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "皇帝",
+      "nameEn": "The Emperor",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "教皇",
+      "nameEn": "The Hierophant",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "恋人",
+      "nameEn": "The Lovers",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "战车",
+      "nameEn": "The Chariot",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "力量",
+      "nameEn": "Strength",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "隐士",
+      "nameEn": "The Hermit",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "命运之轮",
+      "nameEn": "The Wheel of Fortune",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "正义",
+      "nameEn": "Justice",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "name": "悬吊者",
+      "nameEn": "The Hanged Man",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "死亡",
+      "nameEn": "Death",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "节制",
+      "nameEn": "Temperance",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "魔鬼",
+      "nameEn": "The Devil",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "",
+            "love": ""
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 16,
+      "name": "高塔",
+      "nameEn": "The Tower",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "星星",
+      "nameEn": "The Star",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 18,
+      "name": "月亮",
+      "nameEn": "The Moon",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "太阳",
+      "nameEn": "The Sun",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 20,
+      "name": "审判",
+      "nameEn": "Judgement",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "",
+            "love": ""
+          }
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "世界",
+      "nameEn": "The World",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+            "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+          },
+          "reversed": {
+            "general": "（指他的成\n就或环境）对他而言，似乎不再具有意义了，因为他已经长大而不适\n宜于此了。土地表示稳定力，水表示宁静。他越过水，眺望远山及其\n代表的挑战，天空乌云密布，但他并没有注意到，因为他将焦点置于\n内心",
+            "love": ""
+          }
+        }
+      }
+    }
+  ],
+  "minorArcana": {
+    "wands": {
+      "name": "权杖",
+      "cards": [
+        {
+          "id": "w_ace",
+          "name": "权杖王牌",
+          "nameEn": "Ace of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_two",
+          "name": "权杖二",
+          "nameEn": "Two of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_three",
+          "name": "权杖三",
+          "nameEn": "Three of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_four",
+          "name": "权杖四",
+          "nameEn": "Four of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_five",
+          "name": "权杖五",
+          "nameEn": "Five of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_six",
+          "name": "权杖六",
+          "nameEn": "Six of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_seven",
+          "name": "权杖七",
+          "nameEn": "Seven of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_eight",
+          "name": "权杖八",
+          "nameEn": "Eight of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_nine",
+          "name": "权杖九",
+          "nameEn": "Nine of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_ten",
+          "name": "权杖十",
+          "nameEn": "Ten of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_page",
+          "name": "权杖侍卫",
+          "nameEn": "Page of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_knight",
+          "name": "权杖骑士",
+          "nameEn": "Knight of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_queen",
+          "name": "权杖皇后",
+          "nameEn": "Queen of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "w_king",
+          "name": "权杖国王",
+          "nameEn": "King of Wands",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+                "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cups": {
+      "name": "圣杯",
+      "cards": [
+        {
+          "id": "c_ace",
+          "name": "圣杯王牌",
+          "nameEn": "Ace of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_two",
+          "name": "圣杯二",
+          "nameEn": "Two of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_three",
+          "name": "圣杯三",
+          "nameEn": "Three of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_four",
+          "name": "圣杯四",
+          "nameEn": "Four of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_five",
+          "name": "圣杯五",
+          "nameEn": "Five of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_six",
+          "name": "圣杯六",
+          "nameEn": "Six of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_seven",
+          "name": "圣杯七",
+          "nameEn": "Seven of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_eight",
+          "name": "圣杯八",
+          "nameEn": "Eight of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_nine",
+          "name": "圣杯九",
+          "nameEn": "Nine of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_ten",
+          "name": "圣杯十",
+          "nameEn": "Ten of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_page",
+          "name": "圣杯侍卫",
+          "nameEn": "Page of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_knight",
+          "name": "圣杯骑士",
+          "nameEn": "Knight of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_queen",
+          "name": "圣杯皇后",
+          "nameEn": "Queen of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "c_king",
+          "name": "圣杯国王",
+          "nameEn": "King of Cups",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+                "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "swords": {
+      "name": "宝剑",
+      "cards": [
+        {
+          "id": "s_ace",
+          "name": "宝剑王牌",
+          "nameEn": "Ace of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_two",
+          "name": "宝剑二",
+          "nameEn": "Two of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_three",
+          "name": "宝剑三",
+          "nameEn": "Three of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_four",
+          "name": "宝剑四",
+          "nameEn": "Four of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_five",
+          "name": "宝剑五",
+          "nameEn": "Five of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_six",
+          "name": "宝剑六",
+          "nameEn": "Six of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_seven",
+          "name": "宝剑七",
+          "nameEn": "Seven of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_eight",
+          "name": "宝剑八",
+          "nameEn": "Eight of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_nine",
+          "name": "宝剑九",
+          "nameEn": "Nine of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_ten",
+          "name": "宝剑十",
+          "nameEn": "Ten of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_page",
+          "name": "宝剑侍卫",
+          "nameEn": "Page of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_knight",
+          "name": "宝剑骑士",
+          "nameEn": "Knight of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_queen",
+          "name": "宝剑皇后",
+          "nameEn": "Queen of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "s_king",
+          "name": "宝剑国王",
+          "nameEn": "King of Swords",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+                "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "pentacles": {
+      "name": "五角星",
+      "cards": [
+        {
+          "id": "p_ace",
+          "name": "五角星王牌",
+          "nameEn": "Ace of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_two",
+          "name": "五角星二",
+          "nameEn": "Two of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_three",
+          "name": "五角星三",
+          "nameEn": "Three of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_four",
+          "name": "五角星四",
+          "nameEn": "Four of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_five",
+          "name": "五角星五",
+          "nameEn": "Five of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_six",
+          "name": "五角星六",
+          "nameEn": "Six of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_seven",
+          "name": "五角星七",
+          "nameEn": "Seven of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_eight",
+          "name": "五角星八",
+          "nameEn": "Eight of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_nine",
+          "name": "五角星九",
+          "nameEn": "Nine of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_ten",
+          "name": "五角星十",
+          "nameEn": "Ten of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_page",
+          "name": "五角星侍卫",
+          "nameEn": "Page of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_knight",
+          "name": "五角星骑士",
+          "nameEn": "Knight of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_queen",
+          "name": "五角星皇后",
+          "nameEn": "Queen of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "",
+                "love": ""
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        },
+        {
+          "id": "p_king",
+          "name": "五角星国王",
+          "nameEn": "King of Pentacles",
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "在平常时，权杖王牌表示实践计划的能量和欲望。我的一个顾客叫大卫，他来找我解牌的时候，已\n经存了十五个月的钱，计划和女友玛琳到加拿大和欧洲旅行。然而他们过去一直花时间在工作存钱，使\n两人的关系受阻。玛琳最近碰上另一个男人，而离开大卫，和新伴侣同居。\n大卫虽颓丧但并没有放弃原本计划的旅行，因为他已经投入非常多的希望在这一次的旅行。\n王牌出现在他的第一副牌，我告诉他可能即将成行。这表示他的计划将付诸具体行动。六个礼拜后，\n我收到一张明信片，他说他将离开多伦多前往伦敦。在牌形中，王牌代表行动，大卫也如同权杖王牌所\n显示的—真的完成了他的计划。",
+                "love": "权杖王牌暗示一段两性关系的开始，它可能是一段新的开始，或是既存关系的一个新阶段。它暗示\n某种肉体关系的开始，或某些伴随着新阶段而来的肉体活动。它也可意指旅游，然而在两性关系的算法\n当中，这个旅游是和两性关系相关的。\n最近在我的一副问两性关系的牌中，代表过去十八个月的位置上看到了权杖王牌。在进一步的询问\n之后发现了，这次旅游所透露的线索是，这女人在前往苏格兰的旅途当中遇到了一名男子，而她要问的\n是他们之间的关系。"
+              },
+              "reversed": {
+                "general": "",
+                "love": ""
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-24",
+  "description": "塔罗牌知识库 - 汇总多本经典塔罗书籍的牌义解读",
+  "sources": [
+    {
+      "id": "actually_you_are_tarot",
+      "title": "其实你已经很塔罗了",
+      "author": "Paul Fenton Smith"
+    },
+    {
+      "id": "78_wisdom",
+      "title": "78度的智慧",
+      "author": "Rachel Pollack"
+    },
+    {
+      "id": "reversed_meanings",
+      "title": "塔罗逆位精解",
+      "author": ""
+    },
+    {
+      "id": "sunflower_treasure",
+      "title": "塔罗葵花宝典",
+      "author": ""
+    },
+    {
+      "id": "can_be_more_tarot",
+      "title": "其实你可以再塔罗一点",
+      "author": ""
+    }
+  ],
+  "majorArcana": [
+    {
+      "id": 0,
+      "name": "愚者",
+      "nameEn": "The Fool",
+      "keywords": ["新开始", "冒险", "纯真", "自由", "潜力"],
+      "element": "风",
+      "meanings": {
+        "actually_you_are_tarot": {
+          "upright": {
+            "general": "愚者暗示要放纵自己，勇于冒险并活在当下。愚者这张牌代表一个新的开始，暗示你正要踏入生命的旅程，它可能是一个冒险，但也是一个学习和成长的机会。",
+            "love": "在两性关系上，愚者暗示着你即将展开一段新的关系，或者现有的关系即将进入一个新的阶段。这是一个充满可能性的时刻，保持开放和乐观的态度。",
+            "career": "事业上，愚者代表新的机会和冒险。可能是新的工作、新的项目或者创业的机会。不要害怕尝试新事物。"
+          },
+          "reversed": {
+            "general": "当愚者倒立时，暗示当你最需要冒险的时候却拒绝冒险。它可能表示你太过于谨慎，害怕未知，或者你正在逃避某些重要的责任。",
+            "love": "在感情上，倒立的愚者可能表示关系中的不负责任，或者害怕承诺。也可能是时机未到，需要更多时间准备。",
+            "career": "事业上可能表示鲁莽的决定或逃避责任。建议在行动前多做考虑。"
+          }
+        }
+      }
+    }
+  ],
+  "minorArcana": {
+    "wands": {
+      "name": "权杖",
+      "element": "火",
+      "description": "权杖牌组代表火元素，象征行动、创造、热情和事业",
+      "cards": [
+        {
+          "id": "w_ace",
+          "name": "权杖王牌",
+          "nameEn": "Ace of Wands",
+          "number": 1,
+          "keywords": ["新开始", "创造", "灵感", "机会"],
+          "meanings": {
+            "actually_you_are_tarot": {
+              "upright": {
+                "general": "权杖王牌代表一个充满创造性的新开始，或者一项新计划的萌芽。这张牌表示正在展开一项新的冒险，而且会有令人兴奋和充满热情的机会出现。",
+                "love": "在感情上，权杖王牌表示一段充满激情的新关系，或者现有关系中重燃热情的机会。",
+                "career": "事业上代表新的项目、新的工作机会或创业的开始。充满创造力和热情。"
+              },
+              "reversed": {
+                "general": "当权杖王牌倒立时，暗示这个新开始可能会被延迟或阻碍。或者，你可能失去了热情，感到缺乏动力。",
+                "love": "感情上可能表示激情的消退，或者新关系遇到了阻碍。",
+                "career": "事业上表示计划被延迟，或者缺乏执行的动力。"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cups": {
+      "name": "圣杯",
+      "element": "水",
+      "description": "圣杯牌组代表水元素，象征情感、关系、直觉和心灵",
+      "cards": []
+    },
+    "swords": {
+      "name": "宝剑",
+      "element": "风",
+      "description": "宝剑牌组代表风元素，象征思想、沟通、冲突和真相",
+      "cards": []
+    },
+    "pentacles": {
+      "name": "星币",
+      "element": "土",
+      "description": "星币牌组代表土元素，象征物质、金钱、健康和实际事务",
+      "cards": []
+    }
+  },
+  "courtCards": {
+    "pages": [],
+    "knights": [],
+    "queens": [],
+    "kings": []
+  }
+}

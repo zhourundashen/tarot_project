@@ -1,0 +1,3489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>维特塔罗牌阵可视化图集</title>
+    <link rel="stylesheet" href="https://autoglm-api.zhipuai.cn/ppt-proxy/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #4a3b6e;
+            --deep-purple: #2d2147;
+            --accent-gold: #d4af37;
+            --light-gold: #f4e4bc;
+            --mystic-blue: #1a1a3e;
+            --card-bg: #3a2f5a;
+            --text-light: #e8e4ed;
+            --text-muted: #a8a0b5;
+            --shadow: 0 8px 32px rgba(74, 59, 110, 0.4);
+            --glow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--mystic-blue) 0%, var(--deep-purple) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(26, 26, 62, 0.95);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 20px 10px 40px;
+            border: 2px solid var(--primary-purple);
+            border-radius: 25px;
+            background: rgba(58, 47, 90, 0.6);
+            color: var(--text-light);
+            font-size: 0.95rem;
+            width: 250px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 2px solid var(--primary-purple);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--deep-purple);
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin: 2rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-purple);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+        }
+
+        .spreads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .spread-card {
+            background: rgba(42, 33, 70, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .spread-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: var(--glow);
+        }
+
+        .spread-header {
+            margin-bottom: 1rem;
+        }
+
+        .spread-header h3 {
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .spread-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .visualization-area {
+            background: radial-gradient(circle at center, rgba(74, 59, 110, 0.3) 0%, transparent 70%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .spread-layout {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .card-position {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .card-rect {
+            width: 45px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--deep-purple) 100%);
+            border: 2px solid var(--primary-purple);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.3rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .card-rect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+            opacity: 0.6;
+        }
+
+        .card-number {
+            background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+            color: var(--deep-purple);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 11;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-label {
+            background: rgba(58, 47, 90, 0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-align: center;
+            border: 1px solid var(--primary-purple);
+            white-space: nowrap;
+            z-index: 11;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spread-card:hover .card-label {
+            background: rgba(212, 175, 55, 0.25);
+            border-color: var(--accent-gold);
+        }
+
+        .spread-card:hover .card-rect {
+            border-color: var(--accent-gold);
+            box-shadow: var(--glow);
+        }
+
+        .svg-connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .connection-path {
+            stroke: url(#gradientLine);
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.5;
+            stroke-linecap: round;
+        }
+
+        .spread-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .info-item label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .info-item span {
+            color: var(--text-light);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 62, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+            display: none;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(42, 33, 70, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 2px solid var(--accent-gold);
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--accent-gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-visualization {
+            background: radial-gradient(circle at center, rgba(74, 59, 110, 0.3) 0%, transparent 70%);
+            border-radius: 10px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            min-height: 900px;
+            position: relative;
+        }
+
+        .modal-details {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-section {
+            background: rgba(58, 47, 90, 0.4);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .detail-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .detail-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .detail-section li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            line-height: 1.7;
+        }
+
+        .detail-section strong {
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .spreads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-visualization {
+                min-height: 600px;
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .spread-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .visualization-area {
+                border: 1px solid #ccc;
+            }
+
+            .modal {
+                display: none;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .spread-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <i class="fas fa-moon"></i>
+                维特塔罗牌阵可视化图集
+            </a>
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索牌阵...">
+                </div>
+                <div class="category-filter" id="categoryFilter">
+                    <button class="filter-btn active" data-category="all">全部</button>
+                    <button class="filter-btn" data-category="basic">基础类</button>
+                    <button class="filter-btn" data-category="love">关系与爱情</button>
+                    <button class="filter-btn" data-category="self">自我探索</button>
+                    <button class="filter-btn" data-category="decision">决策与问题</button>
+                    <button class="filter-btn" data-category="time">时间与运势</button>
+                    <button class="filter-btn" data-category="career">学业与事业</button>
+                    <button class="filter-btn" data-category="health">健康与疗愈</button>
+                    <button class="filter-btn" data-category="advanced">高级综合</button>
+                    <button class="filter-btn" data-category="special">特殊用途</button>
+                    <button class="filter-btn" data-category="creative">创意与自定义</button>
+                    <button class="filter-btn" data-category="element">元素与魔法</button>
+                    <button class="filter-btn" data-category="yearly">年度与长期</button>
+                    <button class="filter-btn" data-category="healing">疗愈与成长</button>
+                    <button class="filter-btn" data-category="communication">沟通与表达</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container" id="spreadsContainer">
+    </div>
+
+    <div class="modal" id="spreadModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalContent">
+            </div>
+        </div>
+    </div>
+
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <linearGradient id="gradientLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:var(--primary-purple);stop-opacity:0.6" />
+                <stop offset="100%" style="stop-color:var(--accent-gold);stop-opacity:0.8" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <script>
+        const spreads = [
+            {
+                id: 1,
+                name: "单牌占卜",
+                englishName: "Single Card Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "获取快速指引，适合日常简单问题",
+                shape: "单点",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心指引", meaning: "这张牌代表当前问题的核心指引或答案", zIndex: 20 }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "集中精神思考问题",
+                    "从牌叠顶部抽出一张牌",
+                    "将牌面朝上放置在面前",
+                    "记录并解读这张牌的含义"
+                ]
+            },
+            {
+                id: 2,
+                name: "时间之流牌阵",
+                englishName: "Time Flow Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "了解事件的发展过程",
+                shape: "横向排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 20, y: 50, label: "过去", meaning: "过去的情况和影响", zIndex: 10 },
+                    { position: 2, x: 50, y: 50, label: "现在", meaning: "当前的现状", zIndex: 10 },
+                    { position: 3, x: 80, y: 50, label: "未来", meaning: "未来的发展趋势", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "按顺序从左到右横向排列三张牌",
+                    "第一张牌代表过去，第二张代表现在，第三张代表未来"
+                ]
+            },
+            {
+                id: 3,
+                name: "圣三角牌阵",
+                englishName: "Holy Trinity Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "过去-现在-未来的状况分析",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "过去", meaning: "过去的情况和根源", zIndex: 10 },
+                    { position: 2, x: 25, y: 85, label: "现在", meaning: "当前的现状和挑战", zIndex: 10 },
+                    { position: 3, x: 75, y: 85, label: "未来", meaning: "未来的可能性和结果", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "摆放成三角形：第一张牌在上方，第二张和第三张在下方两侧",
+                    "牌位含义：上方牌为代表过去，下方左右两张牌分别为现在和未来"
+                ]
+            },
+            {
+                id: 4,
+                name: "二选一牌阵",
+                englishName: "Choice Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "帮助在两个选项间做出选择",
+                shape: "十字形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "中心", meaning: "当前状况和背景", zIndex: 20 },
+                    { position: 2, x: 50, y: 15, label: "选项A", meaning: "选项A的情况和发展", zIndex: 15 },
+                    { position: 3, x: 50, y: 85, label: "选项B", meaning: "选项B的情况和发展", zIndex: 15 },
+                    { position: 4, x: 15, y: 50, label: "A未来", meaning: "选项A的未来结果", zIndex: 15 },
+                    { position: 5, x: 85, y: 50, label: "B未来", meaning: "选项B的未来结果", zIndex: 15 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 4], [3, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "按照特定顺序摆放：第一张在中心，第二张和第三张分别代表选项A和B，第四张和第五张分别代表A和B的未来",
+                    "牌位布局：中心为现状，上下左右分别为不同选项"
+                ]
+            },
+            {
+                id: 5,
+                name: "是非判断牌阵",
+                englishName: "Yes/No Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "回答可以用是或否来解决的问题",
+                shape: "简单排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心答案", meaning: "直接回答问题", zIndex: 10 }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "根据问题大小选择抽1-3张牌",
+                    "牌面朝上放置，解读牌意来判断是或否",
+                    "单牌牌阵只需抽一张牌直接解读",
+                    "三牌牌阵可摆放成直线，分别代表过去、现在、未来"
+                ]
+            },
+            {
+                id: 6,
+                name: "爱情金字塔牌阵",
+                englishName: "Love Pyramid Spread",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "分析双方情感关系现状和发展",
+                shape: "金字塔形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 25, y: 85, label: "自己感受", meaning: "自己对对方的感受", zIndex: 10 },
+                    { position: 2, x: 75, y: 85, label: "对方感受", meaning: "对方对你的感受", zIndex: 10 },
+                    { position: 3, x: 50, y: 50, label: "关系现状", meaning: "双方关系现状", zIndex: 15 },
+                    { position: 4, x: 25, y: 15, label: "未来发展", meaning: "关系未来发展", zIndex: 10 },
+                    { position: 5, x: 75, y: 15, label: "挑战", meaning: "可能面临的挑战", zIndex: 10 }
+                ],
+                connections: [[1, 3], [2, 3], [3, 4], [3, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "摆放成金字塔形：底部两张，中间一张，顶部两张",
+                    "可根据需要添加补牌"
+                ]
+            },
+            {
+                id: 7,
+                name: "恋爱圣三角牌阵",
+                englishName: "Love Holy Trinity",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "专注于感情问题的过去-现在-未来",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "过去", meaning: "感情的过去和根源", zIndex: 10 },
+                    { position: 2, x: 25, y: 85, label: "现在", meaning: "当前感情状况", zIndex: 10 },
+                    { position: 3, x: 75, y: 85, label: "未来", meaning: "感情的未来发展", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "摆放成三角形：第一张牌在上方，第二张和第三张在下方两侧"
+                ]
+            },
+            {
+                id: 8,
+                name: "关系桥接牌阵",
+                englishName: "Relationship Bridge Spread",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "了解两个人之间的关系动态",
+                shape: "桥形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 50, label: "A内心", meaning: "第一个人的内心", zIndex: 10 },
+                    { position: 2, x: 5, y: 75, label: "A外在", meaning: "第一个人的外在表现", zIndex: 10 },
+                    { position: 3, x: 35, y: 50, label: "互动1", meaning: "关系动态1", zIndex: 12 },
+                    { position: 4, x: 50, y: 50, label: "核心", meaning: "关系核心", zIndex: 20 },
+                    { position: 5, x: 65, y: 50, label: "互动2", meaning: "关系动态2", zIndex: 12 },
+                    { position: 6, x: 95, y: 50, label: "B内心", meaning: "第二个人的内心", zIndex: 10 },
+                    { position: 7, x: 95, y: 75, label: "B外在", meaning: "第二个人的外在表现", zIndex: 10 }
+                ],
+                connections: [[1, 3], [2, 3], [3, 4], [4, 5], [5, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照桥形结构摆放：中间三张牌为桥，两侧各两张牌代表两个人"
+                ]
+            },
+            {
+                id: 9,
+                name: "身心灵牌阵",
+                englishName: "Mind-Body-Spirit Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "探索身体、心理和精神层面的状态",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "身体", meaning: "身体状态和健康状况", zIndex: 10 },
+                    { position: 2, x: 25, y: 85, label: "心理", meaning: "心理状态和情绪状况", zIndex: 10 },
+                    { position: 3, x: 75, y:  85, label: "灵性", meaning: "精神层面和灵性成长", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "分别代表身、心、灵三个层面"
+                ]
+            },
+            {
+                id: 10,
+                name: "四元素牌阵",
+                englishName: "Four Elements Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "分析生活中的四个基本元素",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 15, y: 15, label: "火", meaning: "激情、行动、能量", zIndex: 10 },
+                    { position: 2, x: 85, y: 15, label: "水", meaning: "情感、直觉、关系", zIndex: 10 },
+                    { position: 3, x: 15, y: 85, label: "风", meaning: "思想、沟通、智慧", zIndex: 10 },
+                    { position: 4, x: 85, y: 85, label: "土", meaning: "物质、稳定、务实", zIndex: 10 }
+                ],
+                connections: [[1, 4], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出四张牌",
+                    "分别代表火、水、风、土四个元素"
+                ]
+            },
+            {
+                id: 11,
+                name: "自我探索牌阵",
+                englishName: "Self-Exploration Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "深入了解自己的内在特质",
+                shape: "方形3x3",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 10, label: "外在", meaning: "外在表现", zIndex: 10 },
+                    { position: 2, x: 50, y: 10, label: "形象", meaning: "社会形象", zIndex: 10 },
+                    { position: 3, x: 90, y: 10, label: "看法", meaning: "他人看法", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "状态", meaning: "当前状态", zIndex: 10 },
+                    { position: 5, x: 50, y: 50, label: "冲突", meaning: "内心冲突", zIndex: 10 },
+                    { position: 6, x: 90, y: 50, label: "能力", meaning: "潜在能力", zIndex: 10 },
+                    { position: 7, x: 10, y: 90, label: "恐惧", meaning: "深层恐惧", zIndex: 10 },
+                    { position: 8, x: 50, y: 90, label: "自我", meaning: "真正自我", zIndex: 10 },
+                    { position: 9, x: 90, y: 90, label: "指引", meaning: "灵性指引", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照3x3方形排列"
+                ]
+            },
+            {
+                id: 12,
+                name: "凯尔特十字牌阵",
+                englishName: "Celtic Cross Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "详细剖析问题的多个层面",
+                shape: "十字形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "问题的核心", zIndex: 20 },
+                    { position: 2, x: 65, y: 50, label: "影响", meaning: "conscious awareness 有意识的认知", zIndex: 15, rotate: 90 },
+                    { position: 3, x: 35, y: 50, label: "潜意识", meaning: "unconscious awareness 无意识的认知", zIndex: 15, rotate: 90 },
+                    { position: 4, x: 50, y: 32, label: "高我", meaning: "higher self 高我/理想", zIndex: 15 },
+                    { position: 5, x: 50, y: 68, label: "低我", meaning: "lower self 自我/本能", zIndex: 15 },
+                    { position: 6, x: 80, y: 50, label: "未来", meaning: "未来可能性和结果", zIndex: 12 },
+                    { position: 7, x: 20, y: 30, label: "态度", meaning: "内在态度", zIndex: 12 },
+                    { position: 8, x: 80, y: 30, label: "环境", meaning: "外部影响", zIndex: 12 },
+                    { position: 9, x: 20, y: 70, label: "希望", meaning: "希望和恐惧", zIndex: 12 },
+                    { position: 10, x: 80, y: 70, label: "结果", meaning: "最终结果", zIndex: 12 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [7, 8], [9, 10]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出十张牌",
+                    "按照特定顺序摆放成十字形",
+                    "第一张牌放在中心，第二张牌放在第一张牌的右侧",
+                    "其余八张牌围绕中心牌形成十字交叉"
+                ]
+            },
+            {
+                id: 13,
+                name: "问题解决牌阵",
+                englishName: "Problem-Solving Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "寻找问题的解决方案",
+                shape: "流程形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 50, label: "本质", meaning: "问题本质", zIndex: 10 },
+                    { position: 2, x: 20, y: 50, label: "原因", meaning: "根本原因", zIndex: 10 },
+                    { position: 3, x: 35, y: 50, label: "现状", meaning: "现状分析", zIndex: 10 },
+                    { position: 4, x: 50, y: 50, label: "方案", meaning: "可能的解决方案", zIndex: 10 },
+                    { position: 5, x: 65, y: 50, label: "选择", meaning: "最佳选择", zIndex: 10 },
+                    { position: 6, x: 85, y: 30, label: "步骤", meaning: "实施步骤", zIndex: 10 },
+                    { position: 7, x: 85, y: 70, label: "结果", meaning: "预期结果", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照问题解决流程摆放"
+                ]
+            },
+            {
+                id: 14,
+                name: "决策金字塔牌阵",
+                englishName: "Decision Pyramid Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "辅助重要决策",
+                shape: "金字塔形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 10, y: 85, label: "选项A", meaning: "选项A的现状", zIndex: 10 },
+                    { position: 2, x: 50, y: 85, label: "选项B", meaning: "选项B的现状", zIndex: 10 },
+                    { position: 3, x: 90, y: 85, label: "选项C", meaning: "选项C的现状", zIndex: 10 },
+                    { position: 4, x: 50, y: 50, label: "分析", meaning: "各选项的比较分析", zIndex: 15 },
+                    { position: 5, x: 50, y: 15, label: "最佳", meaning: "最佳选择和未来发展", zIndex: 20 }
+                ],
+                connections: [[1, 4], [2, 4], [3, 4], [4, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "按照金字塔形摆放：底部三张，中间一张，顶部一张"
+                ]
+            },
+            {
+                id: 15,
+                name: "四季运势牌阵",
+                englishName: "Four Seasons Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "占卜季度运势",
+                shape: "十字形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 15, y: 50, label: "权杖", meaning: "能量、行动力、事业", zIndex: 10 },
+                    { position: 2, x: 35, y: 50, label: "圣杯", meaning: "情感、关系、直觉", zIndex: 10 },
+                    { position: 3, x: 65, y: 50, label: "宝剑", meaning: "思维、沟通、挑战", zIndex: 10 },
+                    { position: 4, x: 85, y: 50, label: "星币", meaning: "物质、财运、健康", zIndex: 10 },
+                    { position: 5, x: 50, y: 50, label: "整体", meaning: "整体能量、灵性成长", zIndex: 15 }
+                ],
+                connections: [[1, 5], [2, 5], [3, 5], [4, 5]],
+                steps: [
+                    "将牌分为五组：22张大阿卡纳和四组小阿卡纳（权杖、圣杯、宝剑、星币）",
+                    "将每一组牌分别洗牌",
+                    "按照特定顺序抽取并摆放五组牌",
+                    "从右到左翻开大阿卡纳牌，再按权杖、圣杯、宝剑、星币顺序翻开"
+                ]
+            },
+            {
+                id: 16,
+                name: "月历牌阵",
+                englishName: "Calendar Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "查看一个月的运势发展",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 15, label: "月初", meaning: "月初第一天", zIndex: 10 },
+                    { position: 2, x: 10, y: 35, label: "第一周", meaning: "第一周运势", zIndex: 10 },
+                    { position: 3, x: 10, y: 55, label: "第二周", meaning: "第二周运势", zIndex: 10 },
+                    { position: 4, x: 35, y: 15, label: "月中", meaning: "月中状态", zIndex: 10 },
+                    { position: 5, x: 35, y: 35, label: "第三周", meaning: "第三周运势", zIndex: 10 },
+                    { position: 6, x: 35, y: 55, label: "第四周", meaning: "第四周运势", zIndex: 10 },
+                    { position: 7, x: 60, y: 15, label: "中旬", meaning: "月中状态", zIndex: 10 },
+                    { position: 8, x: 60, y: 35, label: "月末", meaning: "月末最后一天", zIndex: 10 },
+                    { position: 9, x: 60, y: 55, label: "总结", meaning: "月度总结", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三十张牌",
+                    "代表一个月的三十天",
+                    "也可简化为代表一周的七张牌"
+                ]
+            },
+            {
+                id: 17,
+                name: "时间金字塔牌阵",
+                englishName: "Time Pyramid Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "理解时间的发展脉络",
+                shape: "金字塔形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "最近", meaning: "最近的过去", zIndex: 10 },
+                    { position: 2, x: 30, y: 72, label: "近期", meaning: "近期过去", zIndex: 10 },
+                    { position: 3, x: 70, y: 72, label: "现在", meaning: "现在", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "远期", meaning: "较远的过去", zIndex: 10 },
+                    { position: 5, x: 50, y: 50, label: "近期未来", meaning: "近未来", zIndex: 10 },
+                    { position: 6, x: 90, y: 50, label: "中期未来", meaning: "中期未来", zIndex: 10 },
+                    { position: 7, x: 50, y: 25, label: "远期未来", meaning: "遥远的未来", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出多张牌（通常7-10张）",
+                    "按照时间顺序从过去到未来摆放成金字塔形"
+                ]
+            },
+            {
+                id: 18,
+                name: "每周占卜牌阵",
+                englishName: "Weekly Divination Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "了解一周的运势",
+                shape: "直线形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 3, y: 50, label: "周一", meaning: "周一运势", zIndex: 10 },
+                    { position: 2, x: 16, y: 50, label: "周二", meaning: "周二运势", zIndex: 10 },
+                    { position: 3, x: 30, y: 50, label: "周三", meaning: "周三运势", zIndex: 10 },
+                    { position: 4, x: 43, y: 50, label: "周四", meaning: "周四运势", zIndex: 10 },
+                    { position: 5, x: 57, y: 50, label: "周五", meaning: "周五运势", zIndex: 10 },
+                    { position: 6, x: 70, y: 50, label: "周六", meaning: "周六运势", zIndex: 10 },
+                    { position: 7, x: 83, y: 50, label: "周日", meaning: "周日运势", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表一周七天",
+                    "也可只抽一张牌代表本周整体运势"
+                ]
+            },
+            {
+                id: 19,
+                name: "学业金字塔牌阵",
+                englishName: "Academic Pyramid Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "占卜学业发展",
+                shape: "金字塔形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 90, label: "基础", meaning: "当前学习基础", zIndex: 10 },
+                    { position: 2, x: 35, y: 90, label: "方法", meaning: "学习方法", zIndex: 10 },
+                    { position: 3, x: 60, y: 90, label: "环境", meaning: "学习环境", zIndex: 10 },
+                    { position: 4, x: 90, y: 90, label: "资源", meaning: "学习资源", zIndex: 10 },
+                    { position: 5, x: 30, y: 50, label: "挑战", meaning: "学习挑战", zIndex: 10 },
+                    { position: 6, x: 70, y: 50, label: "机会", meaning: "学习机会", zIndex: 10 },
+                    { position: 7, x: 50, y: 15, label: "结果", meaning: "考试结果和未来", zIndex: 20 }
+                ],
+                connections: [[1, 5], [2, 5], [3, 6], [4, 6], [5, 7], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照金字塔形摆放：底座四张，上层两张，顶端一张"
+                ]
+            },
+            {
+                id: 20,
+                name: "事业发展牌阵",
+                englishName: "Career Development Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "了解职业发展状况",
+                shape: "阶梯形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 90, label: "现状", meaning: "当前职业状态", zIndex: 10 },
+                    { position: 2, x: 30, y: 70, label: "技能", meaning: "职业技能", zIndex: 10 },
+                    { position: 3, x: 50, y: 50, label: "环境", meaning: "工作环境", zIndex: 10 },
+                    { position: 4, x: 70, y: 30, label: "挑战", meaning: "职业挑战", zIndex: 10 },
+                    { position: 5, x: 90, y: 10, label: "机会", meaning: "晋升机会", zIndex: 10 },
+                    { position: 6, x: 50, y: 90, label: "路径", meaning: "职业发展路径", zIndex: 10 },
+                    { position: 7, x: 90, y: 90, label: "目标", meaning: "长期职业目标", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [1, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表职业发展的不同阶段"
+                ]
+            },
+            {
+                id: 21,
+                name: "财运牌阵",
+                englishName: "Financial Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "分析财务状况",
+                shape: "3x3方形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 10, label: "收入", meaning: "收入状况", zIndex: 10 },
+                    { position: 2, x: 50, y: 10, label: "支出", meaning: "支出模式", zIndex: 10 },
+                    { position: 3, x: 90, y: 10, label: "储蓄", meaning: "储蓄情况", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "投资", meaning: "投资机会", zIndex: 10 },
+                    { position: 5, x: 50, y: 50, label: "风险", meaning: "风险因素", zIndex: 10 },
+                    { position: 6, x: 90, y: 50, label: "规划", meaning: "财务规划", zIndex: 10 },
+                    { position: 7, x: 10, y: 90, label: "长期", meaning: "长期财务目标", zIndex: 10 },
+                    { position: 8, x: 50, y: 90, label: "挑战", meaning: "财务挑战", zIndex: 10 },
+                    { position: 9, x: 90, y: 90, label: "建议", meaning: "建议指导", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照3x3方形排列"
+                ]
+            },
+            {
+                id: 22,
+                name: "健康状况牌阵",
+                englishName: "Health Condition Spread",
+                category: "health",
+                categoryName: "健康与疗愈",
+                purpose: "了解身体健康状况",
+                shape: "人形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 10, label: "整体", meaning: "整体健康状态", zIndex: 10 },
+                    { position: 2, x: 50, y: 30, label: "头部", meaning: "头部/思维健康", zIndex: 10 },
+                    { position: 3, x: 25, y: 50, label: "心脏", meaning: "心脏/循环系统", zIndex: 10 },
+                    { position: 4, x: 50, y: 50, label: "消化", meaning: "消化系统", zIndex: 10 },
+                    { position: 5, x: 75, y: 50, label: "呼吸", meaning: "呼吸系统", zIndex: 10 },
+                    { position: 6, x: 35, y: 75, label: "肌肉", meaning: "肌肉骨骼系统", zIndex: 10 },
+                    { position: 7, x: 65, y: 75, label: "能量", meaning: "能量水平", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [2, 4], [2, 5], [3, 6], [4, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表身体不同部位或系统"
+                ]
+            },
+            {
+                id: 23,
+                name: "疗愈牌阵",
+                englishName: "Healing Spread",
+                category: "health",
+                categoryName: "健康与疗愈",
+                purpose: "促进身心疗愈",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "核心问题或疗愈焦点", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "层面1", meaning: "疗愈过程层面1", zIndex: 10 },
+                    { position: 3, x: 90, y: 10, label: "层面2", meaning: "疗愈过程层面2", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "层面3", meaning: "疗愈过程层面3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "层面4", meaning: "疗愈过程层面4", zIndex: 10 },
+                    { position: 6, x: 10, y: 90, label: "层面5", meaning: "疗愈过程层面5", zIndex: 10 },
+                    { position: 7, x: 50, y: 90, label: "层面6", meaning: "疗愈过程层面6", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "围绕中心牌放置"
+                ]
+            },
+            {
+                id: 24,
+                name: "大阿卡纳全象牌阵",
+                englishName: "Major Arcana Whole Picture Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "全面了解人生状况",
+                shape: "长方形排列",
+                complexity: "ultra",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "关键牌", meaning: "关键牌，中心", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "愚人", meaning: "愚人之旅开始", zIndex: 10 },
+                    { position: 3, x: 75, y: 10, label: "魔术师", meaning: "创造力", zIndex: 10 },
+                    { position: 4, x: 90, y: 35, label: "女祭司", meaning: "直觉", zIndex: 10 },
+                    { position: 5, x: 85, y: 50, label: "皇后", meaning: "滋养", zIndex: 10 },
+                    { position: 6, x: 50, y: 95, label: "皇帝", meaning: "秩序", zIndex: 10 },
+                    { position: 7, x: 20, y: 80, label: "教皇", meaning: "传统", zIndex: 10 },
+                    { position: 8, x: 10, y: 50, label: "恋人", meaning: "选择", zIndex: 10 },
+                    { position: 9, x: 20, y: 20, label: "战车", meaning: "意志", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将22张大阿卡纳牌洗匀",
+                    "按照特定顺序摆放成长方形",
+                    "可按照愚人之旅的路径排列"
+                ]
+            },
+            {
+                id: 25,
+                name: "元素平衡牌阵",
+                englishName: "Elemental Balance Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "检查生活元素的平衡",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "平衡", meaning: "整体平衡状态", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "火", meaning: "行动、激情、能量", zIndex: 10 },
+                    { position: 3, x: 50, y: 95, label: "水", meaning: "情感、关系、直觉", zIndex: 10 },
+                    { position: 4, x: 5, y: 50, label: "风", meaning: "思想、沟通、智慧", zIndex: 10 },
+                    { position: 5, x: 95, y: 50, label: "土", meaning: "物质、稳定、务实", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌分为四组：火、水、风、土",
+                    "从每组牌中抽取一定数量",
+                    "按照元素方位摆放"
+                ]
+            },
+            {
+                id: 26,
+                name: "星座运势牌阵",
+                englishName: "Zodiac Horoscope Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "结合星象的运势占卜",
+                shape: "长方形排列",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "为代表牌或整体运势", zIndex: 20 },
+                    { position: 2, x: 10, y: 5, label: "白羊", meaning: "白羊座运势", zIndex: 10 },
+                    { position: 3, x: 30, y: 5, label: "金牛", meaning: "金牛座运势", zIndex: 10 },
+                    { position: 4, x: 50, y: 5, label: "双子", meaning: "双子座运势", zIndex: 10 },
+                    { position: 5, x: 70, y: 5, label: "巨蟹", meaning: "巨蟹座运势", zIndex: 10 },
+                    { position: 6, x: 90, y: 30, label: "狮子", meaning: "狮子座运势", zIndex: 10 },
+                    { position: 7, x: 90, y: 50, label: "处女", meaning: "处女座运势", zIndex: 10 },
+                    { position: 8, x: 70, y: 80, label: "天秤", meaning: "天秤座运势", zIndex: 10 },
+                    { position: 9, x: 50, y: 80, label: "天蝎", meaning: "天蝎座运势", zIndex: 10 },
+                    { position: 10, x: 30, y: 80, label: "射手", meaning: "射手座运势", zIndex: 10 },
+                    { position: 11, x: 10, y: 50, label: "摩羯", meaning: "摩羯座运势", zIndex: 10 },
+                    { position: 12, x: 50, y: 60, label: "水瓶", meaning: "水瓶座运势", zIndex: 10 },
+                    { position: 13, x: 50, y: 40, label: "双鱼", meaning: "双鱼座运势", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11], [1, 12], [1, 13]],
+                steps: [
+                    "将牌分为十二组，对应十二星座",
+                    "从每组牌中抽取一张",
+                    "按照星座顺序摆放成长方形"
+                ]
+            },
+            {
+                id: 27,
+                name: "人生课题牌阵",
+                englishName: "Life Lessons Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "理解当前的人生课题",
+                shape: "方形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心课题", meaning: "当前主要人生课题", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "层面1", meaning: "课题分析层面1", zIndex: 10 },
+                    { position: 3, x: 50, y: 10, label: "层面2", meaning: "课题分析层面2", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "层面3", meaning: "课题分析层面3", zIndex: 10 },
+                    { position: 5, x: 10, y: 50, label: "层面4", meaning: "课题分析层面4", zIndex: 10 },
+                    { position: 6, x: 90, y: 50, label: "层面5", meaning: "课题分析层面5", zIndex: 10 },
+                    { position: 7, x: 10, y: 90, label: "层面6", meaning: "课题分析层面6", zIndex: 10 },
+                    { position: 8, x: 50, y: 90, label: "层面7", meaning: "课题分析层面7", zIndex: 10 },
+                    { position: 9, x: 90, y: 90, label: "层面8", meaning: "课题分析层面8", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照特定顺序摆放"
+                ]
+            },
+            {
+                id: 28,
+                name: "保护牌阵",
+                englishName: "Protection Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "建立保护屏障",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "中心", meaning: "为代表个人或空间", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "北方", meaning: "保护屏障北方", zIndex: 10 },
+                    { position: 3, x: 50, y: 5, label: "东北", meaning: "保护屏障东北", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "东方", meaning: "保护屏障东方", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "东南", meaning: "保护屏障东南", zIndex: 10 },
+                    { position: 6, x: 90, y: 90, label: "南方", meaning: "保护屏障南方", zIndex: 10 },
+                    { position: 7, x: 50, y: 95, label: "西南", meaning: "保护屏障西南", zIndex: 10 },
+                    { position: 8, x: 10, y: 90, label: "西方", meaning: "保护屏障西方", zIndex: 10 },
+                    { position: 9, x: 10, y: 50, label: "西北", meaning: "保护屏障西北", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽取一定数量的牌",
+                    "围绕个人或特定区域摆放"
+                ]
+            },
+            {
+                id: 29,
+                name: "牌灵占卜",
+                englishName: "Card Divination",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "了解塔罗牌的灵性特质",
+                shape: "单点",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "牌灵", meaning: "代表牌灵", zIndex: 10 }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "集中精神与牌连接",
+                    "抽出代表牌灵的牌",
+                    "可配合其他牌进行解读"
+                ]
+            },
+            {
+                id: 30,
+                name: "团体动态牌阵",
+                englishName: "Group Dynamics Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "了解团体中的互动关系",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "团体", meaning: "团体整体", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "成员1", meaning: "团体成员1", zIndex: 10 },
+                    { position: 3, x: 50, y: 10, label: "成员2", meaning: "团体成员2", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "成员3", meaning: "团体成员3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "成员4", meaning: "团体成员4", zIndex: 10 },
+                    { position: 6, x: 90, y: 90, label: "成员5", meaning: "团体成员5", zIndex: 10 },
+                    { position: 7, x: 90, y: 90, label: "成员6", meaning: "团体成员6", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "每人抽一张牌",
+                    "按照团体关系摆放"
+                ]
+            },
+            {
+                id: 31,
+                name: "灵魂连接牌阵",
+                englishName: "Soul Connection Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "探索灵魂层面的连接",
+                shape: "双三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 30, y: 50, label: "灵魂A", meaning: "第一个灵魂的本质", zIndex: 10 },
+                    { position: 2, x: 70, y: 50, label: "灵魂B", meaning: "第二个灵魂的本质", zIndex: 10 },
+                    { position: 3, x: 50, y: 35, label: "连接", meaning: "灵魂连接的状态", zIndex: 12 },
+                    { position: 4, x: 50, y: 65, label: "互动", meaning: "灵魂间的互动", zIndex: 10 },
+                    { position: 5, x: 25, y: 25, label: "A特质", meaning: "A的灵魂特质", zIndex: 10 },
+                    { position: 6, x: 75, y: 25, label: "B特质", meaning: "B的灵魂特质", zIndex: 10 }
+                ],
+                connections: [[1, 3], [2, 3], [1, 5], [2, 6], [3, 4]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出两张牌",
+                    "代表两个灵魂",
+                    "可添加更多牌代表连接层面"
+                ]
+            },
+            {
+                id: 32,
+                name: "过去世牌阵",
+                englishName: "Past Life Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "探索过去世的信息",
+                shape: "螺旋形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "今生", meaning: "今生影响", zIndex: 10 },
+                    { position: 2, x: 70, y: 78, label: "近前世", meaning: "近期前世", zIndex: 10 },
+                    { position: 3, x: 82, y: 60, label: "前世1", meaning: "更早前世1", zIndex: 10 },
+                    { position: 4, x: 70, y: 42, label: "前世2", meaning: "更早前世2", zIndex: 10 },
+                    { position: 5, x: 50, y: 25, label: "前世3", meaning: "更早前世3", zIndex: 10 },
+                    { position: 6, x: 30, y: 42, label: "前世4", meaning: "更早前世4", zIndex: 10 },
+                    { position: 7, x: 18, y: 60, label: "远前世", meaning: "遥远过去", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表不同前世或时间线"
+                ]
+            },
+            {
+                id: 33,
+                name: "创意表达牌阵",
+                englishName: "Creative Expression Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "激发创意和灵感",
+                shape: "自由",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心创意", meaning: "核心创意", zIndex: 20 },
+                    { position: 2, x: 25, y: 25, label: "灵感", meaning: "灵感来源", zIndex: 10 },
+                    { position: 3, x: 75, y: 25, label: "元素", meaning: "创意元素", zIndex: 10 },
+                    { position: 4, x: 25, y: 75, label: "表达", meaning: "表达方式", zIndex: 10 },
+                    { position: 5, x: 75, y: 75, label: "挑战", meaning: "潜在挑战", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "根据创意需求抽出一定数量的牌",
+                    "按照灵感或主题自由摆放"
+                ]
+            },
+            {
+                id: 34,
+                name: "内在智慧牌阵",
+                englishName: "Inner Wisdom Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "连接内在智慧",
+                shape: "放射状",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心自我", meaning: "核心自我", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "直觉", meaning: "直觉智慧", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "感知", meaning: "感知力", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "洞察", meaning: "洞察力", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "理解", meaning: "理解力", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "知晓", meaning: "知晓力", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "启发", meaning: "启发力", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出一张中心牌",
+                    "围绕中心牌摆放其他牌"
+                ]
+            },
+            {
+                id: 35,
+                name: "人生十字路口牌阵",
+                englishName: "Life Crossroads Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "面对重大人生抉择时的占卜",
+                shape: "十字形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "当前", meaning: "当前状况", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "路径1", meaning: "选择路径1", zIndex: 10 },
+                    { position: 3, x: 50, y: 90, label: "路径2", meaning: "选择路径2", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "路径3", meaning: "选择路径3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "路径4", meaning: "选择路径4", zIndex: 10 },
+                    { position: 6, x: 50, y: 5, label: "未来1", meaning: "路径1的未来", zIndex: 10 },
+                    { position: 7, x: 50, y: 95, label: "未来2", meaning: "路径2的未来", zIndex: 10 },
+                    { position: 8, x: 5, y: 50, label: "未来3", meaning: "路径3的未来", zIndex: 10 },
+                    { position: 9, x: 95, y: 50, label: "未来4", meaning: "路径4的未来", zIndex: 10 },
+                    { position: 10, x: 50, y: 60, label: "指引", meaning: "整体指引", zIndex: 15 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [2, 6], [3, 7], [4, 8], [5, 9], [1, 10]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出十张牌",
+                    "按照十字形摆放"
+                ]
+            },
+            {
+                id: 36,
+                name: "梦境解析牌阵",
+                englishName: "Dream Interpretation Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "理解和分析梦境",
+                shape: "星形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "主题", meaning: "梦境主题", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "人物", meaning: "梦境人物", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "场景", meaning: "梦境场景", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "情绪", meaning: "梦境情绪", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "象征", meaning: "梦境象征", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "启示", meaning: "梦境启示", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "建议", meaning: "梦境建议", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出七张牌",
+                    "代表梦境的不同元素"
+                ]
+            },
+            {
+                id: 37,
+                name: "直觉开发牌阵",
+                englishName: "Intuition Development Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "开发和增强直觉能力",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "直觉", meaning: "直觉焦点", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "灵感", meaning: "灵感", zIndex: 10 },
+                    { position: 3, x: 50, y: 90, label: "行动", meaning: "行动指引", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出1-3张牌",
+                    "简单摆放并专注感受"
+                ]
+            },
+            {
+                id: 38,
+                name: "四元素魔法牌阵",
+                englishName: "Four Elements Magic Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "运用元素力量的占卜",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "整体能量", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "火", meaning: "行动、激情、能量", zIndex: 10 },
+                    { position: 3, x: 50, y: 90, label: "水", meaning: "情感、关系、直觉", zIndex: 10 },
+                    { position: 4, x: 5, y: 50, label: "风", meaning: "思想、沟通、智慧", zIndex: 10 },
+                    { position: 5, x: 95, y: 50, label: "土", meaning: "物质、稳定、务实", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌分为四组：火、水、风、土",
+                    "从每组牌中抽取一张",
+                    "按照元素方位摆放"
+                ]
+            },
+            {
+                id: 39,
+                name: "行星能量牌阵",
+                englishName: "Planetary Energy Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "了解行星能量的影响",
+                shape: "圆形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "太阳", meaning: "太阳-核心能量", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "月亮", meaning: "月亮-情感", zIndex: 10 },
+                    { position: 3, x: 70, y: 25, label: "水星", meaning: "水星-沟通", zIndex: 10 },
+                    { position: 4, x: 82, y: 50, label: "金星", meaning: "金星-爱", zIndex: 10 },
+                    { position: 5, x: 70, y: 75, label: "火星", meaning: "火星-行动", zIndex: 10 },
+                    { position: 6, x: 50, y: 95, label: "木星", meaning: "木星-扩展", zIndex: 10 },
+                    { position: 7, x: 30, y: 75, label: "土星", meaning: "土星-结构", zIndex: 10 },
+                    { position: 8, x: 18, y: 50, label: "天王", meaning: "天王星-变革", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8]],
+                steps: [
+                    "将牌分为七组，对应七古典行星",
+                    "从每组牌中抽取一张",
+                    "按照行星顺序或天体图摆放"
+                ]
+            },
+            {
+                id: 40,
+                name: "月相牌阵",
+                englishName: "Moon Phase Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "了解月相对生活的影响",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 10, label: "新月", meaning: "新月-开始", zIndex: 10 },
+                    { position: 2, x: 25, y: 10, label: "娥眉月", meaning: "娥眉月-萌芽", zIndex: 10 },
+                    { position: 3, x: 45, y: 10, label: "上弦月", meaning: "上弦月-成长", zIndex: 10 },
+                    { position: 4, x: 65, y: 10, label: "盈凸月", meaning: "盈凸月-充盈", zIndex: 10 },
+                    { position: 5, x: 85, y: 10, label: "满月", meaning: "满月-圆满", zIndex: 10 },
+                    { position: 6, x: 85, y: 50, label: "亏凸月", meaning: "亏凸月-反思", zIndex: 10 },
+                    { position: 7, x: 85, y: 90, label: "下弦月", meaning: "下弦月-释放", zIndex: 10 },
+                    { position: 8, x: 65, y: 90, label: "残月", meaning: "残月-收尾", zIndex: 10 }
+                ],
+                connections: [[1, 2], [```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>维特塔罗牌阵可视化图集</title>
+    <link rel="stylesheet" href="https://autoglm-api.zhipuai.cn/ppt-proxy/https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #4a3b6e;
+            --deep-purple: #2d2147;
+            --accent-gold: #d4af37;
+            --light-gold: #f4e4bc;
+            --mystic-blue: #1a1a3e;
+            --card-bg: #3a2f5a;
+            --text-light: #e8e4ed;
+            --text-muted: #a8a0b5;
+            --shadow: 0 8px 32px rgba(74, 59, 110, 0.4);
+            --glow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--mystic-blue) 0%, var(--deep-purple) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        header {
+            background: rgba(26, 26, 62, 0.95);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 20px 10px 40px;
+            border: 2px solid var(--primary-purple);
+            border-radius: 25px;
+            background: rgba(58, 47, 90, 0.6);
+            color: var(--text-light);
+            font-size: 0.95rem;
+            width: 250px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 2px solid var(--primary-purple);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--deep-purple);
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin: 2rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-purple);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+        }
+
+        .spreads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .spread-card {
+            background: rgba(42, 33, 70, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .spread-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: var(--glow);
+        }
+
+        .spread-header {
+            margin-bottom: 1rem;
+        }
+
+        .spread-header h3 {
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .spread-header .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .visualization-area {
+            background: radial-gradient(circle at center, rgba(74, 59, 110, 0.3) 0%, transparent 70%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            min-height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .spread-layout {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .card-position {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .card-rect {
+            width: 45px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--deep-purple) 100%);
+            border: 2px solid var(--primary-purple);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.3rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .card-rect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+            opacity: 0.6;
+        }
+
+        .card-number {
+            background: linear-gradient(135deg, var(--accent-gold), var(--light-gold));
+            color: var(--deep-purple);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 11;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-label {
+            background: rgba(58, 47, 90, 0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-align: center;
+            border: 1px solid var(--primary-purple);
+            white-space: nowrap;
+            z-index: 11;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .spread-card:hover .card-label {
+            background: rgba(212, 175, 55, 0.25);
+            border-color: var(--accent-gold);
+        }
+
+        .spread-card:hover .card-rect {
+            border-color: var(--accent-gold);
+            box-shadow: var(--glow);
+        }
+
+        .svg-connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .connection-path {
+            stroke: url(#gradientLine);
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.5;
+            stroke-linecap: round;
+        }
+
+        .spread-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .info-item label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .info-item span {
+            color: var(--text-light);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 62, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(42, 33, 70, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 2px solid var(--accent-gold);
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--accent-gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-visualization {
+            background: radial-gradient(circle at center, rgba(74, 59, 110, 0.3) 0%, transparent 70%);
+            border-radius: 10px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            min-height: 900px;
+            position: relative;
+        }
+
+        .modal-details {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-section {
+            background: rgba(58, 47, 90, 0.4);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .detail-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .detail-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .detail-section li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            line-height: 1.7;
+        }
+
+        .detail-section strong {
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .spreads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-visualization {
+                min-height: 600px;
+                padding: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .spread-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .visualization-area {
+                border: 1px solid #ccc;
+            }
+
+            .modal {
+                display: none;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .spread-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <i class="fas fa-moon"></i>
+                维特塔罗牌阵可视化图集
+            </a>
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索牌阵...">
+                </div>
+                <div class="category-filter" id="categoryFilter">
+                    <button class="filter-btn active" data-category="all">全部</button>
+                    <button class="filter-btn" data-category="basic">基础类</button>
+                    <button class="filter-btn" data-category="love">关系与爱情</button>
+                    <button class="filter-btn" data-category="self">自我探索</button>
+                    <button class="filter-btn" data-category="decision">决策与问题</button>
+                    <button class="filter-btn" data-category="time">时间与运势</button>
+                    <button class="filter-btn" data-category="career">学业与事业</button>
+                    <button class="filter-btn" data-category="health">健康与疗愈</button>
+                    <button class="filter-btn" data-category="advanced">高级综合</button>
+                    <button class="filter-btn" data-category="special">特殊用途</button>
+                    <button class="filter-btn" data-category="creative">创意与自定义</button>
+                    <button class="filter-btn" data-category="element">元素与魔法</button>
+                    <button class="filter-btn" data-category="yearly">年度与长期</button>
+                    <button class="filter-btn" data-category="healing">疗愈与成长</button>
+                    <button class="filter-btn" data-category="communication">沟通与表达</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container" id="spreadsContainer">
+    </div>
+
+    <div class="modal" id="spreadModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalContent">
+            </div>
+        </div>
+    </div>
+
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <linearGradient id="gradientLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:var(--primary-purple);stop-opacity:0.6" />
+                <stop offset="100%" style="stop-color:var(--accent-gold);stop-opacity:0.8" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <script>
+        const spreads = [
+            {
+                id: 1,
+                name: "单牌占卜",
+                englishName: "Single Card Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "获取快速指引，适合日常简单问题",
+                shape: "单点",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心指引", meaning: "这张牌代表当前问题的核心指引或答案" }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "集中精神思考问题",
+                    "从牌叠顶部抽出一张牌",
+                    "将牌面朝上放置在面前",
+                    "记录并解读这张牌的含义"
+                ]
+            },
+            {
+                id: 2,
+                name: "时间之流牌阵",
+                englishName: "Time Flow Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "了解事件的发展过程",
+                shape: "横向排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 15, y: 50, label: "过去", meaning: "过去的情况和影响" },
+                    { position: 2, x: 50, y: 50, label: "现在", meaning: "当前的现状" },
+                    { position: 3, x: 85, y: 50, label: "未来", meaning: "未来的发展趋势" }
+                ],
+                connections: [[1, 2], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "按顺序从左到右横向排列三张牌",
+                    "第一张牌代表过去，第二张代表现在，第三张代表未来"
+                ]
+            },
+            {
+                id: 3,
+                name: "圣三角牌阵",
+                englishName: "Holy Trinity Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "过去-现在-未来的状况分析",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "过去", meaning: "过去的情况和根源" },
+                    { position: 2, x: 15, y: 85, label: "现在", meaning: "当前的现状和挑战" },
+                    { position: 3, x: 85, y: 85, label: "未来", meaning: "未来的可能性和结果" }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "摆放成三角形：第一张牌在上方，第二张和第三张在下方两侧",
+                    "牌位含义：上方牌为代表过去，下方左右两张牌分别为现在和未来"
+                ]
+            },
+            {
+                id: 4,
+                name: "二选一牌阵",
+                englishName: "Choice Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "帮助在两个选项间做出选择",
+                shape: "十字形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "中心", meaning: "当前状况和背景", zIndex: 20 },
+                    { position: 2, x: 50, y: 15, label: "选项A", meaning: "选项A的情况和发展", zIndex: 15 },
+                    { position: 3, x: 50, y: 85, label: "选项B", meaning: "选项B的情况和发展", zIndex: 15 },
+                    { position: 4, x: 15, y: 50, label: "A未来", meaning: "选项A的未来结果", zIndex: 15 },
+                    { position: 5, x: 85, y: 50, label: "B未来", meaning: "选项B的未来结果", zIndex: 15 }
+                ],
+                connections: [[1, 2], [1, 3], [2, 4], [3, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "按照特定顺序摆放：第一张在中心，第二张和第三张分别代表选项A和B，第四张和第五张分别代表A和B的未来",
+                    "牌位布局：中心为现状，上下左右分别为不同选项"
+                ]
+            },
+            {
+                id: 5,
+                name: "是非判断牌阵",
+                englishName: "Yes/No Spread",
+                category: "basic",
+                categoryName: "基础类",
+                purpose: "回答可以用是或否来解决的问题",
+                shape: "简单排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心答案", meaning: "直接回答问题" }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "根据问题大小选择抽1-3张牌",
+                    "牌面朝上放置，解读牌意来判断是或否",
+                    "单牌牌阵只需抽一张牌直接解读",
+                    "三牌牌阵可摆放成直线，分别代表过去、现在、未来"
+                ]
+            },
+            {
+                id: 6,
+                name: "爱情金字塔牌阵",
+                englishName: "Love Pyramid Spread",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "分析双方情感关系现状和发展",
+                shape: "金字塔形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 20, y: 85, label: "自己感受", meaning: "自己对对方的感受" },
+                    { position: 2, x: 80, y: 85, label: "对方感受", meaning: "对方对你的感受" },
+                    { position: 3, x: 50, y: 50, label: "关系现状", meaning: "双方关系现状" },
+                    { position: 4, x: 30, y: 15, label: "未来发展", meaning: "关系未来发展" },
+                    { position: 5, x: 70, y: 15, label: "挑战", meaning: "可能面临的挑战" }
+                ],
+                connections: [[1, 3], [2, 3], [3, 4], [3, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "摆放成金字塔形：底部两张，中间一张，顶部两张",
+                    "可根据需要添加补牌"
+                ]
+            },
+            {
+                id: 7,
+                name: "恋爱圣三角牌阵",
+                englishName: "Love Holy Trinity",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "专注于感情问题的过去-现在-未来",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "过去", meaning: "感情的过去和根源" },
+                    { position: 2, x: 15, y: 85, label: "现在", meaning: "当前感情状况" },
+                    { position: 3, x: 85, y: 85, label: "未来", meaning: "感情的未来发展" }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "摆放成三角形：第一张牌在上方，第二张和第三张在下方两侧"
+                ]
+            },
+            {
+                id: 8,
+                name: "关系桥接牌阵",
+                englishName: "Relationship Bridge Spread",
+                category: "love",
+                categoryName: "关系与爱情",
+                purpose: "了解两个人之间的关系动态",
+                shape: "桥形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 50, label: "A内心", meaning: "第一个人的内心" },
+                    { position: 2, x: 5, y: 75, label: "A外在", meaning: "第一个人的外在表现" },
+                    { position: 3, x: 35, y: 50, label: "互动1", meaning: "关系动态1" },
+                    { position: 4, x: 50, y: 50, label: "核心", meaning: "关系核心" },
+                    { position: 5, x: 65, y: 50, label: "互动2", meaning: "关系动态2" },
+                    { position: 6, x: 95, y: 50, label: "B内心", meaning: "第二个人的内心" },
+                    { position: 7, x: 95, y: 75, label: "B外在", meaning: "第二个人的外在表现" }
+                ],
+                connections: [[1, 3], [2, 3], [3, 4], [4, 5], [5, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照桥形结构摆放：中间三张牌为桥，两侧各两张牌代表两个人"
+                ]
+            },
+            {
+                id: 9,
+                name: "身心灵牌阵",
+                englishName: "Mind-Body-Spirit Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "探索身体、心理和精神层面的状态",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 15, label: "身体", meaning: "身体状态和健康状况" },
+                    { position: 2, x: 15, y: 85, label: "心理", meaning: "心理状态和情绪状况" },
+                    { position: 3, x: 85, y: 85, label: "灵性", meaning: "精神层面和灵性成长" }
+                ],
+                connections: [[1, 2], [1, 3], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三张牌",
+                    "分别代表身、心、灵三个层面"
+                ]
+            },
+            {
+                id: 10,
+                name: "四元素牌阵",
+                englishName: "Four Elements Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "分析生活中的四个基本元素",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 15, y: 15, label: "火", meaning: "激情、行动、能量" },
+                    { position: 2, x: 85, y: 15, label: "水", meaning: "情感、直觉、关系" },
+                    { position: 3, x: 15, y: 85, label: "风", meaning: "思想、沟通、智慧" },
+                    { position: 4, x: 85, y: 85, label: "土", meaning: "物质、稳定、务实" }
+                ],
+                connections: [[1, 4], [2, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出四张牌",
+                    "分别代表火、水、风、土四个元素"
+                ]
+            },
+            {
+                id: 11,
+                name: "自我探索牌阵",
+                englishName: "Self-Exploration Spread",
+                category: "self",
+                categoryName: "自我探索",
+                purpose: "深入了解自己的内在特质",
+                shape: "方形3x3",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 10, label: "外在", meaning: "外在表现" },
+                    { position: 2, x: 50, y: 10, label: "形象", meaning: "社会形象" },
+                    { position: 3, x: 90, y: 10, label: "看法", meaning: "他人看法" },
+                    { position: 4, x: 10, y: 50, label: "状态", meaning: "当前状态" },
+                    { position: 5, x: 50, y: 50, label: "冲突", meaning: "内心冲突" },
+                    { position: 6, x: 90, y: 50, label: "能力", meaning: "潜在能力" },
+                    { position: 7, x: 10, y: 90, label: "恐惧", meaning: "深层恐惧" },
+                    { position: 8, x: 50, y: 90, label: "自我", meaning: "真正自我" },
+                    { position: 9, x: 90, y: 90, label: "指引", meaning: "灵性指引" }
+                ],
+                connections: [[1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照3x3方形排列"
+                ]
+            },
+            {
+                id: 12,
+                name: "凯尔特十字牌阵",
+                englishName: "Celtic Cross Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "详细剖析问题的多个层面",
+                shape: "十字形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "问题的核心", zIndex: 20 },
+                    { position: 2, x: 68, y: 50, label: "影响", meaning: "conscious awareness 有意识的认知", zIndex: 15, rotate: 90 },
+                    { position: 3, x: 32, y: 50, label: "潜意识", meaning: "unconscious awareness 无意识的认知", zIndex: 15, rotate: 90 },
+                    { position: 4, x: 50, y: 32, label: "高我", meaning: "higher self 高我/理想", zIndex: 15 },
+                    { position: 5, x: 50, y: 68, label: "低我", meaning: "lower self 自我/本能", zIndex: 15 },
+                    { position: 6, x: 88, y: 50, label: "未来", meaning: "未来可能性和结果", zIndex: 12 },
+                    { position: 7, x: 20, y: 25, label: "态度", meaning: "内在态度", zIndex: 12 },
+                    { position: 8, x: 80, y: 25, label: "环境", meaning: "外部影响", zIndex: 12 },
+                    { position: 9, x: 20, y: 75, label: "希望", meaning: "希望和恐惧", zIndex: 12 },
+                    { position: 10, x: 80, y: 75, label: "结果", meaning: "最终结果", zIndex: 12 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [7, 8], [9, 10]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出十张牌",
+                    "按照特定顺序摆放成十字形",
+                    "第一张牌放在中心，第二张牌放在第一张牌的右侧",
+                    "其余八张牌围绕中心牌形成十字交叉"
+                ]
+            },
+            {
+                id: 13,
+                name: "问题解决牌阵",
+                englishName: "Problem-Solving Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "寻找问题的解决方案",
+                shape: "流程形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 50, label: "本质", meaning: "问题本质" },
+                    { position: 2, x: 25, y: 50, label: "原因", meaning: "根本原因" },
+                    { position: 3, x: 45, y: 50, label: "现状", meaning: "现状分析" },
+                    { position: 4, x: 65, y: 50, label: "方案", meaning: "可能的解决方案" },
+                    { position: 5, x: 85, y: 50, label: "选择", meaning: "最佳选择" },
+                    { position: 6, x: 95, y: 30, label: "步骤", meaning: "实施步骤" },
+                    { position: 7, x: 95, y: 70, label: "结果", meaning: "预期结果" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照问题解决流程摆放"
+                ]
+            },
+            {
+                id: 14,
+                name: "决策金字塔牌阵",
+                englishName: "Decision Pyramid Spread",
+                category: "decision",
+                categoryName: "决策与问题",
+                purpose: "辅助重要决策",
+                shape: "金字塔形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 10, y: 85, label: "选项A", meaning: "选项A的现状" },
+                    { position: 2, x: 50, y: 85, label: "选项B", meaning: "选项B的现状" },
+                    { position: 3, x: 90, y: 85, label: "选项C", meaning: "选项C的现状" },
+                    { position: 4, x: 50, y: 50, label: "分析", meaning: "各选项的比较分析" },
+                    { position: 5, x: 50, y: 15, label: "最佳", meaning: "最佳选择和未来发展" }
+                ],
+                connections: [[1, 4], [2, 4], [3, 4], [4, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出五张牌",
+                    "按照金字塔形摆放：底部三张，中间一张，顶部一张"
+                ]
+            },
+            {
+                id: 15,
+                name: "四季运势牌阵",
+                englishName: "Four Seasons Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "占卜季度运势",
+                shape: "十字形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 10, y: 50, label: "权杖", meaning: "能量、行动力、事业" },
+                    { position: 2, x: 35, y: 50, label: "圣杯", meaning: "情感、关系、直觉" },
+                    { position: 3, x: 65, y: 50, label: "宝剑", meaning: "思维、沟通、挑战" },
+                    { position: 4, x: 90, y: 50, label: "星币", meaning: "物质、财运、健康" },
+                    { position: 5, x: 50, y: 50, label: "整体", meaning: "整体能量、灵性成长" }
+                ],
+                connections: [[1, 5], [2, 5], [3, 5], [4, 5]],
+                steps: [
+                    "将牌分为五组：22张大阿卡纳和四组小阿卡纳（权杖、圣杯、宝剑、星币）",
+                    "将每一组牌分别洗牌",
+                    "按照特定顺序抽取并摆放五组牌",
+                    "从右到左翻开大阿卡纳牌，再按权杖、圣杯、宝剑、星币顺序翻开"
+                ]
+            },
+            {
+                id: 16,
+                name: "月历牌阵",
+                englishName: "Calendar Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "查看一个月的运势发展",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 10, label: "月初", meaning: "月初第一天" },
+                    { position: 2, x: 5, y: 35, label: "第一周", meaning: "第一周运势" },
+                    { position: 3, x: 5, y: 60, label: "第二周", meaning: "第二周运势" },
+                    { position: 4, x: 35, y: 10, label: "月中", meaning: "月中状态" },
+                    { position: 5, x: 35, y: 35, label: "第三周", meaning: "第三周运势" },
+                    { position: 6, x: 35, y: 60, label: "第四周", meaning: "第四周运势" },
+                    { position: 7, x: 65, y: 10, label: "中旬", meaning: "月中状态" },
+                    { position: 8, x: 65, y: 35, label: "月末", meaning: "月末最后一天" },
+                    { position: 9, x: 65, y: 60, label: "总结", meaning: "月度总结" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出三十张牌",
+                    "代表一个月的三十天",
+                    "也可简化为代表一周的七张牌"
+                ]
+            },
+            {
+                id: 17,
+                name: "时间金字塔牌阵",
+                englishName: "Time Pyramid Spread",
+                category: "time",
+                categoryName: "时间与运势",
+                purpose: "理解时间的发展脉络",
+                shape: "金字塔形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "最近", meaning: "最近的过去" },
+                    { position: 2, x: 30, y: 72, label: "近期", meaning: "近期过去" },
+                    { position: 3, x: 70, y: 72, label: "现在", meaning: "现在" },
+                    { position: 4, x: 10, y: 50, label: "远期", meaning: "较远的过去" },
+                    { position: 5, x: 50, y: 50, label: "近期未来", meaning: "近未来" },
+                    { position: 6, x: 90, y: 50, label: "中期未来", meaning: "中期未来" },
+                    { position: 7, x: 50, y: 10, label: "远期未来", meaning: "遥远的未来" }
+                ],
+                connections: [[1, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出多张牌（通常7-10张）",
+                    "按照时间顺序从过去到未来摆放成金字塔形"
+                ]
+            },
+            {
+                id: 18,
+                name: "每周占卜牌阵",
+                englishName: "Weekly Divination Spread",
+                category: "time",
+                categoryName: "time与运势",
+                purpose: "了解一周的运势",
+                shape: "直线形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 3, y: 50, label: "周一", meaning: "周一运势" },
+                    { position: 2, x: 17, y: 50, label: "周二", meaning: "周二运势" },
+                    { position: 3, x: 30, y: 50, label: "周三", meaning: "周三运势" },
+                    { position: 4, x: 43, y: 50, label: "周四", meaning: "周四运势" },
+                    { position: 5, x: 56, y: 50, label: "周五", meaning: "周五运势" },
+                    { position: 6, x: 70, y: 50, label: "周六", meaning: "周六运势" },
+                    { position: 7, x: 83, y: 50, label: "周日", meaning: "周日运势" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表一周七天",
+                    "也可只抽一张牌代表本周整体运势"
+                ]
+            },
+            {
+                id: 19,
+                name: "学业金字塔牌阵",
+                englishName: "Academic Pyramid Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "占卜学业发展",
+                shape: "金字塔形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 90, label: "基础", meaning: "当前学习基础" },
+                    { position: 2, x: 35, y: 90, label: "方法", meaning: "学习方法" },
+                    { position: 3, x: 60, y: 90, label: "环境", meaning: "学习环境" },
+                    { position: 4, x: 85, y: 90, label: "资源", meaning: "学习资源" },
+                    { position: 5, x: 35, y: 50, label: "挑战", meaning: "学习挑战" },
+                    { position: 6, x: 65, y: 50, label: "机会", meaning: "学习机会" },
+                    { position: 7, x: 50, y: 15, label: "结果", meaning: "考试结果和未来" }
+                ],
+                connections: [[1, 5], [2, 5], [3, 6], [4, 6], [5, 7], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "按照金字塔形摆放：底座四张，上层两张，顶端一张"
+                ]
+            },
+            {
+                id: 20,
+                name: "事业发展牌阵",
+                englishName: "Career Development Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "了解职业发展状况",
+                shape: "阶梯形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 90, label: "现状", meaning: "当前职业状态" },
+                    { position: 2, x: 30, y: 70, label: "技能", meaning: "职业技能" },
+                    { position: 3, x: 50, y: 50, label: "环境", meaning: "工作环境" },
+                    { position: 4, x: 70, y: 30, label: "挑战", meaning: "职业挑战" },
+                    { position: 5, x: 90, y: 10, label: "机会", meaning: "晋升机会" },
+                    { position: 6, x: 50, y: 90, label: "路径", meaning: "职业发展路径" },
+                    { position: 7, x: 90, y: 90, label: "目标", meaning: "长期职业目标" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [1, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表职业发展的不同阶段"
+                ]
+            },
+            {
+                id: 21,
+                name: "财运牌阵",
+                englishName: "Financial Spread",
+                category: "career",
+                categoryName: "学业与事业",
+                purpose: "分析财务状况",
+                shape: "3x3方形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 10, y: 10, label: "收入", meaning: "收入状况" },
+                    { position: 2, x: 50, y: 10, label: "支出", meaning: "支出模式" },
+                    { position: 3, x: 90, y: 10, label: "储蓄", meaning: "储蓄情况" },
+                    { position: 4, x: 10, y: 50, label: "投资", meaning: "投资机会" },
+                    { position: 5, x: 50, y: 50, label: "风险", meaning: "风险因素" },
+                    { position: 6, x: 90, y: 50, label: "规划", meaning: "财务规划" },
+                    { position: 7, x: 10, y: 90, label: "长期", meaning: "长期财务目标" },
+                    { position: 8, x: 50, y: 90, label: "挑战", meaning: "财务挑战" },
+                    { position: 9, x: 90, y: 90, label: "建议", meaning: "建议指导" }
+                ],
+                connections: [[1, 2], [2, 3], [4, 5], [5, 6], [7, 8], [8, 9], [1, 4], [4, 7], [2, 5], [5, 8], [3, 6], [6, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照3x3方形排列"
+                ]
+            },
+            {
+                id: 22,
+                name: "健康状况牌阵",
+                englishName: "Health Condition Spread",
+                category: "health",
+                categoryName: "健康与疗愈",
+                purpose: "了解身体健康状况",
+                shape: "人形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 10, label: "整体", meaning: "整体健康状态" },
+                    { position: 2, x: 50, y: 25, label: "头部", meaning: "头部/思维健康" },
+                    { position: 3, x: 25, y: 50, label: "心脏", meaning: "心脏/循环系统" },
+                    { position: 4, x: 50, y: 50, label: "消化", meaning: "消化系统" },
+                    { position: 5, x: 75, y: 50, label: "呼吸", meaning: "呼吸系统" },
+                    { position: 6, x: 35, y: 75, label: "肌肉", meaning: "肌肉骨骼系统" },
+                    { position: 7, x: 65, y: 75, label: "能量", meaning: "能量水平" }
+                ],
+                connections: [[1, 2], [2, 3], [2, 4], [2, 5], [3, 6], [4, 6], [5, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表身体不同部位或系统"
+                ]
+            },
+            {
+                id: 23,
+                name: "疗愈牌阵",
+                englishName: "Healing Spread",
+                category: "health",
+                categoryName: "健康与疗愈",
+                purpose: "促进身心疗愈",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "核心问题或疗愈焦点", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "层面1", meaning: "疗愈过程层面1", zIndex: 10 },
+                    { position: 3, x: 90, y: 10, label: "层面2", meaning: "疗愈过程层面2", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "层面3", meaning: "疗愈过程层面3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "层面4", meaning: "疗愈过程层面4", zIndex: 10 },
+                    { position: 6, x: 10, y: 90, label: "层面5", meaning: "疗愈过程层面5", zIndex: 10 },
+                    { position: 7, x: 50, y: 90, label: "层面6", meaning: "疗愈过程层面6", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "围绕中心牌放置"
+                ]
+            },
+            {
+                id: 24,
+                name: "大阿卡纳全象牌阵",
+                englishName: "Major Arcana Whole Picture Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "全面了解人生状况",
+                shape: "长方形排列",
+                complexity: "ultra",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "关键牌", meaning: "关键牌，中心", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "愚人", meaning: "愚人之旅开始", zIndex: 10 },
+                    { position: 3, x: 75, y: 10, label: "魔术师", meaning: "创造力", zIndex: 10 },
+                    { position: 4, x: 90, y: 35, label: "女祭司", meaning: "直觉", zIndex: 10 },
+                    { position: 5, x: 85, y: 50, label: "皇后", meaning: "滋养", zIndex: 10 },
+                    { position: 6, x: 50, y: 90, label: "皇帝", meaning: "秩序", zIndex: 10 },
+                    { position: 7, x: 15, y: 80, label: "教皇", meaning: "传统", zIndex: 10 },
+                    { position: 8, x: 10, y: 50, label: "恋人", meaning: "选择", zIndex: 10 },
+                    { position: 9, x: 15, y: 20, label: "战车", meaning: "意志", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将22张大阿卡纳牌洗匀",
+                    "按照特定顺序摆放成长方形",
+                    "可按照愚人之旅的路径排列"
+                ]
+            },
+            {
+                id: 25,
+                name: "元素平衡牌阵",
+                englishName: "Elemental Balance Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "检查生活元素的平衡",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "平衡", meaning: "整体平衡状态", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "火", meaning: "行动、激情、能量", zIndex: 10 },
+                    { position: 3, x: 50, y: 95, label: "水", meaning: "情感、关系、直觉", zIndex: 10 },
+                    { position: 4, x: 5, y: 50, label: "风", meaning: "思想、沟通、智慧", zIndex: 10 },
+                    { position: 5, x: 95, y: 50, label: "土", meaning: "物质、稳定、务实", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌分为四组：火、水、风、土",
+                    "从每组牌中抽取一定数量",
+                    "按照元素方位摆放"
+                ]
+            },
+            {
+                id: 26,
+                name: "星座运势牌阵",
+                englishName: "Zodiac Horoscope Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "结合星象的运势占卜",
+                shape: "长方形排列",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "为代表牌或整体运势", zIndex: 20 },
+                    { position: 2, x: 10, y: 5, label: "白羊", meaning: "白羊座运势", zIndex: 10 },
+                    { position: 3, x: 30, y: 5, label: "金牛", meaning: "金牛座运势", zIndex: 10 },
+                    { position: 4, x: 50, y: 5, label: "双子", meaning: "双子座运势", zIndex: 10 },
+                    { position: 5, x: 70, y: 5, label: "巨蟹", meaning: "巨蟹座运势", zIndex: 10 },
+                    { position: 6, x: 90, y: 30, label: "狮子", meaning: "狮子座运势", zIndex: 10 },
+                    { position: 7, x: 90, y: 55, label: "处女", meaning: "处女座运势", zIndex: 10 },
+                    { position: 8, x: 70, y: 80, label: "天秤", meaning: "天秤座运势", zIndex: 10 },
+                    { position: 9, x: 50, y: 80, label: "天蝎", meaning: "天蝎座运势", zIndex: 10 },
+                    { position: 10, x: 30, y: 80, label: "射手", meaning: "射手座运势", zIndex: 10 },
+                    { position: 11, x: 10, y: 55, label: "摩羯", meaning: "摩羯座运势", zIndex: 10 },
+                    { position: 12, x: 50, y: 60, label: "水瓶", meaning: "水瓶座运势", zIndex: 10 },
+                    { position: 13, x: 50, y: 40, label: "双鱼", meaning: "双鱼座运势", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11], [1, 12], [1, 13]],
+                steps: [
+                    "将牌分为十二组，对应十二星座",
+                    "从每组牌中抽取一张",
+                    "按照星座顺序摆放成长方形"
+                ]
+            },
+            {
+                id: 27,
+                name: "人生课题牌阵",
+                englishName: "Life Lessons Spread",
+                category: "advanced",
+                categoryName: "高级综合",
+                purpose: "理解当前的人生课题",
+                shape: "方形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心课题", meaning: "当前主要人生课题", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "层面1", meaning: "课题分析层面1", zIndex: 10 },
+                    { position: 3, x: 50, y: 10, label: "层面2", meaning: "课题分析层面2", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "层面3", meaning: "课题分析层面3", zIndex: 10 },
+                    { position: 5, x: 10, y: 50, label: "层面4", meaning: "课题分析层面4", zIndex: 10 },
+                    { position: 6, x: 90, y: 50, label: "层面5", meaning: "课题分析层面5", zIndex: 10 },
+                    { position: 7, x: 10, y: 90, label: "层面6", meaning: "课题分析层面6", zIndex: 10 },
+                    { position: 8, x: 50, y: 90, label: "层面7", meaning: "课题分析层面7", zIndex: 10 },
+                    { position: 9, x: 90, y: 90, label: "层面8", meaning: "课题分析层面8", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出九张牌",
+                    "按照特定顺序摆放"
+                ]
+            },
+            {
+                id: 28,
+                name: "保护牌阵",
+                englishName: "Protection Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "建立保护屏障",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "中心", meaning: "为代表个人或空间", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "北方", meaning: "保护屏障北方", zIndex: 10 },
+                    { position: 3, x: 50, y: 5, label: "东北", meaning: "保护屏障东北", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "东方", meaning: "保护屏障东方", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "东南", meaning: "保护屏障东南", zIndex: 10 },
+                    { position: 6, x: 90, y: 90, label: "南方", meaning: "保护屏障南方", zIndex: 10 },
+                    { position: 7, x: 50, y: 95, label: "西南", meaning: "保护屏障西南", zIndex: 10 },
+                    { position: 8, x: 10, y: 90, label: "西方", meaning: "保护屏障西方", zIndex: 10 },
+                    { position: 9, x: 10, y: 50, label: "西北", meaning: "保护屏障西北", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽取一定数量的牌",
+                    "围绕个人或特定区域摆放"
+                ]
+            },
+            {
+                id: 29,
+                name: "牌灵占卜",
+                englishName: "Card Divination",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "了解塔罗牌的灵性特质",
+                shape: "单点",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "牌灵", meaning: "代表牌灵" }
+                ],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "集中精神与牌连接",
+                    "抽出代表牌灵的牌",
+                    "可配合其他牌进行解读"
+                ]
+            },
+            {
+                id: 30,
+                name: "团体动态牌阵",
+                englishName: "Group Dynamics Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "了解团体中的互动关系",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "团体", meaning: "团体整体", zIndex: 20 },
+                    { position: 2, x: 10, y: 10, label: "成员1", meaning: "团体成员1", zIndex: 10 },
+                    { position: 3, x: 50, y: 10, label: "成员2", meaning: "团体成员2", zIndex: 10 },
+                    { position: 4, x: 90, y: 10, label: "成员3", meaning: "团体成员3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "成员4", meaning: "团体成员4", zIndex: 10 },
+                    { position: 6, x: 90, y: 90, label: "成员5", meaning: "团体成员5", zIndex: 10 },
+                    { position: 7, x: 10, y: 90, label: "成员6", meaning: "团体成员6", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "每人抽一张牌",
+                    "按照团体关系摆放"
+                ]
+            },
+            {
+                id: 31,
+                name: "灵魂连接牌阵",
+                englishName: "Soul Connection Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "探索灵魂层面的连接",
+                shape: "双三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 30, y: 50, label: "灵魂A", meaning: "第一个灵魂的本质" },
+                    { position: 2, x: 70, y: 50, label: "灵魂B", meaning: "第二个灵魂的本质" },
+                    { position: 3, x: 50, y: 35, label: "连接", meaning: "灵魂连接的状态" },
+                    { position: 4, x: 50, y: 65, label: "互动", meaning: "灵魂间的互动" },
+                    { position: 5, x: 25, y: 30, label: "A特质", meaning: "A的灵魂特质" },
+                    { position: 6, x: 75, y: 30, label: "B特质", meaning: "B的灵魂特质" }
+                ],
+                connections: [[1, 3], [2, 3], [1, 5], [2, 6], [3, 4]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出两张牌",
+                    "代表两个灵魂",
+                    "可添加更多牌代表连接层面"
+                ]
+            },
+            {
+                id: 32,
+                name: "过去世牌阵",
+                englishName: "Past Life Spread",
+                category: "special",
+                categoryName: "特殊用途",
+                purpose: "探索过去世的信息",
+                shape: "螺旋形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "今生", meaning: "今生影响" },
+                    { position: 2, x: 70, y: 78, label: "近前世", meaning: "近期前世" },
+                    { position: 3, x: 82, y: 60, label: "前世1", meaning: "更早前世1" },
+                    { position: 4, x: 70, y: 42, label: "前世2", meaning: "更早前世2" },
+                    { position: 5, x: 50, y: 25, label: "前世3", meaning: "更早前世3" },
+                    { position: 6, x: 30, y: 42, label: "前世4", meaning: "更早前世4" },
+                    { position: 7, x: 18, y: 60, label: "远前世", meaning: "遥远过去" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部依次抽出七张牌",
+                    "代表不同前世或时间线"
+                ]
+            },
+            {
+                id: 33,
+                name: "创意表达牌阵",
+                englishName: "Creative Expression Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "激发创意和灵感",
+                shape: "自由",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心创意", meaning: "核心创意", zIndex: 20 },
+                    { position: 2, x: 25, y: 25, label: "灵感", meaning: "灵感来源", zIndex: 10 },
+                    { position: 3, x: 75, y: 25, label: "元素", meaning: "创意元素", zIndex: 10 },
+                    { position: 4, x: 25, y: 75, label: "表达", meaning: "表达方式", zIndex: 10 },
+                    { position: 5, x: 75, y: 75, label: "挑战", meaning: "潜在挑战", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "根据创意需求抽出一定数量的牌",
+                    "按照灵感或主题自由摆放"
+                ]
+            },
+            {
+                id: 34,
+                name: "内在智慧牌阵",
+                englishName: "Inner Wisdom Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "连接内在智慧",
+                shape: "放射状",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心自我", meaning: "核心自我", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "直觉", meaning: "直觉智慧", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "感知", meaning: "感知力", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "洞察", meaning: "洞察力", zIndex: 10 },
+                    { position: 5, x: 50, y: 85, label: "理解", meaning: "理解力", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "知晓", meaning: "知晓力", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "启发", meaning: "启发力", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出一张中心牌",
+                    "围绕中心牌摆放其他牌"
+                ]
+            },
+            {
+                id: 35,
+                name: "人生十字路口牌阵",
+                englishName: "Life Crossroads Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "面对重大人生抉择时的占卜",
+                shape: "十字形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "当前", meaning: "当前状况", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "路径1", meaning: "选择路径1", zIndex: 10 },
+                    { position: 3, x: 50, y: 90, label: "路径2", meaning: "选择路径2", zIndex: 10 },
+                    { position: 4, x: 10, y: 50, label: "路径3", meaning: "选择路径3", zIndex: 10 },
+                    { position: 5, x: 90, y: 50, label: "路径4", meaning: "选择路径4", zIndex: 10 },
+                    { position: 6, x: 50, y: 5, label: "未来1", meaning: "路径1的未来", zIndex: 8 },
+                    { position: 7, x: 50, y: 95, label: "未来2", meaning: "路径2的未来", zIndex: 8 },
+                    { position: 8, x: 5, y: 50, label: "未来3", meaning: "路径3的未来", zIndex: 8 },
+                    { position: 9, x: 95, y: 50, label: "未来4", meaning: "路径4的未来", zIndex: 8 },
+                    { position: 10, x: 50, y: 60, label: "指引", meaning: "整体指引", zIndex: 15 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [2, 6], [3, 7], [4, 8], [5, 9], [1, 10]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出十张牌",
+                    "按照十字形摆放"
+                ]
+            },
+            {
+                id: 36,
+                name: "梦境解析牌阵",
+                englishName: "Dream Interpretation Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "理解和分析梦境",
+                shape: "星形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "主题", meaning: "梦境主题", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "人物", meaning: "梦境人物", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "场景", meaning: "梦境场景", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "情绪", meaning: "梦境情绪", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "象征", meaning: "梦境象征", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "启示", meaning: "梦境启示", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "建议", meaning: "梦境建议", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出七张牌",
+                    "代表梦境的不同元素"
+                ]
+            },
+            {
+                id: 37,
+                name: "直觉开发牌阵",
+                englishName: "Intuition Development Spread",
+                category: "creative",
+                categoryName: "创意与自定义",
+                purpose: "开发和增强直觉能力",
+                shape: "三角形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "直觉", meaning: "直觉焦点", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "灵感", meaning: "灵感", zIndex: 10 },
+                    { position: 3, x: 50, y: 90, label: "行动", meaning: "行动指引", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出1-3张牌",
+                    "简单摆放并专注感受"
+                ]
+            },
+            {
+                id: 38,
+                name: "四元素魔法牌阵",
+                englishName: "Four Elements Magic Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "运用元素力量的占卜",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "整体能量", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "火", meaning: "行动、激情、能量", zIndex: 10 },
+                    { position: 3, x: 50, y: 95, label: "水", meaning: "情感、关系、直觉", zIndex: 10 },
+                    { position: 4, x: 5, y: 50, label: "风", meaning: "思想、沟通、智慧", zIndex: 10 },
+                    { position: 5, x: 95, y: 50, label: "土", meaning: "物质、稳定、务实", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5]],
+                steps: [
+                    "将牌分为四组：火、水、风、土",
+                    "从每组牌中抽取一张",
+                    "按照元素方位摆放"
+                ]
+            },
+            {
+                id: 39,
+                name: "行星能量牌阵",
+                englishName: "Planetary Energy Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "了解行星能量的影响",
+                shape: "圆形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "太阳", meaning: "太阳-核心能量", zIndex: 20 },
+                    { position: 2, x: 50, y: 5, label: "月亮", meaning: "月亮-情感", zIndex: 15 },
+                    { position: 3, x: 75, y: 25, label: "水星", meaning: "水星-沟通", zIndex: 10 },
+                    { position: 4, x: 82, y: 50, label: "金星", meaning: "金星-爱", zIndex: 10 },
+                    { position: 5, x: 75, y: 75, label: "火星", meaning: "火星-行动", zIndex: 10 },
+                    { position: 6, x: 50, y: 95, label: "木星", meaning: "木星-扩展", zIndex: 10 },
+                    { position: 7, x: 25, y: 75, label: "土星", meaning: "土星-结构", zIndex: 10 },
+                    { position: 8, x: 15, y: 50, label: "天王", meaning: "天王星-变革", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8]],
+                steps: [
+                    "将牌分为七组，对应七古典行星",
+                    "从每组牌中抽取一张",
+                    "按照行星顺序或天体图摆放"
+                ]
+            },
+            {
+                id: 40,
+                name: "月相牌阵",
+                englishName: "Moon Phase Spread",
+                category: "element",
+                categoryName: "元素与魔法",
+                purpose: "了解月相对生活的影响",
+                shape: "长方形排列",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 5, y: 10, label: "新月", meaning: "新月-开始", zIndex: 10 },
+                    { position: 2, x: 25, y: 10, label: "娥眉月", meaning: "娥眉月-萌芽", zIndex: 10 },
+                    { position: 3, x: 50, y: 10, label: "上弦月", meaning: "上弦月-成长", zIndex: 10 },
+                    { position: 4, x: 70, y: 10, label: "盈凸月", meaning: "盈凸月-充盈", zIndex: 10 },
+                    { position: 5, x: 85, y: 10, label: "满月", meaning: "满月-圆满", zIndex: 10 },
+                    { position: 6, x: 85, y: 50, label: "亏凸月", meaning: "亏凸月-反思", zIndex: 10 },
+                    { position: 7, x: 85, y: 80, label: "下弦月", meaning: "下弦月-释放", zIndex: 10 },
+                    { position: 8, x: 70, y: 80, label: "残月", meaning: "残月-收尾", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 1]],
+                steps: [
+                    "将牌分为八组，代表八个月相",
+                    "从每组牌中抽取一张",
+                    "按照月相周期顺序摆放"
+                ]
+            },
+            {
+                id: 41,
+                name: "年度运势牌阵",
+                englishName: "Annual Fortune Spread",
+                category: "yearly",
+                categoryName: "年度与长期",
+                purpose: "预测整年的运势",
+                shape: "长方形排列",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心", meaning: "年度核心能量", zIndex: 20 },
+                    { position: 2, x: 5, y: 5, label: "1月", meaning: "一月运势", zIndex: 10 },
+                    { position: 3, x: 25, y: 5, label: "2月", meaning: "二月运势", zIndex: 10 },
+                    { position: 4, x: 45, y: 5, label: "3月", meaning: "三月运势", zIndex: 10 },
+                    { position: 5, x: 65, y: 5, label: "4月", meaning: "四月运势", zIndex: 10 },
+                    { position: 6, x: 85, y: 5, label: "5月", meaning: "五月运势", zIndex: 10 },
+                    { position: 7, x: 95, y: 30, label: "6月", meaning: "六月运势", zIndex: 10 },
+                    { position: 8, x: 95, y: 50, label: "7月", meaning: "七月运势", zIndex: 10 },
+                    { position: 9, x: 95, y: 70, label: "8月", meaning: "八月运势", zIndex: 10 },
+                    { position: 10, x: 85, y: 90, label: "9月", meaning: "九月运势", zIndex: 10 },
+                    { position: 11, x: 65, y: 90, label: "10月", meaning: "十月运势", zIndex: 10 },
+                    { position: 12, x: 45, y: 90, label: "11月", meaning: "十一月运势", zIndex: 10 },
+                    { position: 13, x: 25, y: 90, label: "12月", meaning: "十二月运势", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11], [1, 12], [1, 13]],
+                steps: [
+                    "将牌分为十二组，对应十二个月",
+                    "从每组牌中抽取一张",
+                    "按照月份顺序摆放"
+                ]
+            },
+            {
+                id: 42,
+                name: "年度回顾牌阵",
+                englishName: "Year in Review Spread",
+                category: "yearly",
+                categoryName: "年度与长期",
+                purpose: "回顾过去一年的成长",
+                shape: "螺旋形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "结束", meaning: "年末", zIndex: 10 },
+                    { position: 2, x: 65, y: 82, label: "12月", meaning: "十二月", zIndex: 10 },
+                    { position: 3, x: 80, y: 68, label: "11月", meaning: "十一月", zIndex: 10 },
+                    { position: 4, x: 85, y: 50, label: "10月", meaning: "十月", zIndex: 10 },
+                    { position: 5, x: 75, y: 35, label: "9月", meaning: "九月", zIndex: 10 },
+                    { position: 6, x: 65, y: 22, label: "8月", meaning: "八月", zIndex: 10 },
+                    { position: 7, x: 50, y: 10, label: "7月", meaning: "七月", zIndex: 10 },
+                    { position: 8, x: 35, y: 22, label: "6月", meaning: "六月", zIndex: 10 },
+                    { position: 9, x: 25, y: 35, label: "5月", meaning: "五月", zIndex: 10 },
+                    { position: 10, x: 15, y: 50, label: "4月", meaning: "四月", zIndex: 10 },
+                    { position: 11, x: 25, y: 65, label: "3月", meaning: "三月", zIndex: 10 },
+                    { position: 12, x: 35, y:78, label: "2月", meaning: "二月", zIndex: 10 },
+                    { position: 13, x: 50, y: 70, label: "开始", meaning: "年初", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出十三张牌",
+                    "代表过去的一年"
+                ]
+            },
+            {
+                id: 43,
+                name: "未来愿景牌阵",
+                englishName: "Future Vision Spread",
+                category: "yearly",
+                categoryName: "年度与长期",
+                purpose: "探索未来的可能性和愿景",
+                shape: "星形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心愿景", meaning: "核心愿景", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "事业", meaning: "事业愿景", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "关系", meaning: "关系愿景", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "健康", meaning: "健康愿景", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "财务", meaning: "财务愿景", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "学习", meaning: "学习愿景", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "精神", meaning: "精神愿景", zIndex: 10 },
+                    { position: 8, x: 50, y:5, label: "整体", meaning: "整体未来", zIndex: 10 },
+                    { position: 9, x: 50, y: 95, label: "实现", meaning: "实现路径", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [2, 8], [5, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出九张牌",
+                    "代表不同领域的未来愿景"
+                ]
+            },
+            {
+                id: 44,
+                name: "长期目标牌阵",
+                englishName: "Long-term Goals Spread",
+                category: "yearly",
+                categoryName: "年度与长期",
+                purpose: "设定和评估长期目标",
+                shape: "金字塔形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 95, label: "事业1", meaning: "事业目标基础", zIndex: 10 },
+                    { position: 2, x: 70, y: 95, label: "事业2", meaning: "事业发展", zIndex: 10 },
+                    { position: 3, x: 30, y: 95, label: "事业3", meaning: "事业长期", zIndex: 10 },
+                    { position: 4, x: 50, y: 65, label: "关系1", meaning: "关系目标基础", zIndex: 10 },
+                    { position: 5, x: 70, y: 65, label: "关系2", meaning: "关系发展", zIndex: 10 },
+                    { position: 6, x: 30, y: 65, label: "关系3", meaning: "关系长期", zIndex: 10 },
+                    { position: 7, x: 50, y: 40, label: "健康", meaning: "健康目标", zIndex: 10 },
+                    { position: 8, x: 50, y: 20, label: "财务", meaning: "财务目标", zIndex: 10 },
+                    { position: 9, x: 50, y: 5, label: "精神", meaning: "精神目标", zIndex: 10 },
+                    { position: 10, x: 50, y: 75, label: "综合", meaning: "综合评估", zIndex: 15 }
+                ],
+                connections: [[1, 4], [2, 4], [3, 4], [4, 7], [5, 7], [6, 7], [7, 8], [8, 9], [10, 4]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出十张牌",
+                    "代表不同生活领域的长期目标"
+                ]
+            },
+            {
+                id: 45,
+                name: "内在孩童牌阵",
+                englishName: "Inner Child Spread",
+                category: "healing",
+                categoryName: "疗愈与成长",
+                purpose: "连接和疗愈内在孩童",
+                shape: "心形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "本质", meaning: "内在孩童的本质", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "喜悦", meaning: "孩童的喜悦", zIndex: 10 },
+                    { position: 3, x: 65, y: 35, label: "纯真", meaning: "孩童的纯真", zIndex: 10 },
+                    { position: 4, x: 65, y: 65, label: "创伤", meaning: "孩童的创伤", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "需求", meaning: "孩童的需求", zIndex: 10 },
+                    { position: 6, x: 35, y: 65, label: "恐惧", meaning: "孩童的恐惧", zIndex: 10 },
+                    { position: 7, x: 35, y: 35, label: "天赋", meaning: "孩童的天赋", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出七张牌",
+                    "代表内在孩童的不同方面"
+                ]
+            },
+            {
+                id: 46,
+                name: "阴阳平衡牌阵",
+                englishName: "Yin-Yang Balance Spread",
+                category: "healing",
+                categoryName: "疗愈与成长",
+                purpose: "检查生活中的平衡状态",
+                shape: "长方形排列",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 30, y: 50, label: "阴", meaning: "阴性能量（接受、直觉、女性）", zIndex: 10 },
+                    { position: 2, x: 70, y: 50, label: "阳", meaning: "阳性能量（行动、逻辑、男性）", zIndex: 10 },
+                    { position: 3, x: 50, y: 20, label: "平衡", meaning: "阴阳平衡状态", zIndex: 20 },
+                    { position: 4, x: 50, y: 80, label: "调和", meaning: "阴阳调和", zIndex: 15 },
+                    { position: 5, x: 10, y: 20, label: "阴特质", meaning: "阴的特质", zIndex: 10 },
+                    { position: 6, x: 90, y: 20, label: "阳特质", meaning: "阳的特质", zIndex: 10 },
+                    { position: 7, x: 10, y: 80, label: "阴需求", meaning: "阴的需求", zIndex: 10 },
+                    { position: 8, x: 90, y: 80, label: "阳需求", meaning: "阳的需求", zIndex: 10 }
+                ],
+                connections: [[1, 3], [2, 3], [3, 4], [1, 5], [2, 6], [1, 7], [2, 8]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出两张牌",
+                    "分别代表阴阳两面",
+                    "可添加更多牌代表不同层面"
+                ]
+            },
+            {
+                id: 47,
+                name: "脉轮能量牌阵",
+                englishName: "Chakra Energy Spread",
+                category: "healing",
+                categoryName: "疗愈与成长",
+                purpose: "检查脉轮能量状态",
+                shape: "垂直长方形",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 30, y: 90, label: "根轮", meaning: "根脉轮（生存）", zIndex: 10 },
+                    { position: 2, x: 30, y: 72, label: "生殖", meaning: "生殖轮（情绪）", zIndex: 10 },
+                    { position: 3, x: 30, y: 54, label: "脐轮", meaning: "脐轮（力量）", zIndex: 10 },
+                    { position: 4, x: 30, y: 36, label: "心轮", meaning: "心轮（爱）", zIndex: 10 },
+                    { position: 5, x: 30, y: 18, label: "喉轮", meaning: "喉轮（表达）", zIndex: 10 },
+                    { position: 6, x: 30, y: 10, label: "眉心", meaning: "眉心轮（智慧）", zIndex: 10 },
+                    { position: 7, x: 75, y: 5, label: "顶轮", meaning: "顶轮（灵性）", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出七张牌",
+                    "代表七个脉轮"
+                ]
+            },
+            {
+                id: 48,
+                name: "灵性成长牌阵",
+                englishName: "Spiritual Growth Spread",
+                category: "healing",
+                categoryName: "疗愈与成长",
+                purpose: "评估灵性成长进展",
+                shape: "螺旋形",
+                complexity: "complex",
+                cardPositions: [
+                    { position: 1, x: 50, y: 90, label: "物质", meaning: "物质意识", zIndex: 10 },
+                    { position: 2, x: 65, y: 78, label: "感知", meaning: "感知意识", zIndex: 10 },
+                    { position: 3, x: 75, y: 65, label: "思考", meaning: "思考意识", zIndex: 10 },
+                    { position: 4, x: 80, y: 50, label: "情感", meaning: "情感意识", zIndex: 10 },
+                    { position: 5, x: 75, y: 35, label: "直觉", meaning: "直觉意识", zIndex: 10 },
+                    { position: 6, x: 65, y: 22, label: "灵感", meaning: "灵感意识", zIndex: 10 },
+                    { position: 7, x: 50, y: 10, label: "智慧", meaning: "智慧意识", zIndex: 10 },
+                    { position: 8, x: 35, y: 22, label: "开悟", meaning: "开悟意识", zIndex: 10 },
+                    { position: 9, x: 25, y: 35, label: "合一", meaning: "合一意识", zIndex: 10 }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出九张牌",
+                    "代表灵性成长的不同阶段"
+                ]
+            },
+            {
+                id: 49,
+                name: "沟通桥梁牌阵",
+                englishName: "Communication Bridge Spread",
+                category: "communication",
+                categoryName: "沟通与表达",
+                purpose: "改善与他人沟通",
+                shape: "桥梁形",
+                complexity: "simple",
+                cardPositions: [
+                    { position: 1, x: 5, y: 50, label: "意图", meaning: "沟通者的意图" },
+                    { position: 2, x: 35, y: 50, label: "方式", meaning: "表达方式" },
+                    { position: 3, x: 65, y: 50, label: "理解", meaning: "接收者的理解" },
+                    { position: 4, x: 85, y: 30, label: "障碍", meaning: "沟通障碍" },
+                    { position: 5, x: 85, y:70, label: "建议", meaning: "改进建议" }
+                ],
+                connections: [[1, 2], [2, 3], [3, 4], [3, 5]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出五张牌",
+                    "代表沟通的不同环节"
+                ]
+            },
+            {
+                id: 50,
+                name: "创意表达牌阵",
+                englishName: "Creative Expression Spread",
+                category: "communication",
+                categoryName: "沟通与表达",
+                purpose: "帮助创意表达",
+                shape: "放射状",
+                complexity: "medium",
+                cardPositions: [
+                    { position: 1, x: 50, y: 50, label: "核心创意", meaning: "核心创意", zIndex: 20 },
+                    { position: 2, x: 50, y: 10, label: "表达", meaning: "表达方式", zIndex: 10 },
+                    { position: 3, x: 75, y: 35, label: "灵感", meaning: "灵感来源", zIndex: 10 },
+                    { position: 4, x: 75, y: 65, label: "元素", meaning: "创意元素", zIndex: 10 },
+                    { position: 5, x: 50, y: 90, label: "挑战", meaning: "潜在挑战", zIndex: 10 },
+                    { position: 6, x: 25, y: 65, label: "媒介", meaning: "表达媒介", zIndex: 10 },
+                    { position: 7, x: 25, y: 35, label: "受众", meaning: "目标受众", zIndex: 10 }
+                ],
+                connections: [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7]],
+                steps: [
+                    "将牌洗匀后牌面朝下",
+                    "从牌叠顶部抽出七张牌",
+                    "代表不同创意领域"
+                ]
+            }
+        ];
+
+        function getModalSize(spread) {
+            if (spread.complexity === 'ultra') {
+                return { width: 1800, height: 1400 };
+            } else if (spread.complexity === 'complex') {
+                return { width: 1600, height: 1200 };
+            } else {
+                return { width: 1300, height: 900 };
+            }
+        }
+
+        function init() {
+            renderSpreads();
+            setupEventListeners();
+        }
+
+        function renderSpreads() {
+            const container = document.getElementById('spreadsContainer');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedCategory = document.querySelector('.filter-btn.active').dataset.category;
+
+            const groupedSpreads = {};
+            spreads.forEach(spread => {
+                if (!groupedSpreads[spread.category]) {
+                    groupedSpreads[spread.category] = [];
+                }
+                
+                const matchesSearch = spread.name.toLowerCase().includes(searchTerm) || spread.purpose.toLowerCase().includes(searchTerm);
+                const matchesCategory = selectedCategory === 'all' || spread.category === selectedCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    groupedSpreads[spread.category].push(spread);
+                }
+            });
+
+            let html = '';
+            const categoryOrder = ['basic', 'love', 'self', 'decision', 'time', 'career', 'health', 'advanced', 'special', 'creative', 'element', 'yearly', 'healing', 'communication'];
+            
+            categoryOrder.forEach(category => {
+                if (groupedSpreads[category] && groupedSpreads[category].length > 0) {
+                    const categoryName = groupedSpreads[category][0].categoryName;
+                    html += `
+                        <div class="section-title">
+                            <i class="fas fa-layer-group"></i>
+                            ${categoryName}
+                        </div>
+                        <div class="spreads-grid">
+                            ${groupedSpreads[category].map(spread => createSpreadCard(spread)).join('')}
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+
+            document.querySelectorAll('.spread-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const spreadId = parseInt(card.dataset.id);
+                    openModal(spreadId);
+                });
+            });
+        }
+
+        function createSpreadCard(spread) {
+            return `
+                <div class="spread-card" data-id="${spread.id}">
+                    <div class="spread-header">
+                        <h3>${spread.name}</h3>
+                        <div class="subtitle">${spread.englishName}</div>
+                    </div>
+                    <div class="visualization-area">
+                        ${createVisualization(spread)}
+                    </div>
+                    <div class="spread-info">
+                        <div class="info-item">
+                            <label><i class="fas fa-bullseye"></i> 用途</label>
+                            <span>${spread.purpose}</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-shapes"></i> 形状</label>
+                            <span>${spread.shape}</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-th"></i> 牌数</label>
+                            <span>${spread.cardPositions.length} 张</span>
+                        </div>
+                        <div class="info-item">
+                            <label><i class="fas fa-tag"></i> 类别</label>
+                            <span>${spread.categoryName}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createVisualization(spread, isModal = false) {
+            let visualization = '<div class="spread-layout">';
+            
+            if (spread.connections) {
+                visualization += '<svg class="svg-connections" viewBox="0 0 100 100" preserveAspectRatio="none">';
+                spread.connections.forEach(([from, to]) => {
+                    const fromCard = spread.cardPositions.find(c => c.position === from);
+                    const toCard = spread.cardPositions.find(c => c.position === to);
+                    
+                    if (fromCard && toCard) {
+                        visualization += `<path class="connection-path" d="M${fromCard.x},${fromCard.y} L${toCard.x},${toCard.y}" />`;
+                    }
+                });
+                visualization += '</svg>';
+            }
+            
+            spread.cardPositions.forEach(card => {
+                const zIndex = card.zIndex || 10;
+                const rotate = card.rotate || 0;
+                const opacity = card.zIndex === 20 ? 1 : card.zIndex === 15 ? 0.9 : card.zIndex === 12 ? 0.85 : 0.8 : 0.7;
+                visualization += `
+                    <div class="card-position" style="left: ${card.x}%; top: ${card.y}%; z-index: ${zIndex}; ${card.zIndex < 20 ? 'opacity: ' + opacity + ';' : ''}">
+                        <div class="card-rect" ${rotate ? 'style="transform: rotate(' + rotate + 'deg);"' : ''}>
+                            <div class="card-number">${card.position}</div>
+                        </div>
+                        <div class="card-label">${card.label}</div>
+                    </div>
+                `;
+            });
+            
+            visualization += '</div>';
+            return visualization;
+        }
+
+        function openModal(spreadId) {
+            const spread = spreads.find(s => s.id === spreadId);
+            if (!spread) return;
+
+            const modal = document.getElementById('spreadModal');
+            const content = document.getElementById('modalContent');
+            const modalSize = getModalSize(spread);
+
+            document.querySelector('.modal-content').style.maxWidth = modalSize.width + 'px';
+            document.querySelector('.modal-visualization').style.minHeight = modalSize.height + 'px';
+
+            content.innerHTML = `
+                <h2 style="color: var(--accent-gold); margin-bottom: 0.5rem; font-size: 2rem;">${spread.name}</h2>
+                <p style="color: var(--text-muted); font-style: italic; margin-bottom: 1.5rem; font-size: 1.1rem;">${spread.englishName}</p>
+                
+                <div class="modal-visualization">
+                    ${createVisualization(spread, true)}
+                </div>
+                
+                <div class="modal-details">
+                    <div class="detail-section">
+                        <h4><i class="fas fa-bullseye"></i> 用途</h4>
+                        <p>${spread.purpose}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4><i class="fas fa-list-ol"></i> 摆放步骤</h4>
+                        <ul>
+                            ${spread.steps.map(step => `<li>${step}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4><i class="fas fa-map-marked-alt"></i> 牌位说明</h4>
+                        <ul>
+                            ${spread.cardPositions.map(card => `
+                                <li>
+                                    <strong>牌位 ${card.position} - ${card.label}</strong><br>
+                                    ${card.meaning}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+            modal.classList.add('active');
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', renderSpreads);
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderSpreads();
+                });
+            });
+
+            document.getElementById('modalClose').addEventListener('click', () => {
+                const modal = document.getElementById('spreadModal');
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            });
+
+            document.getElementById('spreadModal').addEventListener('click', (e) => {
+                if (e.target.id === 'spreadModal') {
+                    const modal = document.getElementById('scrollbar');
+                    modal.style.display = 'none';
+                    modal.classList.remove('active');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('spreadModal');
+                    modal.style.display = 'none';
+                    modal.classList.remove('active');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'p') {
+                    window.print();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

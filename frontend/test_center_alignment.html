@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三牌阵居中测试</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        h2 {
+            color: #d4af37;
+            font-family: Arial, sans-serif;
+        }
+        
+        .spread-display {
+            position: relative;
+            margin: 0 auto;
+            min-width: 600px;
+            min-height: 500px;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            border-radius: 20px;
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+        }
+        
+        .result-card {
+            position: absolute;
+            width: 140px;
+            height: 215px;
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .card-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d4af37;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .container-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid red;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        .center-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background: red;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .test-info {
+            color: #e8e6e3;
+            font-family: monospace;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        
+        .test-info h3 {
+            color: #d4af37;
+            margin-top: 0;
+        }
+        
+        .test-info code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #a855f7;
+        }
+    </style>
+</head>
+<body>
+    <h2>三牌阵居中测试</h2>
+    
+    <div class="test-info">
+        <h3>测试说明</h3>
+        <p>✅ 红色虚线框：牌阵容器的实际范围</p>
+        <p>✅ 红色竖线：容器中心线（50%位置）</p>
+        <p>✅ 中间牌应该与红色竖线对齐</p>
+        <p>✅ 左右牌应该对称分布</p>
+    </div>
+    
+    <div>
+        <h2 style="text-align: center; margin-bottom: 20px;">三牌阵 - 过去/现在/未来</h2>
+        <div class="spread-display" id="spread-display-1">
+            <div class="container-border"></div>
+            <div class="center-line"></div>
+            <div class="result-card" style="left: calc(50% - 150px); top: 50%; transform: translate(-50%, -50%);">
+                过去
+                <span class="card-label">第1张牌</span>
+            </div>
+            <div class="result-card" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                现在
+                <span class="card-label">第2张牌 (居中)</span>
+            </div>
+            <div class="result-card" style="left: calc(50% + 150px); top: 50%; transform: translate(-50%, -50%);">
+                未来
+                <span class="card-label">第3张牌</span>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <h2 style="text-align: center; margin-bottom: 20px;">抉择牌阵 - 选项A/选项B/建议</h2>
+        <div class="spread-display" id="spread-display-2">
+            <div class="container-border"></div>
+            <div class="center-line"></div>
+            <div class="result-card" style="left: calc(50% - 150px); top: 50%; transform: translate(-50%, -50%);">
+                选项A
+                <span class="card-label">第1张牌</span>
+            </div>
+            <div class="result-card" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                选项B
+                <span class="card-label">第2张牌 (居中)</span>
+            </div>
+            <div class="result-card" style="left: calc(50% + 150px); top: 50%; transform: translate(-50%, -50%);">
+                建议
+                <span class="card-label">第3张牌</span>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <h2 style="text-align: center; margin-bottom: 20px;">身心灵牌阵 - 身体/心理/灵性</h2>
+        <div class="spread-display" id="spread-display-3">
+            <div class="container-border"></div>
+            <div class="center-line"></div>
+            <div class="result-card" style="left: calc(50% - 150px); top: 50%; transform: translate(-50%, -50%);">
+                身体
+                <span class="card-label">第1张牌</span>
+            </div>
+            <div class="result-card" style="left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                心理
+                <span class="card-label">第2张牌 (居中)</span>
+            </div>
+            <div class="result-card" style="left: calc(50% + 150px); top: 50%; transform: translate(-50%, -50%);">
+                灵性
+                <span class="card-label">第3张牌</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 添加动态提示
+        document.querySelectorAll('.result-card').forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                const rect = card.getBoundingClientRect();
+                const parentRect = card.parentElement.getBoundingClientRect();
+                const centerX = parentRect.left + parentRect.width / 2;
+                const cardCenterX = rect.left + rect.width / 2;
+                const offset = cardCenterX - centerX;
+                
+                console.log(`牌${index + 1} 中心点偏移: ${offset.toFixed(2)}px`);
+                
+                if (index === 1) { // 中间牌
+                    if (Math.abs(offset) < 1) {
+                        card.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+                        card.style.borderColor = '#22c55e';
+                    } else {
+                        card.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+                        card.style.borderColor = '#ef4444';
+                    }
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.background = 'linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%)';
+                card.style.borderColor = '#d4af37';
+            });
+        });
+    </script>
+</body>
+</html>

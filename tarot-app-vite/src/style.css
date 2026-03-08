@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+SC:wght@400;600&display=swap');
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #1a1a25;
+  --text-primary: #e8e6e3;
+  --text-secondary: #9d9a94;
+  --text-muted: #6b6966;
+  --gold: #d4af37;
+  --gold-light: #f4e4ba;
+  --gold-dark: #9a7b2c;
+  --accent-purple: #6b5b95;
+  --accent-blue: #4a6fa5;
+  --border-color: rgba(212, 175, 55, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --glow-gold: rgba(212, 175, 55, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Noto Serif SC', 'Cinzel', serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--bg-primary);
+}

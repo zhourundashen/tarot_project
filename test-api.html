@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI API测试</title>
+</head>
+<body>
+    <h1>AI API测试页面</h1>
+    <button onclick="testNormalAPI()">测试普通API</button>
+    <button onclick="testStreamAPI()">测试流式API</button>
+    <div id="result" style="margin-top: 20px; padding: 20px; border: 1px solid #ccc; min-height: 200px; white-space: pre-wrap; font-family: monospace;"></div>
+    
+    <script>
+        const backendUrl = 'http://localhost:3000';
+        
+        async function testNormalAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '🔄 测试普通API...\n';
+            
+            const messages = [
+                { role: 'system', content: '你是一个友好的助手。' },
+                { role: 'user', content: '请说"测试成功"' }
+            ];
+            
+            try {
+                resultDiv.textContent += '📤 发送请求...\n';
+                
+                const response = await fetch(`${backendUrl}/api/ai/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages, stream: false })
+                });
+                
+                resultDiv.textContent += `📥 响应状态: ${response.status}\n`;
+                
+                const data = await response.json();
+                resultDiv.textContent += `📦 响应数据:\n${JSON.stringify(data, null, 2)}\n`;
+                
+                if (data.success && data.data && data.data.content) {
+                    resultDiv.textContent += `\n✅ 成功! 内容: ${data.data.content}\n`;
+                } else {
+                    resultDiv.textContent += `\n❌ 失败: ${JSON.stringify(data)}\n`;
+                }
+            } catch (error) {
+                resultDiv.textContent += `\n❌ 错误: ${error.message}\n`;
+            }
+        }
+        
+        async function testStreamAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = '🔄 测试流式API...\n';
+            
+            const messages = [
+                { role: 'system', content: '你是一个友好的助手。' },
+                { role: 'user', content: '请说"流式测试成功"' }
+            ];
+            
+            try {
+                resultDiv.textContent += '📤 发送流式请求...\n';
+                
+                const response = await fetch(`${backendUrl}/api/ai/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages, stream: true })
+                });
+                
+                resultDiv.textContent += `📥 响应状态: ${response.status}\n`;
+                resultDiv.textContent += `📥 响应头: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}\n\n`;
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+                let chunkCount = 0;
+                
+                resultDiv.textContent += '📊 开始接收数据流:\n';
+                resultDiv.textContent += '─'.repeat(50) + '\n';
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) {
+                        resultDiv.textContent += '\n' + '─'.repeat(50) + '\n';
+                        resultDiv.textContent += '✅ 流式传输完成\n';
+                        break;
+                    }
+                    
+                    const chunk = decoder.decode(value, { stream: true });
+                    chunkCount++;
+                    
+                    resultDiv.textContent += `\n[第${chunkCount}块] 长度: ${chunk.length}\n`;
+                    resultDiv.textContent += `原始数据: ${chunk.substring(0, 200)}${chunk.length > 200 ? '...' : ''}\n`;
+                    
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = line.slice(6).trim();
+                            
+                            if (data === '[DONE]') {
+                                resultDiv.textContent += '  🏁 收到[DONE]信号\n';
+                                continue;
+                            }
+                            
+                            try {
+                                const json = JSON.parse(data);
+                                const content = json.content || json.choices?.[0]?.delta?.content || '';
+                                
+                                if (content) {
+                                    fullContent += content;
+                                    resultDiv.textContent += `  📝 内容片段: "${content}"\n`;
+                                }
+                            } catch (e) {
+                                resultDiv.textContent += `  ⚠️  解析失败: ${data.substring(0, 50)}\n`;
+                            }
+                        }
+                    }
+                }
+                
+                resultDiv.textContent += `\n✅ 完整内容:\n${fullContent}\n`;
+                
+                if (!fullContent) {
+                    resultDiv.textContent += '\n⚠️  警告: 未收到任何内容！\n';
+                    resultDiv.textContent += '可能的原因:\n';
+                    resultDiv.textContent += '1. 后端API密钥未配置或无效\n';
+                    resultDiv.textContent += '2. 智谱AI API调用失败\n';
+                    resultDiv.textContent += '3. 网络连接问题\n';
+                }
+                
+            } catch (error) {
+                resultDiv.textContent += `\n❌ 错误: ${error.message}\n`;
+                resultDiv.textContent += `堆栈: ${error.stack}\n`;
+            }
+        }
+    </script>
+</body>
+</html>

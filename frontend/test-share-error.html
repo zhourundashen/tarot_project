@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分享功能错误诊断</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        .error-box {
+            background: #2d1b1b;
+            border: 2px solid #f87171;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success-box {
+            background: #1b2d1b;
+            border: 2px solid #4ade80;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #6B21A8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        button:hover { background: #7c3aed; }
+        h2 { color: #A78BFA; }
+        #console-log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        .log-entry { margin: 5px 0; }
+        .log-error { color: #f87171; }
+        .log-success { color: #4ade80; }
+        .log-warning { color: #fbbf24; }
+        .log-info { color: #60a5fa; }
+    </style>
+</head>
+<body>
+    <h1>🔍 分享功能错误诊断</h1>
+    
+    <div>
+        <button onclick="testBasic()">1. 基础检查</button>
+        <button onclick="testModule()">2. 模块加载</button>
+        <button onclick="testCanvas()">3. Canvas测试</button>
+        <button onclick="testImageGen()">4. 图片生成</button>
+        <button onclick="testFullShare()">5. 完整分享</button>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+    
+    <h2>📋 诊断日志</h2>
+    <div id="console-log"></div>
+    
+    <h2>❌ 错误信息</h2>
+    <div id="error-display" class="error-box">等待诊断...</div>
+    
+    <h2>✅ 成功信息</h2>
+    <div id="success-display" class="success-box">等待诊断...</div>
+    
+    <h2>🖼️ 生成的图片</h2>
+    <div id="image-display"></div>
+
+    <script src="js/module-loader.js"></script>
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('console-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span style="color:#999">[${time}]</span> ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function showError(title, error) {
+            const display = document.getElementById('error-display');
+            display.innerHTML = `<strong>${title}</strong>\n\n`;
+            display.innerHTML += `错误信息: ${error.message}\n\n`;
+            display.innerHTML += `错误堆栈:\n${error.stack || '无'}`;
+        }
+        
+        function showSuccess(message) {
+            const display = document.getElementById('success-display');
+            display.innerHTML += message + '\n';
+        }
+        
+        function clearLog() {
+            document.getElementById('console-log').innerHTML = '';
+            document.getElementById('error-display').innerHTML = '等待诊断...';
+            document.getElementById('success-display').innerHTML = '等待诊断...';
+            document.getElementById('image-display').innerHTML = '';
+        }
+        
+        function testBasic() {
+            log('===== 开始基础检查 =====', 'info');
+            
+            try {
+                // 检查 ModuleLoader
+                if (typeof ModuleLoader === 'undefined') {
+                    throw new Error('ModuleLoader 未定义，module-loader.js 未正确加载');
+                }
+                log('✓ ModuleLoader 存在', 'success');
+                
+                // 检查模块配置
+                if (!ModuleLoader.modules || !ModuleLoader.modules.share) {
+                    throw new Error('ModuleLoader.modules.share 未配置');
+                }
+                log('✓ share 模块配置: ' + ModuleLoader.modules.share, 'success');
+                
+                // 检查基本 DOM API
+                if (typeof document === 'undefined') {
+                    throw new Error('document 对象不存在');
+                }
+                log('✓ document 对象存在', 'success');
+                
+                // 检查 Canvas API
+                const testCanvas = document.createElement('canvas');
+                if (!testCanvas.getContext) {
+                    throw new Error('浏览器不支持 Canvas API');
+                }
+                const ctx = testCanvas.getContext('2d');
+                if (!ctx) {
+                    throw new Error('无法获取 Canvas 2D 上下文');
+                }
+                log('✓ Canvas API 支持', 'success');
+                
+                showSuccess('✅ 基础检查全部通过');
+                
+            } catch (error) {
+                log('✗ 基础检查失败: ' + error.message, 'error');
+                showError('基础检查失败', error);
+            }
+        }
+        
+        async function testModule() {
+            log('===== 开始模块加载测试 =====', 'info');
+            
+            try {
+                // 检查 TarotShare 是否已存在
+                if (typeof TarotShare !== 'undefined') {
+                    log('⚠️ TarotShare 已存在（可能已在 index.html 中加载）', 'warning');
+                    log('TarotShare 类型: ' + typeof TarotShare, 'info');
+                    log('TarotShare 方法: ' + Object.keys(TarotShare).join(', '), 'info');
+                    showSuccess('✅ TarotShare 模块已加载');
+                    return;
+                }
+                
+                log('TarotShare 未定义，尝试通过 ModuleLoader 加载...', 'info');
+                
+                // 尝试加载模块
+                const loaded = await ModuleLoader.load('share');
+                log('ModuleLoader.load() 返回: ' + loaded, 'info');
+                
+                // 再次检查
+                if (typeof TarotShare === 'undefined') {
+                    // 尝试直接加载
+                    log('ModuleLoader 加载后 TarotShare 仍未定义，尝试直接加载...', 'warning');
+                    
+                    await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = 'js/share.js';
+                        script.onload = () => {
+                            log('share.js 直接加载成功', 'success');
+                            resolve();
+                        };
+                        script.onerror = () => {
+                            reject(new Error('share.js 加载失败（404）'));
+                        };
+                        document.head.appendChild(script);
+                    });
+                    
+                    if (typeof TarotShare === 'undefined') {
+                        throw new Error('share.js 加载成功但 TarotShare 未定义');
+                    }
+                }
+                
+                log('✓ TarotShare 已加载', 'success');
+                log('TarotShare 方法: ' + Object.keys(TarotShare).join(', '), 'info');
+                log('TarotShare 模板: ' + Object.keys(TarotShare.templates || {}).join(', '), 'info');
+                
+                showSuccess('✅ 模块加载成功');
+                
+            } catch (error) {
+                log('✗ 模块加载失败: ' + error.message, 'error');
+                showError('模块加载失败', error);
+            }
+        }
+        
+        async function testCanvas() {
+            log('===== 开始 Canvas 测试 =====', 'info');
+            
+            try {
+                if (typeof TarotShare === 'undefined') {
+                    await testModule();
+                }
+                
+                // 测试创建 Canvas
+                log('测试创建 Canvas...', 'info');
+                const canvas = document.createElement('canvas');
+                canvas.width = 800;
+                canvas.height = 1200;
+                const ctx = canvas.getContext('2d');
+                
+                if (!ctx) {
+                    throw new Error('无法获取 Canvas 2D 上下文');
+                }
+                log('✓ Canvas 创建成功 (800x1200)', 'success');
+                
+                // 测试绘制
+                log('测试绘制...', 'info');
+                ctx.fillStyle = '#6B21A8';
+                ctx.fillRect(0, 0, 800, 1200);
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 42px "Microsoft YaHei", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('测试文字', 400, 100);
+                log('✓ Canvas 绘制成功', 'success');
+                
+                // 测试导出
+                log('测试导出 dataURL...', 'info');
+                const dataURL = canvas.toDataURL('image/png');
+                
+                if (!dataURL || !dataURL.startsWith('data:image/png')) {
+                    throw new Error('toDataURL 返回格式不正确: ' + dataURL.substring(0, 50));
+                }
+                log('✓ dataURL 导出成功', 'success');
+                log('dataURL 大小: ' + (dataURL.length / 1024).toFixed(2) + ' KB', 'info');
+                
+                // 显示测试图片
+                const imgDiv = document.getElementById('image-display');
+                imgDiv.innerHTML = '<h3>Canvas 测试图片</h3><img src="' + dataURL + '" style="max-width:400px;border:2px solid #6B21A8;border-radius:8px;">';
+                
+                showSuccess('✅ Canvas 测试通过');
+                
+            } catch (error) {
+                log('✗ Canvas 测试失败: ' + error.message, 'error');
+                showError('Canvas 测试失败', error);
+            }
+        }
+        
+        async function testImageGen() {
+            log('===== 开始图片生成测试 =====', 'info');
+            
+            try {
+                if (typeof TarotShare === 'undefined') {
+                    await testModule();
+                }
+                
+                // 准备测试数据
+                const testData = {
+                    question: '测试问题',
+                    spreadName: '测试牌阵',
+                    cards: [
+                        { card: { name: '愚者', keywords: ['测试'] }, reversed: false, position: '测试' }
+                    ],
+                    interpretation: '测试解读',
+                    keywords: ['测试'],
+                    template: 'mystic'
+                };
+                
+                log('测试数据准备完成', 'info');
+                log('开始调用 TarotShare.generateShareImage()...', 'info');
+                
+                // 测试生成
+                const startTime = Date.now();
+                const imageData = await TarotShare.generateShareImage(testData);
+                const elapsed = Date.now() - startTime;
+                
+                log('generateShareImage() 完成，耗时: ' + elapsed + 'ms', 'info');
+                
+                if (!imageData) {
+                    throw new Error('generateShareImage() 返回空值');
+                }
+                
+                if (!imageData.startsWith('data:image')) {
+                    throw new Error('返回的不是图片数据: ' + imageData.substring(0, 100));
+                }
+                
+                log('✓ 图片生成成功', 'success');
+                log('图片大小: ' + (imageData.length / 1024).toFixed(2) + ' KB', 'info');
+                
+                // 显示图片
+                const imgDiv = document.getElementById('image-display');
+                imgDiv.innerHTML = '<h3>生成的分享图片</h3><img src="' + imageData + '" style="max-width:100%;border:2px solid #6B21A8;border-radius:8px;">';
+                
+                showSuccess('✅ 图片生成成功');
+                
+            } catch (error) {
+                log('✗ 图片生成失败: ' + error.message, 'error');
+                showError('图片生成失败', error);
+                
+                // 输出更多调试信息
+                if (typeof TarotShare !== 'undefined') {
+                    log('TarotShare.generateShareImage 类型: ' + typeof TarotShare.generateShareImage, 'info');
+                    log('TarotShare.generateShareImage: ' + TarotShare.generateShareImage, 'info');
+                }
+            }
+        }
+        
+        async function testFullShare() {
+            log('===== 开始完整分享测试 =====', 'info');
+            
+            try {
+                if (typeof TarotShare === 'undefined') {
+                    await testModule();
+                }
+                
+                if (typeof app === 'undefined') {
+                    log('⚠️ app 对象未定义（不在主应用中）', 'warning');
+                    log('直接测试 TarotShare.showShareModalWithPages()', 'info');
+                    
+                    // 准备完整测试数据
+                    const testData = {
+                        question: '完整测试问题',
+                        spreadName: '三牌阵',
+                        cards: [
+                            { card: { name: '愚者', keywords: ['新开始'] }, reversed: false, position: '过去' },
+                            { card: { name: '魔术师', keywords: ['创造力'] }, reversed: false, position: '现在' },
+                            { card: { name: '女祭司', keywords: ['直觉'] }, reversed: true, position: '未来' }
+                        ],
+                        interpretation: '这是测试解读内容。',
+                        keywords: ['新开始', '创造力', '直觉'],
+                        summary: '测试总结',
+                        scores: { love: 85, career: 70, wealth: 65, health: 80, study: 60 },
+                        trend: [60, 75, 85],
+                        elements: { fire: 20, water: 35, air: 30, earth: 15 }
+                    };
+                    
+                    log('开始生成所有页面...', 'info');
+                    const pages = await TarotShare.generateAllPages(testData);
+                    log('生成了 ' + pages.length + ' 个页面', 'success');
+                    
+                    log('开始显示分享模态框...', 'info');
+                    TarotShare.showShareModalWithPages(pages, testData);
+                    log('✓ 分享模态框已显示', 'success');
+                    
+                    showSuccess('✅ 完整分享流程成功\n分享模态框应该已经显示在页面上');
+                    
+                } else {
+                    // 在主应用中
+                    log('调用 app.shareReading()...', 'info');
+                    await app.shareReading();
+                    log('✓ app.shareReading() 完成', 'success');
+                    showSuccess('✅ 完整分享流程成功');
+                }
+                
+            } catch (error) {
+                log('✗ 完整分享失败: ' + error.message, 'error');
+                showError('完整分享失败', error);
+                console.error('完整错误:', error);
+            }
+        }
+        
+        // 页面加载后自动运行基础测试
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                log('页面加载完成，自动开始基础检查...', 'info');
+                testBasic();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

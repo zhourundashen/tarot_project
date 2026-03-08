@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分享功能诊断工具</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        .test-section {
+            background: #16213e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #0f3460;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #1e4620; color: #4ade80; }
+        .error { background: #4a1e1e; color: #f87171; }
+        .warning { background: #4a3e1e; color: #fbbf24; }
+        button {
+            background: #6B21A8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #7c3aed; }
+        #test-image {
+            max-width: 100%;
+            border: 2px solid #6B21A8;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔮 分享功能诊断工具</h1>
+    
+    <div class="test-section">
+        <h2>1. 模块加载测试</h2>
+        <button onclick="testModuleLoader()">测试 ModuleLoader</button>
+        <div id="module-test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. TarotShare 对象测试</h2>
+        <button onclick="testTarotShare()">测试 TarotShare</button>
+        <div id="tarotshare-test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Canvas 生成测试</h2>
+        <button onclick="testCanvasGeneration()">测试图片生成</button>
+        <div id="canvas-test-result"></div>
+        <img id="test-image" style="display:none;">
+    </div>
+    
+    <div class="test-section">
+        <h2>4. 完整流程测试</h2>
+        <button onclick="testFullFlow()">测试完整分享流程</button>
+        <div id="full-test-result"></div>
+    </div>
+
+    <script src="js/module-loader.js"></script>
+    <script>
+        async function testModuleLoader() {
+            const resultDiv = document.getElementById('module-test-result');
+            resultDiv.innerHTML = '<div class="test-result warning">正在测试...</div>';
+            
+            try {
+                console.log('开始测试 ModuleLoader...');
+                
+                if (typeof ModuleLoader === 'undefined') {
+                    throw new Error('ModuleLoader 未定义');
+                }
+                
+                resultDiv.innerHTML += '<div class="test-result success">✓ ModuleLoader 存在</div>';
+                
+                // 尝试加载 share 模块
+                await ModuleLoader.load('share');
+                resultDiv.innerHTML += '<div class="test-result success">✓ share 模块加载成功</div>';
+                
+                // 检查是否已加载
+                if (ModuleLoader.isLoaded('share')) {
+                    resultDiv.innerHTML += '<div class="test-result success">✓ share 模块状态正常</div>';
+                } else {
+                    throw new Error('share 模块加载状态异常');
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML += `<div class="test-result error">✗ 错误: ${error.message}</div>`;
+                console.error('ModuleLoader 测试失败:', error);
+            }
+        }
+        
+        async function testTarotShare() {
+            const resultDiv = document.getElementById('tarotshare-test-result');
+            resultDiv.innerHTML = '<div class="test-result warning">正在测试...</div>';
+            
+            try {
+                console.log('开始测试 TarotShare...');
+                
+                // 确保 share 模块已加载
+                if (typeof TarotShare === 'undefined') {
+                    await ModuleLoader.load('share');
+                }
+                
+                if (typeof TarotShare === 'undefined') {
+                    throw new Error('TarotShare 未定义');
+                }
+                
+                resultDiv.innerHTML += '<div class="test-result success">✓ TarotShare 对象存在</div>';
+                
+                // 检查必要方法
+                const methods = ['generateShareImage', 'showShareModal', 'handleDownload', 'handleShare'];
+                methods.forEach(method => {
+                    if (typeof TarotShare[method] === 'function') {
+                        resultDiv.innerHTML += `<div class="test-result success">✓ ${method}() 方法存在</div>`;
+                    } else {
+                        throw new Error(`${method}() 方法不存在`);
+                    }
+                });
+                
+                // 检查模板
+                if (TarotShare.templates && Object.keys(TarotShare.templates).length > 0) {
+                    resultDiv.innerHTML += `<div class="test-result success">✓ 模板配置正常 (${Object.keys(TarotShare.templates).length}个模板)</div>`;
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML += `<div class="test-result error">✗ 错误: ${error.message}</div>`;
+                console.error('TarotShare 测试失败:', error);
+            }
+        }
+        
+        async function testCanvasGeneration() {
+            const resultDiv = document.getElementById('canvas-test-result');
+            const testImage = document.getElementById('test-image');
+            resultDiv.innerHTML = '<div class="test-result warning">正在测试...</div>';
+            
+            try {
+                console.log('开始测试 Canvas 生成...');
+                
+                // 确保 share 模块已加载
+                if (typeof TarotShare === 'undefined') {
+                    await ModuleLoader.load('share');
+                }
+                
+                // 准备测试数据
+                const testOptions = {
+                    question: '这是一个测试问题',
+                    spreadName: '三牌阵',
+                    cards: [
+                        { card: { name: '愚者', keywords: ['新开始', '冒险'] }, reversed: false, position: '过去' },
+                        { card: { name: '魔术师', keywords: ['创造力', '技能'] }, reversed: false, position: '现在' },
+                        { card: { name: '女祭司', keywords: ['直觉', '神秘'] }, reversed: true, position: '未来' }
+                    ],
+                    interpretation: '这是一段测试解读内容。',
+                    keywords: ['测试1', '测试2', '测试3'],
+                    template: 'mystic'
+                };
+                
+                resultDiv.innerHTML += '<div class="test-result success">✓ 测试数据准备完成</div>';
+                
+                // 生成图片
+                const imageData = await TarotShare.generateShareImage(testOptions);
+                
+                if (imageData && imageData.startsWith('data:image')) {
+                    resultDiv.innerHTML += '<div class="test-result success">✓ 图片生成成功</div>';
+                    testImage.src = imageData;
+                    testImage.style.display = 'block';
+                } else {
+                    throw new Error('生成的图片数据格式不正确');
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML += `<div class="test-result error">✗ 错误: ${error.message}</div>`;
+                console.error('Canvas 生成测试失败:', error);
+            }
+        }
+        
+        async function testFullFlow() {
+            const resultDiv = document.getElementById('full-test-result');
+            resultDiv.innerHTML = '<div class="test-result warning">正在测试完整流程...</div>';
+            
+            try {
+                // 1. 加载模块
+                if (typeof TarotShare === 'undefined') {
+                    await ModuleLoader.load('share');
+                }
+                resultDiv.innerHTML += '<div class="test-result success">✓ 步骤1: 模块加载成功</div>';
+                
+                // 2. 准备数据
+                const testOptions = {
+                    question: '完整流程测试',
+                    spreadName: '测试牌阵',
+                    cards: [
+                        { card: { name: '太阳', keywords: ['成功', '快乐'] }, reversed: false, position: '测试位置' }
+                    ],
+                    interpretation: '测试解读',
+                    keywords: ['成功', '快乐'],
+                    template: 'mystic'
+                };
+                resultDiv.innerHTML += '<div class="test-result success">✓ 步骤2: 数据准备完成</div>';
+                
+                // 3. 生成所有页面
+                const pages = await TarotShare.generateAllPages(testOptions);
+                resultDiv.innerHTML += `<div class="test-result success">✓ 步骤3: 生成了 ${pages.length} 个页面</div>`;
+                
+                // 4. 显示模态框
+                TarotShare.showShareModalWithPages(pages, testOptions);
+                resultDiv.innerHTML += '<div class="test-result success">✓ 步骤4: 模态框显示成功</div>';
+                
+                resultDiv.innerHTML += '<div class="test-result success">✅ 完整流程测试通过！</div>';
+                
+            } catch (error) {
+                resultDiv.innerHTML += `<div class="test-result error">✗ 错误: ${error.message}</div>`;
+                console.error('完整流程测试失败:', error);
+            }
+        }
+    </script>
+</body>
+</html>

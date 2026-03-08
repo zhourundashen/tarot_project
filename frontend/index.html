@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>神秘塔罗 | Tarot Divination</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-optimize.css">
+    <style>
+        @font-face {
+            font-family: 'Cinzel';
+            font-style: normal;
+            font-weight: 400;
+            src: url('https://cdn.jsdelivr.net/npm/@fontsource/cinzel@4.5.0/files/cinzel-latin-400.woff2') format('woff2');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Cinzel';
+            font-style: normal;
+            font-weight: 600;
+            src: url('https://cdn.jsdelivr.net/npm/@fontsource/cinzel@4.5.0/files/cinzel-latin-600.woff2') format('woff2');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Noto Serif SC';
+            font-style: normal;
+            font-weight: 400;
+            src: url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@4.5.9/chinese-simplified-400.woff2') format('woff2');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Noto Serif SC';
+            font-style: normal;
+            font-weight: 600;
+            src: url('https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc@4.5.9/chinese-simplified-600.woff2') format('woff2');
+            font-display: swap;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="moon-glow"></div>
+    
+    <header>
+        <h1 class="logo">✧ 神秘塔罗 ✧</h1>
+        <p class="subtitle">聆听命运的指引</p>
+        <div class="header-controls">
+            <button class="btn-signin" id="btn-signin" onclick="CreditsManager.showSignInModal()" title="每日签到">
+                <span class="btn-icon">📅</span>
+                <span class="btn-text">签到</span>
+            </button>
+            <div class="user-bar" id="user-bar" style="display:none;">
+                <span id="user-nickname"></span>
+                <span id="user-readings" class="readings-badge clickable" onclick="CreditsManager.showExchangeModal()" title="点击兑换次数">0次</span>
+                <span class="credits-divider">/</span>
+                <span id="user-credits" class="credits-badge clickable" onclick="CreditsManager.showExchangeModal()" title="点击兑换次数">0分</span>
+                <button class="btn-logout" onclick="app.logout()">退出</button>
+            </div>
+            <button class="btn-login" id="btn-login" onclick="app.showLoginModal()" style="display:none;">登录</button>
+            <button class="btn-sound" id="btn-sound" onclick="app.toggleSound()" title="音效开关">
+                <span class="btn-icon sound-icon">🔊</span>
+                <span class="btn-text">音效</span>
+            </button>
+            <button class="btn-ai" id="btn-ai" onclick="app.toggleAI()" title="AI开关">
+                <span class="btn-icon">🤖</span>
+                <span class="btn-text">AI</span>
+            </button>
+            <button class="btn-ritual" id="btn-ritual" onclick="app.toggleRitual()" title="仪式感开关">
+                <span class="btn-icon">🕯️</span>
+                <span class="btn-text">仪式</span>
+            </button>
+            <button class="btn-help" onclick="app.startGuide()" title="新手引导">
+                <span class="btn-icon">❓</span>
+                <span class="btn-text">指引</span>
+            </button>
+        </div>
+    </header>
+
+    <main id="app">
+        <!-- 欢迎页面 -->
+        <section id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="tarot-symbol">
+                    <svg viewBox="0 0 100 100" class="mystical-symbol">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#goldGradient)" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="url(#goldGradient)" stroke-width="1"/>
+                        <path d="M50 10 L50 90 M10 50 L90 50" stroke="url(#goldGradient)" stroke-width="1"/>
+                        <path d="M50 15 L55 25 L50 20 L45 25 Z" fill="#d4af37"/>
+                        <path d="M50 85 L55 75 L50 80 L45 75 Z" fill="#d4af37"/>
+                        <path d="M15 50 L25 55 L20 50 L25 45 Z" fill="#d4af37"/>
+                        <path d="M85 50 L75 55 L80 50 L75 45 Z" fill="#d4af37"/>
+                        <text x="50" y="55" text-anchor="middle" fill="#d4af37" font-size="14">☽</text>
+                        <defs>
+                            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#d4af37"/>
+                                <stop offset="50%" style="stop-color:#f4e4ba"/>
+                                <stop offset="100%" style="stop-color:#d4af37"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h2>欢迎来到塔罗的世界</h2>
+                <p class="intro-text">在星光与月影之间，塔罗牌将为你揭示命运的奥秘</p>
+                <div class="welcome-buttons">
+                    <button class="btn-mystical" onclick="app.startReading()">
+                        <span>开始占卜</span>
+                    </button>
+                    <button class="btn-mystical secondary" onclick="app.showHistory()">
+                        <span>📜 历史记录</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 问题输入页面 -->
+        <section id="question-screen" class="screen">
+            <div class="screen-content">
+                <h2>请输入你的问题</h2>
+                <p class="hint">在心中默念你想问的问题，让塔罗牌为你指引方向</p>
+                <div class="question-input-area">
+                    <textarea id="user-question-input" placeholder="例如：我的感情发展如何？最近的工作会有什么变化？"></textarea>
+                </div>
+                
+                <div class="question-templates">
+                    <div class="template-category">
+                        <div class="category-header" onclick="app.toggleCategory('love')">
+                            <span class="category-icon">💕</span>
+                            <span class="category-name">感情爱情</span>
+                            <span class="category-arrow" id="love-arrow">▼</span>
+                        </div>
+                        <div class="category-questions" id="love-questions">
+                            <span class="question-tag" onclick="app.selectQuestion('我的感情运势如何？')">感情运势</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我和TA的关系会如何发展？')">关系发展</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我对TA来说是什么样的人？')">我在TA心中</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我们还有机会复合吗？')">复合机会</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我的正缘什么时候出现？')">正缘时机</span>
+                            <span class="question-tag" onclick="app.selectQuestion('TA对我的真实想法是什么？')">TA的想法</span>
+                            <span class="question-tag" onclick="app.selectQuestion('这段感情值得继续吗？')">是否继续</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我们之间有什么阻碍？')">感情阻碍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-category">
+                        <div class="category-header" onclick="app.toggleCategory('career')">
+                            <span class="category-icon">💼</span>
+                            <span class="category-name">事业工作</span>
+                            <span class="category-arrow" id="career-arrow">▼</span>
+                        </div>
+                        <div class="category-questions" id="career-questions">
+                            <span class="question-tag" onclick="app.selectQuestion('近期工作会有什么发展？')">工作发展</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我应该跳槽吗？')">是否跳槽</span>
+                            <span class="question-tag" onclick="app.selectQuestion('这次升职机会大吗？')">升职机会</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我和同事/上司的关系如何？')">职场关系</span>
+                            <span class="question-tag" onclick="app.selectQuestion('这个项目会成功吗？')">项目前景</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我现在适合创业吗？')">创业时机</span>
+                            <span class="question-tag" onclick="app.selectQuestion('面试会通过吗？')">面试结果</span>
+                            <span class="question-tag" onclick="app.selectQuestion('工作中我需要注意什么？')">工作注意</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-category">
+                        <div class="category-header" onclick="app.toggleCategory('money')">
+                            <span class="category-icon">💰</span>
+                            <span class="category-name">财运投资</span>
+                            <span class="category-arrow" id="money-arrow">▼</span>
+                        </div>
+                        <div class="category-questions" id="money-questions">
+                            <span class="question-tag" onclick="app.selectQuestion('我最近的财运如何？')">近期财运</span>
+                            <span class="question-tag" onclick="app.selectQuestion('这笔投资值得做吗？')">投资建议</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我什么时候能存到钱？')">储蓄时机</span>
+                            <span class="question-tag" onclick="app.selectQuestion('近期会有意外支出吗？')">支出预警</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我的副业能赚钱吗？')">副业前景</span>
+                            <span class="question-tag" onclick="app.selectQuestion('今年适合买房/买车吗？')">大额消费</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-category">
+                        <div class="category-header" onclick="app.toggleCategory('study')">
+                            <span class="category-icon">📚</span>
+                            <span class="category-name">学业考试</span>
+                            <span class="category-arrow" id="study-arrow">▼</span>
+                        </div>
+                        <div class="category-questions" id="study-questions">
+                            <span class="question-tag" onclick="app.selectQuestion('这次考试能通过吗？')">考试结果</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我的学习状态如何？')">学习状态</span>
+                            <span class="question-tag" onclick="app.selectQuestion('考研/考公能上岸吗？')">升学考试</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我应该选择什么专业/方向？')">专业选择</span>
+                            <span class="question-tag" onclick="app.selectQuestion('留学申请会顺利吗？')">留学前景</span>
+                            <span class="question-tag" onclick="app.selectQuestion('如何提高学习效率？')">学习建议</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-category">
+                        <div class="category-header" onclick="app.toggleCategory('life')">
+                            <span class="category-icon">🌟</span>
+                            <span class="category-name">生活综合</span>
+                            <span class="category-arrow" id="life-arrow">▼</span>
+                        </div>
+                        <div class="category-questions" id="life-questions">
+                            <span class="question-tag" onclick="app.selectQuestion('我最近需要注意什么？')">注意事项</span>
+                            <span class="question-tag" onclick="app.selectQuestion('本月/本年的整体运势如何？')">整体运势</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我现在的状态怎么样？')">当前状态</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我应该做出什么改变？')">改变建议</span>
+                            <span class="question-tag" onclick="app.selectQuestion('这件事的结局会如何？')">事情结局</span>
+                            <span class="question-tag" onclick="app.selectQuestion('我的贵人运如何？')">贵人运势</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-modes">
+                    <p class="mode-hint">请选择您的占卜方式：</p>
+                    <div class="mode-buttons">
+                        <button class="mode-btn" onclick="app.chooseManualSpread()">
+                            <span class="mode-icon">🎴</span>
+                            <span class="mode-title">我自己选牌阵</span>
+                            <span class="mode-desc">我知道要用什么牌阵</span>
+                        </button>
+                        <button class="mode-btn recommended" onclick="app.requestAIRecommend()">
+                            <span class="mode-icon">✨</span>
+                            <span class="mode-title">AI帮我选牌阵</span>
+                            <span class="mode-desc">根据我的问题推荐</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 牌阵选择 -->
+        <section id="spread-select" class="screen">
+            <div class="screen-content">
+                <h2>选择牌阵</h2>
+                <p class="hint">每种牌阵都有其独特的解读方式</p>
+                <div class="spread-grid" id="spread-grid"></div>
+                <button class="btn-back" onclick="app.showScreen('question-screen')">← 返回</button>
+            </div>
+        </section>
+
+        <!-- AI推荐确认页面 -->
+        <section id="ai-recommend-screen" class="screen">
+            <div class="screen-content">
+                <h2>AI为您推荐牌阵</h2>
+                <p class="hint" id="ai-recommend-hint">正在分析您的问题...</p>
+                
+                <div id="ai-recommend-loading" class="wheel-loading">
+                    <div class="wheel-container">
+                        <div class="wheel-ripple"></div>
+                        <div class="wheel-ripple"></div>
+                        <div class="wheel-ripple"></div>
+                        
+                        <div class="wheel-outer-stars">
+                            <span class="wheel-star large">✦</span>
+                            <span class="wheel-star small">·</span>
+                            <span class="wheel-star large">✧</span>
+                            <span class="wheel-star small">·</span>
+                            <span class="wheel-star large">✦</span>
+                            <span class="wheel-star small">·</span>
+                            <span class="wheel-star large">✧</span>
+                            <span class="wheel-star small">·</span>
+                        </div>
+                        
+                        <div class="wheel-zodiac">
+                            <span class="wheel-zodiac-symbol" style="top:0;left:50%;transform:translateX(-50%)">♈</span>
+                            <span class="wheel-zodiac-symbol" style="top:5%;right:15%">♉</span>
+                            <span class="wheel-zodiac-symbol" style="top:20%;right:2%">♊</span>
+                            <span class="wheel-zodiac-symbol" style="top:45%;right:-2%">♋</span>
+                            <span class="wheel-zodiac-symbol" style="bottom:20%;right:2%">♌</span>
+                            <span class="wheel-zodiac-symbol" style="bottom:5%;right:15%">♍</span>
+                            <span class="wheel-zodiac-symbol" style="bottom:0;left:50%;transform:translateX(-50%)">♎</span>
+                            <span class="wheel-zodiac-symbol" style="bottom:5%;left:15%">♏</span>
+                            <span class="wheel-zodiac-symbol" style="bottom:20%;left:2%">♐</span>
+                            <span class="wheel-zodiac-symbol" style="top:45%;left:-2%">♑</span>
+                            <span class="wheel-zodiac-symbol" style="top:20%;left:2%">♒</span>
+                            <span class="wheel-zodiac-symbol" style="top:5%;left:15%">♓</span>
+                        </div>
+                        
+                        <div class="wheel-planets">
+                            <span class="wheel-planet">☉</span>
+                            <span class="wheel-planet">☽</span>
+                            <span class="wheel-planet">☿</span>
+                            <span class="wheel-planet">♀</span>
+                            <span class="wheel-planet">♂</span>
+                            <span class="wheel-planet">♃</span>
+                            <span class="wheel-planet">♄</span>
+                        </div>
+                        
+                        <div class="wheel-runes">
+                            <span class="wheel-rune">ᚠ</span>
+                            <span class="wheel-rune">ᚢ</span>
+                            <span class="wheel-rune">ᚦ</span>
+                            <span class="wheel-rune">ᚨ</span>
+                            <span class="wheel-rune">ᚱ</span>
+                            <span class="wheel-rune">ᚲ</span>
+                            <span class="wheel-rune">ᚷ</span>
+                            <span class="wheel-rune">ᚹ</span>
+                        </div>
+                        
+                        <div class="wheel-center">
+                            <span class="wheel-center-icon">🔮</span>
+                            <span class="wheel-center-symbol">FORTUNA</span>
+                        </div>
+                    </div>
+                    <div class="wheel-text">
+                        <span class="wheel-text-content" id="wheel-text-recommend">正在连接宇宙能量...</span>
+                    </div>
+                </div>
+                
+                <div id="ai-recommend-result" class="ai-recommend-result" style="display:none;">
+                    <div class="recommend-card" id="recommend-card">
+                        <div class="recommend-icon" id="recommend-icon">✦</div>
+                        <h3 id="recommend-name">牌阵名称</h3>
+                        <p class="recommend-name-en" id="recommend-name-en">Spread Name</p>
+                        <p class="recommend-cards" id="recommend-cards">3张牌</p>
+                        <div class="recommend-reason" id="recommend-reason">
+                            推荐理由将显示在这里...
+                        </div>
+                    </div>
+                    
+                    <div class="recommend-actions">
+                        <button class="btn-mystical" onclick="app.acceptRecommend()">
+                            <span>接受推荐</span>
+                        </button>
+                        <button class="btn-mystical secondary" onclick="app.showOtherSpreads()">
+                            <span>查看其他牌阵</span>
+                        </button>
+                        <button class="btn-back" onclick="app.showScreen('question-screen')">← 返回修改问题</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 带侧栏的主流程页面 -->
+        <section id="main-process-screen" class="screen">
+            <div class="process-layout">
+                <button class="chat-toggle-btn" onclick="app.toggleChatSidebar()" title="收起/展开">
+                    <span>◀</span>
+                </button>
+                <!-- 左侧AI聊天侧栏 -->
+                <aside class="chat-sidebar" id="chat-sidebar">
+                    <div class="chat-header">
+                        <span class="chat-icon">🌙</span>
+                        <span class="chat-title">塔罗师助手</span>
+                        <button class="chat-fullscreen-btn" onclick="app.toggleChatFullscreen()" title="全屏展开">
+                            <span class="fullscreen-icon">⛶</span>
+                        </button>
+                        <button class="chat-exit-fullscreen-btn" onclick="app.toggleChatFullscreen()" title="退出全屏" style="display:none;">
+                            <span class="exit-icon">✕</span>
+                        </button>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- 消息将动态插入 -->
+                    </div>
+                    <div class="chat-input-area">
+                        <textarea id="chat-input" placeholder="输入你的问题或想法..." rows="2"></textarea>
+                        <button class="chat-send-btn" onclick="app.sendChatMessage()">
+                            <span>发送</span>
+                        </button>
+                    </div>
+                </aside>
+                
+                <!-- 右侧主区域 -->
+                <div class="main-area" id="main-area">
+                    <!-- 洗牌阶段 -->
+                    <div class="process-phase" id="phase-shuffle">
+                        <h2>洗牌与冥想</h2>
+                        <p class="hint">在心中默念你的问题，然后进行洗牌</p>
+                        <p class="shuffle-count" id="shuffle-count"></p>
+                        
+                        <div class="shuffle-phases">
+                            <div class="shuffle-phase" id="shuffle-phase-0">
+                                <div class="shuffle-area">
+                                    <div class="deck-container" id="deck-container">
+                                        <div class="deck" id="deck"></div>
+                                    </div>
+                                </div>
+                                <div class="shuffle-controls">
+                                    <button class="btn-mystical" id="start-shuffle-btn" onclick="app.performShuffle()">
+                                        <span>开始洗牌</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="shuffle-phase" id="shuffle-phase-1" style="display:none;">
+                                <div class="shuffle-area">
+                                    <div class="deck-container" id="deck-container-active">
+                                        <div class="deck shuffling" id="deck-active"></div>
+                                    </div>
+                                </div>
+                                <div class="shuffle-controls">
+                                    <button class="btn-mystical" disabled>
+                                        <span>洗牌中...</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="shuffle-phase" id="shuffle-phase-2" style="display:none;">
+                                <div class="shuffle-area">
+                                    <div class="deck-container">
+                                        <div class="deck" id="deck-paused"></div>
+                                    </div>
+                                </div>
+                                <div class="shuffle-question">
+                                    <p class="question-text">是否继续洗牌？</p>
+                                    <div class="shuffle-controls">
+                                        <button class="btn-mystical" onclick="app.performShuffle()">
+                                            <span>再洗一次</span>
+                                        </button>
+                                        <button class="btn-mystical secondary" onclick="app.showCutPhase()">
+                                            <span>准备切牌</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="shuffle-phase" id="shuffle-phase-3" style="display:none;">
+                                <div class="cut-area-three">
+                                    <div class="cut-instruction">将牌堆分成三叠，点击执行切牌</div>
+                                    <div class="three-piles">
+                                        <div class="pile" id="pile-left">
+                                            <div class="pile-label">左</div>
+                                        </div>
+                                        <div class="pile" id="pile-center">
+                                            <div class="pile-label">中</div>
+                                        </div>
+                                        <div class="pile" id="pile-right">
+                                            <div class="pile-label">右</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="shuffle-controls">
+                                    <button class="btn-mystical" id="perform-cut-btn" onclick="app.performCut()">
+                                        <span>执行切牌</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="shuffle-phase" id="shuffle-phase-4" style="display:none;">
+                                <div class="shuffle-area">
+                                    <div class="deck-container">
+                                        <div class="deck" id="deck-ready"></div>
+                                    </div>
+                                </div>
+                                <div class="shuffle-controls">
+                                    <button class="btn-mystical" onclick="app.goToDrawScreen()">
+                                        <span>开始抽牌</span>
+                                    </button>
+                                </div>
+                                <p class="shuffle-complete-text">牌已准备好</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 抽牌阶段 -->
+                    <div class="process-phase" id="phase-draw" style="display:none;">
+                        <h2>抽牌</h2>
+                        <p class="hint" id="draw-hint">从弧形牌阵中点击或拖拽选择</p>
+                        <div class="fan-container" id="fan-container"></div>
+                        <div class="drawn-cards-area" id="drawn-area" style="display:none;">
+                            <h4>已选牌位</h4>
+                            <div class="drawn-cards" id="drawn-cards"></div>
+                        </div>
+                        <div class="draw-controls">
+                            <button class="btn-mystical secondary" id="auto-draw-btn" onclick="app.autoDraw()">
+                                <span>自动抽牌</span>
+                            </button>
+                            <button class="btn-mystical" id="reveal-btn" onclick="app.revealCards()" style="display:none;">
+                                <span>翻开牌面</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 解读阶段 -->
+                    <div class="process-phase" id="phase-result" style="display:none;">
+                        <h2>牌面解读</h2>
+                        <div class="table-area" id="table-area">
+                            <button class="btn-reset-cards" id="reset-cards-btn" onclick="app.resetCardsPosition()" style="display:none;">
+                                <span>重置牌阵</span>
+                            </button>
+                            <div class="spread-display" id="spread-display"></div>
+                        </div>
+                        
+                        <div class="result-actions-wrapper">
+                            <div class="result-actions-primary">
+                                <button class="btn-mystical primary" id="flip-all-btn" onclick="app.flipAllCards()" style="display:none;">
+                                    <span>🎴 一键翻牌</span>
+                                </button>
+                            </div>
+                            
+                            <div class="result-actions" id="result-actions" style="display:none;">
+                                <div class="action-group">
+                                    <span class="action-group-title">保存分享</span>
+                                    <div class="action-group-btns">
+                                        <button class="btn-mystical" id="save-reading-btn" onclick="app.saveReading()">
+                                            <span>💾 保存</span>
+                                        </button>
+                                        <button class="btn-mystical secondary" id="share-reading-btn" onclick="app.shareReading()">
+                                            <span>🖼️ 分享</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="action-group">
+                                    <span class="action-group-title">导出</span>
+                                    <div class="action-group-btns">
+                                        <button class="btn-mystical secondary" id="copy-reading-btn" onclick="app.copyReading()">
+                                            <span>📋 复制</span>
+                                        </button>
+                                        <button class="btn-mystical secondary" id="download-reading-btn" onclick="app.downloadReading()">
+                                            <span>📥 下载</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="action-group">
+                                    <span class="action-group-title">重新开始</span>
+                                    <div class="action-group-btns">
+                                        <button class="btn-mystical secondary" onclick="app.backToSpreadSelect()">
+                                            <span>🔀 换牌阵</span>
+                                        </button>
+                                        <button class="btn-mystical secondary" onclick="app.newReading()">
+                                            <span>✨ 新占卜</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="today-keywords" id="today-keywords" style="display:none;">
+                            <div class="keywords-header">
+                                <span class="keywords-icon">✨</span>
+                                <span class="keywords-title">今日指引关键词</span>
+                            </div>
+                            <div class="keywords-container" id="keywords-container"></div>
+                            <p class="keywords-hint">记住这些关键词，它们将指引你今天的道路</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+     </main>
+
+    <!-- 命运之轮测试模态框 -->
+    <!-- 登录模态框 -->
+    <div class="modal-overlay" id="login-modal" style="display:none;">
+        <div class="modal-content login-modal">
+            <button class="modal-close" onclick="app.hideLoginModal()" title="关闭">×</button>
+            
+            <h3 class="login-title">欢迎回来</h3>
+            
+            <!-- 登录表单 -->
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <input type="tel" id="login-phone" placeholder="手机号" required maxlength="11" pattern="[0-9]{11}">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="密码" required minlength="6">
+                </div>
+                <div class="form-row">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember-me"> 记住我
+                    </label>
+                    <a href="javascript:void(0)" class="forgot-link" onclick="app.showForgotPassword()">忘记密码？</a>
+                </div>
+                <div class="login-tabs">
+                    <button type="submit" class="tab-btn active">登 录</button>
+                    <button type="button" class="tab-btn" onclick="app.switchLoginTab('register')">注 册</button>
+                </div>
+            </form>
+            
+            <!-- 注册表单 -->
+            <form id="register-form" class="login-form" style="display:none;">
+                <div class="form-group">
+                    <input type="tel" id="register-phone" placeholder="手机号" required maxlength="11" pattern="[0-9]{11}">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-password" placeholder="密码（6-20位）" required minlength="6" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="register-nickname" placeholder="昵称（选填）" maxlength="12">
+                </div>
+                <div class="form-tips">注册即表示同意 <a href="javascript:void(0)" onclick="app.showUserAgreement()">《用户协议》</a> 和 <a href="javascript:void(0)" onclick="app.showPrivacyPolicy()">《隐私政策》</a></div>
+                <div class="login-tabs">
+                    <button type="button" class="tab-btn" onclick="app.switchLoginTab('login')">登 录</button>
+                    <button type="submit" class="tab-btn active">注 册</button>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <button class="btn-guest" onclick="app.guestLogin()">
+                    <span class="guest-icon">👤</span>
+                    游客模式体验
+                </button>
+            </div>
+        </div>
+    </div>
+
+     <footer>
+         <p>✧ 命运的轮盘永不停歇 ✧</p>
+         <div class="footer-links">
+             <a href="javascript:void(0)" onclick="app.showUserAgreement()">用户协议</a>
+             <span class="footer-divider">|</span>
+             <a href="javascript:void(0)" onclick="app.showPrivacyPolicy()">隐私政策</a>
+             <span class="footer-divider">|</span>
+             <a href="javascript:void(0)" onclick="app.showDisclaimer()">免责声明</a>
+         </div>
+     </footer>
+
+     <!-- 用户协议模态框 -->
+     <div class="legal-modal" id="user-agreement-modal" style="display:none;">
+         <div class="legal-overlay" onclick="app.hideUserAgreement()"></div>
+         <div class="legal-content">
+             <button class="modal-close" onclick="app.hideUserAgreement()">×</button>
+             <h2 class="legal-title">用户协议</h2>
+             <div class="legal-body">
+                 <p class="legal-update">更新日期：2026年2月20日 | 生效日期：2026年2月20日</p>
+                 
+                 <h4>一、服务条款的确认和接纳</h4>
+                 <p>1.1 欢迎您使用"神秘塔罗"平台（以下简称"本平台"）提供的服务。在使用本平台服务前，请您仔细阅读并充分理解本协议。</p>
+                 <p>1.2 您通过网络页面点击"同意"按钮或实际使用本平台服务，即表示您已阅读并同意接受本协议的约束。</p>
+                 
+                 <h4>二、服务内容</h4>
+                 <p>2.1 本平台为用户提供塔罗占卜、AI解读等娱乐性服务。</p>
+                 <p>2.2 本平台有权在必要时修改服务内容，或暂停/终止部分或全部服务。</p>
+                 
+                 <h4>三、用户注册与账号</h4>
+                 <p>3.1 用户需年满18周岁方可使用本平台服务。</p>
+                 <p>3.2 用户应提供真实、准确、完整的个人资料，并在变更时及时更新。</p>
+                 <p>3.3 用户应妥善保管账号和密码，因账号密码泄露造成的损失由用户自行承担。</p>
+                 
+                 <h4>四、用户行为规范</h4>
+                 <p>4.1 用户不得利用本平台从事违法、违规或侵犯他人权益的活动。</p>
+                 <p>4.2 用户不得干扰本平台的正常运行。</p>
+                 <p>4.3 用户不得尝试破解、反编译或以其他方式获取本平台源代码。</p>
+                 
+                 <h4>五、知识产权</h4>
+                 <p>5.1 本平台的所有内容（包括但不限于文字、图片、音频、视频、软件等）的知识产权归本平台所有。</p>
+                 <p>5.2 未经本平台书面许可，用户不得复制、传播、展示本平台内容。</p>
+                 
+                 <h4>六、免责声明</h4>
+                 <p>6.1 本平台提供的塔罗占卜服务仅供娱乐参考，不构成任何专业建议（包括但不限于医疗、法律、投资建议）。</p>
+                 <p>6.2 用户基于本平台内容作出的任何决定，由用户自行承担责任。</p>
+                 
+                 <h4>七、隐私保护</h4>
+                 <p>7.1 本平台重视用户隐私保护，具体详见《隐私政策》。</p>
+                 
+                 <h4>八、协议修改</h4>
+                 <p>8.1 本平台有权随时修改本协议，修改后的协议将在本平台公布。</p>
+                 <p>8.2 如用户继续使用本平台服务，视为同意修改后的协议。</p>
+                 
+                 <h4>九、法律适用与争议解决</h4>
+                 <p>9.1 本协议的订立、执行和解释均适用中华人民共和国法律。</p>
+                 <p>9.2 如发生争议，双方应友好协商解决；协商不成的，可向本平台所在地人民法院提起诉讼。</p>
+                 
+                 <h4>十、联系我们</h4>
+                 <p>如您对本协议有任何疑问，请通过以下方式联系我们：</p>
+                 <p>邮箱：support@tarot.com</p>
+             </div>
+             <div class="legal-footer">
+                 <button class="btn-mystical" onclick="app.hideUserAgreement()">
+                     <span>我已阅读并同意</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- 隐私政策模态框 -->
+     <div class="legal-modal" id="privacy-policy-modal" style="display:none;">
+         <div class="legal-overlay" onclick="app.hidePrivacyPolicy()"></div>
+         <div class="legal-content">
+             <button class="modal-close" onclick="app.hidePrivacyPolicy()">×</button>
+             <h2 class="legal-title">隐私政策</h2>
+             <div class="legal-body">
+                 <p class="legal-update">更新日期：2026年2月20日 | 生效日期：2026年2月20日</p>
+                 
+                 <h4>一、引言</h4>
+                 <p>"神秘塔罗"平台（以下简称"我们"）非常重视用户隐私保护。本隐私政策旨在向您说明我们如何收集、使用、存储和保护您的个人信息。</p>
+                 
+                 <h4>二、我们收集的信息</h4>
+                 <p>2.1 账号信息：手机号码、昵称、密码（加密存储）</p>
+                 <p>2.2 使用信息：占卜记录、对话历史、使用偏好</p>
+                 <p>2.3 设备信息：设备型号、操作系统、浏览器类型</p>
+                 <p>2.4 日志信息：访问时间、访问页面、IP地址</p>
+                 
+                 <h4>三、我们如何使用收集的信息</h4>
+                 <p>3.1 提供、维护和改进我们的服务</p>
+                 <p>3.2 处理您的订单和支付</p>
+                 <p>3.3 向您发送服务通知和营销信息（经您同意）</p>
+                 <p>3.4 进行数据分析以改善用户体验</p>
+                 <p>3.5 保护平台安全和防止欺诈</p>
+                 
+                 <h4>四、信息存储</h4>
+                 <p>4.1 您的信息存储在位于中国境内的服务器上。</p>
+                 <p>4.2 我们采用业界标准的安全措施保护您的信息，包括但不限于数据加密、访问控制等。</p>
+                 <p>4.3 我们会在实现目的所需的期限内保留您的信息，法律法规另有规定的除外。</p>
+                 
+                 <h4>五、信息共享</h4>
+                 <p>我们不会向第三方出售您的个人信息。仅在以下情况下，我们可能共享您的信息：</p>
+                 <p>5.1 获得您的明确同意</p>
+                 <p>5.2 根据法律法规的要求</p>
+                 <p>5.3 与授权合作伙伴共享（如支付服务商、云服务商），且他们会遵守保密义务</p>
+                 
+                 <h4>六、Cookie使用</h4>
+                 <p>6.1 我们使用Cookie和类似技术来提供、保护和改进我们的服务。</p>
+                 <p>6.2 您可以通过浏览器设置管理Cookie，但这可能影响您使用部分功能。</p>
+                 
+                 <h4>七、您的权利</h4>
+                 <p>7.1 访问权：您有权访问我们持有的您的个人信息</p>
+                 <p>7.2 更正权：您有权更正不准确的信息</p>
+                 <p>7.3 删除权：您可以要求我们删除您的个人信息</p>
+                 <p>7.4 撤回同意：您可以随时撤回之前给予的同意</p>
+                 
+                 <h4>八、未成年人保护</h4>
+                 <p>8.1 我们的服务面向18周岁以上的用户。</p>
+                 <p>8.2 如发现在未获得可证实父母同意的情况下收集了未成年人的个人信息，我们会尽快删除相关信息。</p>
+                 
+                 <h4>九、隐私政策的变更</h4>
+                 <p>9.1 我们可能不时更新本隐私政策。</p>
+                 <p>9.2 更新后的政策将在本平台公布，重大变更会通过站内信或邮件通知您。</p>
+                 
+                 <h4>十、联系我们</h4>
+                 <p>如您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
+                 <p>邮箱：support@tarot.com</p>
+                 <p>我们将在15个工作日内回复您的请求。</p>
+             </div>
+             <div class="legal-footer">
+                 <button class="btn-mystical" onclick="app.hidePrivacyPolicy()">
+                     <span>我已阅读并同意</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- 免责声明模态框 -->
+     <div class="legal-modal" id="disclaimer-modal" style="display:none;">
+         <div class="legal-overlay" onclick="app.hideDisclaimer()"></div>
+         <div class="legal-content">
+             <button class="modal-close" onclick="app.hideDisclaimer()">×</button>
+             <h2 class="legal-title">免责声明</h2>
+             <div class="legal-body">
+                 <div class="disclaimer-notice">
+                     <p>⚠️ 重要提示</p>
+                     <p>请您在使用本平台服务前，仔细阅读以下免责声明。</p>
+                 </div>
+                 
+                 <h4>一、服务性质</h4>
+                 <p>1.1 "神秘塔罗"平台提供的塔罗占卜、AI解读等服务<strong>仅供娱乐和参考</strong>，不属于科学预测，也不构成任何形式的专业建议。</p>
+                 <p>1.2 塔罗占卜是一种传统文化和娱乐活动，其解读结果<strong>不应作为人生重大决策的唯一依据</strong>。</p>
+                 
+                 <h4>二、不构成专业建议</h4>
+                 <p>本平台的内容和服务<strong>不构成</strong>以下专业建议：</p>
+                 <p>2.1 医疗建议：如有健康问题，请咨询专业医疗人员</p>
+                 <p>2.2 法律建议：如有法律问题，请咨询专业律师</p>
+                 <p>2.3 投资理财建议：投资有风险，决策需谨慎</p>
+                 <p>2.4 心理咨询建议：如有心理困扰，请寻求专业心理咨询师帮助</p>
+                 
+                 <h4>三、用户责任</h4>
+                 <p>3.1 用户应对基于本平台内容作出的任何决定承担全部责任。</p>
+                 <p>3.2 用户应理性看待占卜结果，不应过度依赖或迷信。</p>
+                 <p>3.3 如因用户个人行为造成任何损失，本平台不承担责任。</p>
+                 
+                 <h4>四、AI生成内容</h4>
+                 <p>4.1 本平台的部分解读内容由人工智能（AI）生成。</p>
+                 <p>4.2 AI生成的内容可能存在不准确或不完整的情况。</p>
+                 <p>4.3 AI的观点<strong>不代表本平台立场</strong>，仅供参考。</p>
+                 
+                 <h4>五、服务中断或变更</h4>
+                 <p>5.1 本平台保留随时修改、暂停或终止服务的权利。</p>
+                 <p>5.2 因系统维护、网络故障、不可抗力等原因导致的服务中断，本平台不承担责任。</p>
+                 
+                 <h4>六、第三方链接</h4>
+                 <p>6.1 本平台可能包含第三方网站的链接。</p>
+                 <p>6.2 我们对第三方网站的内容、隐私政策不负责任。</p>
+                 
+                 <h4>七、免责范围</h4>
+                 <p>在法律允许的最大范围内，本平台对以下情况不承担责任：</p>
+                 <p>7.1 因用户自身原因（如账号密码泄露）造成的损失</p>
+                 <p>7.2 因不可抗力（如自然灾害、政府行为、网络攻击）造成的服务中断或损失</p>
+                 <p>7.3 因第三方原因造成的损失</p>
+                 <p>7.4 间接的、附带的、特殊的或后果性的损失</p>
+                 
+                 <h4>八、适用法律</h4>
+                 <p>8.1 本免责声明的解释和执行适用中华人民共和国法律。</p>
+                 <p>8.2 如本声明任何条款被认定为无效，不影响其他条款的效力。</p>
+                 
+                 <h4>九、联系我们</h4>
+                 <p>如您对本免责声明有任何疑问，请联系我们：</p>
+                 <p>邮箱：support@tarot.com</p>
+                 
+                 <div class="disclaimer-confirm">
+                     <p>点击"我已了解"按钮，即表示您已阅读、理解并同意接受本免责声明的所有条款。</p>
+                 </div>
+             </div>
+             <div class="legal-footer">
+                 <button class="btn-mystical" onclick="app.hideDisclaimer()">
+                     <span>我已了解</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- 新手引导模态框 -->
+     <div class="guide-modal" id="guide-modal" style="display:none;">
+         <div class="guide-overlay"></div>
+         <div class="guide-content">
+             <button class="modal-close" onclick="app.hideGuide()">×</button>
+             
+             <div class="guide-step" id="guide-step-1">
+                 <div class="guide-icon">🎴</div>
+                 <h3 class="guide-title">欢迎来到神秘塔罗</h3>
+                 <p class="guide-desc">这是一个基于AI的智能塔罗占卜平台。让我带你快速了解如何使用。</p>
+                 <div class="guide-progress">
+                     <span class="progress-dot active"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                 </div>
+             </div>
+             
+             <div class="guide-step" id="guide-step-2" style="display:none;">
+                 <div class="guide-icon">❓</div>
+                 <h3 class="guide-title">输入你的问题</h3>
+                 <p class="guide-desc">首先，在心中想好你想问的问题，可以是感情、事业、财运等方面。你也可以让AI帮你推荐最合适的牌阵。</p>
+                 <div class="guide-progress">
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot active"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                 </div>
+             </div>
+             
+             <div class="guide-step" id="guide-step-3" style="display:none;">
+                 <div class="guide-icon">🔮</div>
+                 <h3 class="guide-title">洗牌与抽牌</h3>
+                 <p class="guide-desc">选择牌阵后，你需要洗牌并冥想你的问题。然后从78张塔罗牌中选择属于你的命运之牌，系统会自动分配正逆位。</p>
+                 <div class="guide-progress">
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot active"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                 </div>
+             </div>
+             
+             <div class="guide-step" id="guide-step-4" style="display:none;">
+                 <div class="guide-icon">✨</div>
+                 <h3 class="guide-title">AI深度解读</h3>
+                 <p class="guide-desc">抽完牌后，AI会根据牌阵、牌位和你的问题，为你提供专业且温暖的塔罗解读。你还可以继续追问。</p>
+                 <div class="guide-progress">
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot active"></span>
+                     <span class="progress-dot"></span>
+                 </div>
+             </div>
+             
+             <div class="guide-step" id="guide-step-5" style="display:none;">
+                 <div class="guide-icon">🌙</div>
+                 <h3 class="guide-title">准备开始了吗？</h3>
+                 <p class="guide-desc">现在你已经了解了基本流程。记住，塔罗只是指引，最终的决定权永远在你手中。愿星光指引你的道路！</p>
+                 <div class="guide-progress">
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot"></span>
+                     <span class="progress-dot active"></span>
+                 </div>
+             </div>
+             
+             <div class="guide-controls">
+                 <button class="btn-mystical secondary" id="guide-prev-btn" onclick="app.prevGuideStep()" style="display:none;">
+                     <span>上一步</span>
+                 </button>
+                 <button class="btn-mystical" id="guide-next-btn" onclick="app.nextGuideStep()">
+                     <span>下一步</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- 历史记录模态框 -->
+     <div class="history-modal" id="history-modal" style="display:none;">
+         <div class="history-overlay" onclick="app.hideHistory()"></div>
+         <div class="history-content">
+             <button class="modal-close" onclick="app.hideHistory()">×</button>
+             <h2 class="history-title">📜 占卜历史</h2>
+             
+             <div class="history-search">
+                 <input type="text" id="history-search-input" placeholder="搜索问题或牌名..." oninput="app.searchHistory()">
+                 <button class="btn-mystical secondary small" onclick="app.clearAllHistory()">
+                     <span>清空全部</span>
+                 </button>
+             </div>
+             
+             <div class="history-list" id="history-list">
+                 <p class="history-empty">暂无历史记录</p>
+             </div>
+         </div>
+     </div>
+
+     <!-- 历史详情模态框 -->
+     <div class="history-detail-modal" id="history-detail-modal" style="display:none;">
+         <div class="history-overlay" onclick="app.hideHistoryDetail()"></div>
+         <div class="history-detail-content">
+             <button class="modal-close" onclick="app.hideHistoryDetail()">×</button>
+             <div id="history-detail-body"></div>
+             <div class="history-detail-actions">
+                 <button class="btn-mystical secondary" onclick="app.deleteCurrentHistory()">
+                     <span>删除此记录</span>
+                 </button>
+                 <button class="btn-mystical" onclick="app.hideHistoryDetail()">
+                     <span>关闭</span>
+                 </button>
+             </div>
+         </div>
+     </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/error-monitor.js"></script>
+    <script src="js/knowledge-smart.js"></script>
+    <script src="js/module-loader.js"></script>
+    <script src="js/lazy-loader.js"></script>
+    <script src="js/mobile-helper.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/knowledge.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/credits.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/tarot.js"></script>
+    <script src="js/spreads.js"></script>
+    <script src="js/share.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/mobile-guide-fix.js"></script>
+    <script src="js/quick-fix.js"></script>
+    <script src="js/mobile-test.js"></script>
+    <script src="js/quick-test.js"></script>
+    <script src="js/login-fix.js"></script>
+    <script src="js/login-debug.js"></script>
+    <script>
+        console.log('✅ 移动端测试脚本已加载');
+        console.log('💡 使用方法:');
+        console.log('  1. 自动测试（刷新页面后自动运行）');
+        console.log('     MobileAutoTest.run()        → 完整测试');
+        console.log('  2. 快速测试（5分钟内）');
+        console.log('     QuickMobileTest.quickRun()   → 快速测试');
+        console.log('  3. 查看报告（测试后）');
+        console.log('     MobileAutoTest.getReport()');
+        console.log('  4. 登录诊断（登录失败时）');
+        console.log('     LoginDebug.fixAndLogin()     → 诊断并登录');
+        console.log('     LoginDebug.testLogin("手机号", "密码")');
+        console.log('');
+        console.log('━━━━ 详细测试清单请查看: 工作日志/移动端快速测试清单.md');
+        console.log('');
+    </script>
+</body>
+</html>

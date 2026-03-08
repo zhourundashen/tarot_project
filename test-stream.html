@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>流式输出测试</title>
+</head>
+<body>
+    <h1>AI流式输出测试</h1>
+    <button onclick="testStream()">测试流式输出</button>
+    <button onclick="testNormal()">测试普通输出</button>
+    <div id="result" style="margin-top: 20px; white-space: pre-wrap; border: 1px solid #ddd; min-height: 200px;"></div>
+    
+    <script>
+        const backendUrl = 'http://localhost:3000';
+        
+        async function testStream() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '测试流式输出...';
+            
+            const messages = [
+                {
+                    role: 'system',
+                    content: '你是一个专业的塔罗占卜师。请用温暖、专业的语调回复。。'
+                },
+                {
+                    role: 'user',
+                    content: '请为我解读这张牌'
+                }
+            ];
+            
+            try {
+                const response = await fetch(`${backendUrl}/api/ai/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ messages, messages, stream: true })
+                });
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = line.slice(6);
+                            
+                            if (data === '[DONE]') {
+                                resultDiv.innerHTML += '<br>✅ 完成';
+                                break;
+                            }
+                            
+                            try {
+                                const json = JSON.parse(data);
+                                const content = json.content || '';
+                                
+                                if (content) {
+                                    fullContent += content;
+                                    resultDiv.innerHTML = fullContent.replace(/\n/g, '<br>');
+                                }
+                            } catch (e) {
+                                // 忽略解析错误
+                            }
+                        }
+                    }
+                }
+                
+                resultDiv.innerHTML += '<br>✅ 测试完成！';
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: red;">❌ 测试失败: ${error.message}</span>`;
+            }
+        }
+        
+        async function testNormal() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '测试普通输出...';
+            
+            const messages = [
+                {
+                    role: 'system',
+                    content: '你是一个专业的塔罗占卜师.请用温暖、专业的语调回复.'
+                }
+                },
+                {
+                    role: 'user',
+                    content: '请为我解读这张牌'
+                }
+            ];
+            
+            try {
+                const response = await fetch(`${backendUrl}/api/ai/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ messages: messages, stream: false })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.content) {
+                    resultDiv.innerHTML = `<pre>✅ 普通输出成功!</pre>`;
+                    resultDiv.innerHTML += data.data.content;
+                } else {
+                    resultDiv.innerHTML = `<span style="color: red;">❌ 测试失败: ${JSON.stringify(data)}</span>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: red;">❌ 测试失败: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
